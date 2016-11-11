@@ -9,7 +9,7 @@ CREATE TABLE users (
   UNIQUE KEY (user_name)
 );
 
-CREATE TABLE configurations (
+CREATE TABLE outlines (
   id int NOT NULL AUTO_INCREMENT,
   value varchar(1000)  NOT NULL,
   PRIMARY KEY (ID)
@@ -18,8 +18,8 @@ CREATE TABLE configurations (
 CREATE TABLE user_config (
   id int NOT NULL AUTO_INCREMENT,
   user_id int NOT NULL,
-  config_id int NOT NULL,
+  outline_id int NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY (config_id) REFERENCES configurations (id) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY (outline_id) REFERENCES outlines (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

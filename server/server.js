@@ -4,7 +4,7 @@ const db = require('./config/connection');
 const app = express();
 
 require('./config/middleware')(app, express);
-// require('./config/routes')(app, express);
+require('./config/routes')(app, express);
 
 const port = process.env.PORT || 8080;
 
