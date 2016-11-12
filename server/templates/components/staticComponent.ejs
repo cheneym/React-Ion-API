@@ -7,13 +7,8 @@ const <%- name %> = () => (
     <% for(var i=0; i<children.length; i++) { %>  <<%= children[i].name %> /> 
     <% } %></div>
 );
-
 <% if (initial) {%>
-
 ReactDOM.render(<<%- name %> />, document.getElementById('App'));
-
 <% } else {%>
-
 export default <%- name %>;
-
 <% } %>
