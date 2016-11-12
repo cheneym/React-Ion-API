@@ -1,10 +1,10 @@
 const zip = require('../../server/utils/zip');
 
-module.exports.getOutline = (req, res) => {
+module.exports.getProject = (req, res) => {
   zip(res);
 };
 
-module.exports.makeOutline = (req, res) => {
+module.exports.createProject = (req, res) => {
   const data = {
     name: 'Lol',
     body: '<h1>Hello World<h1>',
