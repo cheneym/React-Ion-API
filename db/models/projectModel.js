@@ -20,7 +20,7 @@ module.exports.get = (params, cb) => {
 };
 
 module.exports.getUserProjects = (userId, cb) => {
-  const queryString = `select p.id, p.projectname, p.tree from users u
+  const queryString = `select p.id, p.name, p.project_tree from users u
                        left outer join user_project up on (u.id=up.user_id)
                        left outer join projects projects p on (up.project_id=p.id)
                        where u.id=?`;
@@ -30,8 +30,8 @@ module.exports.getUserProjects = (userId, cb) => {
 };
 
 module.exports.create = (projectProps, cb) => {
-  const params = [projectProps.projectname, projectProps.tree];
-  const queryString = `insert into projects(projectname, tree)
+  const params = [projectProps.name, projectProps.project_tree];
+  const queryString = `insert into projects(name, project_tree)
                        value (?, ?)`;
   db.query(queryString, params, (err, results) => {
     if (cb) { cb(err, results); }
@@ -39,8 +39,8 @@ module.exports.create = (projectProps, cb) => {
 };
 
 module.exports.update = (projectProps, cb) => {
-  const params = [projectProps.projectname, projectProps.tree, projectProps.id];
-  const queryString = `update projects set projectname=?, tree=?
+  const params = [projectProps.name, projectProps.project_tree, projectProps.id];
+  const queryString = `update projects set name=?, project_tree=?
                        where id=?`;
   db.query(queryString, params, (err, results) => {
     if (cb) { cb(err, results); }

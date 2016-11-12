@@ -20,22 +20,22 @@ module.exports.get = (params, cb) => {
 };
 
 module.exports.create = (userProps, cb) => {
-  const params = [userProps.username, userProps.password, userProps.salt];
-  const queryString = `insert into users(username, password, salt)
-                       value (?, ?, ?)`;
+  const params = [userProps.id];
+  const queryString = `insert into users(id)
+                       value (?)`;
   db.query(queryString, params, (err, results) => {
     if (cb) { cb(err, results); }
   });
 };
 
-module.exports.update = (userProps, cb) => {
-  const params = [userProps.password, userProps.salt, userProps.username];
-  const queryString = `update users set password=?, salt=?
-                       where username=?`;
-  db.query(queryString, params, (err, results) => {
-    if (cb) { cb(err, results); }
-  });
-};
+// module.exports.update = (userProps, cb) => {
+//   const params = [userProps.newId, userProps.id];
+//   const queryString = `update users set id=?
+//                        where id=?`;
+//   db.query(queryString, params, (err, results) => {
+//     if (cb) { cb(err, results); }
+//   });
+// };
 
 module.exports.remove = (params, cb) => {
   const keys = Object.keys(params);
