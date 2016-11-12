@@ -57,7 +57,7 @@ describe('Project Model', () => {
         const newProject2 = {};
         Object.assign(newProject2, newProject);
         newProject2.tree = 'captainfalcon';
-        newProject2.projectId = insertId;
+        newProject2.id = insertId;
         Project.update(newProject2, (err2) => {
           expect(err2).to.not.exist;
           Project.get({}, (err3, projects) => {
@@ -74,7 +74,7 @@ describe('Project Model', () => {
         expect(err).to.not.exist;
         const newProject2 = Object.assign(newProject);
         newProject2.tree = 'notRandom';
-        newProject2.projectId = insertId;
+        newProject2.id = insertId;
         Project.update(newProject2, (err2) => {
           expect(err2).to.not.exist;
           Project.get({}, (err3, projects) => {
@@ -112,14 +112,14 @@ describe('Project Model', () => {
       });
     });
 
-    it('Uses projectId as search query when passed object with projectId property', (done) => {
+    it('Uses id as search query when passed object with id property', (done) => {
       Project.create(newProject, (err) => {
         expect(err).to.not.exist;
         Project.create(newProject3, (err2, { insertId }) => {
           expect(err2).to.not.exist;
           Project.create(newProject4, (err3) => {
             expect(err3).to.not.exist;
-            Project.get({ projectId: insertId }, (err4, projects) => {
+            Project.get({ id: insertId }, (err4, projects) => {
               expect(err4).to.not.exist;
               expect(projects.length).to.equal(1);
               expect(projects[0].projectname).to.equal('silver');
@@ -141,7 +141,7 @@ describe('Project Model', () => {
         expect(err).to.not.exist;
         Project.create(newProject3, (err2) => {
           expect(err2).to.not.exist;
-          Project.remove({ projectId: insertId }, (err3) => {
+          Project.remove({ id: insertId }, (err3) => {
             expect(err3).to.not.exist;
             Project.get({}, (err4, projects) => {
               expect(err4).to.not.exist;

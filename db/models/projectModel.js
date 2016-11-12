@@ -1,9 +1,14 @@
 const db = require('../../server/config/connection');
 
-module.exports.get = ({ projectId }, cb) => {
-  if (projectId) {
-    const queryString = 'select * from projects where id=?';
-    db.query(queryString, projectId, (err, results) => {
+module.exports.get = (params, cb) => {
+  const keys = Object.keys(params);
+  const vals = Object.values(params);
+  if (keys.length > 0) {
+    let queryString = 'select * from projects where ';
+    for (let i = 0; i < keys.length; i++) {
+      queryString += `${keys[i]}=?`;
+    }
+    db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }
     });
   } else {
@@ -15,7 +20,7 @@ module.exports.get = ({ projectId }, cb) => {
 };
 
 module.exports.getUserProjects = (userId, cb) => {
-  const queryString = `select p.id p.projectname p.tree from users u
+  const queryString = `select p.id, p.projectname, p.tree from users u
                        left outer join user_project up on (u.id=up.user_id)
                        left outer join projects projects p on (up.project_id=p.id)
                        where u.id=?`;
@@ -34,7 +39,7 @@ module.exports.create = (projectProps, cb) => {
 };
 
 module.exports.update = (projectProps, cb) => {
-  const params = [projectProps.projectname, projectProps.tree, projectProps.projectId];
+  const params = [projectProps.projectname, projectProps.tree, projectProps.id];
   const queryString = `update projects set projectname=?, tree=?
                        where id=?`;
   db.query(queryString, params, (err, results) => {
@@ -42,10 +47,15 @@ module.exports.update = (projectProps, cb) => {
   });
 };
 
-module.exports.remove = ({ projectId }, cb) => {
-  if (projectId) {
-    const queryString = 'delete from projects where id=?';
-    db.query(queryString, projectId, (err, results) => {
+module.exports.remove = (params, cb) => {
+  const keys = Object.keys(params);
+  const vals = Object.values(params);
+  if (keys.length > 0) {
+    let queryString = 'delete from projects where ';
+    for (let i = 0; i < keys.length; i++) {
+      queryString += `${keys[i]}=?`;
+    }
+    db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }
     });
   } else {
