@@ -1,9 +1,9 @@
 const express = require('express');
-const outlineController = require('../../../db/controllers/outlineController');
+const projectController = require('../../../db/controllers/projectController');
 
 const router = new express.Router();
 
 router.route('/:id')
-  .get(outlineController.getOutline);
+  .get(projectController.getProject);
 
 module.exports = router;
