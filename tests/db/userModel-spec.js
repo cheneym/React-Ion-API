@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const User = require('../../db/models/userModel.js');
@@ -38,9 +39,9 @@ describe('User Model', () => {
     it('Adds valid users to database', (done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
-        User.get((err, users) => {
-          expect(err).to.not.exist;
-          expect(users.length).equal(1);
+        User.get((err2, users) => {
+          expect(err2).to.not.exist;
+          expect(users.length).to.equal(1);
           expect(users[0].username).to.equal('gold');
           done();
         });
@@ -50,11 +51,35 @@ describe('User Model', () => {
 
   describe('User Update: ', () => {
     it('Does not add or remove users from database', (done) => {
-      done();
+      User.create(newUser, (err) => {
+        expect(err).to.not.exist;
+        const newUser2 = Object.assign(newUser);
+        newUser2.password = 'notRandom';
+        User.update(newUser2, (err2) => {
+          expect(err2).to.not.exist;
+          User.get((err3, users) => {
+            expect(err3).to.not.exist;
+            expect(users.length).to.equal(1);
+            done();
+          });
+        });
+      });
     });
 
     it('Updates existing users from database', (done) => {
-      done();
+      User.create(newUser, (err) => {
+        expect(err).to.not.exist;
+        const newUser2 = Object.assign(newUser);
+        newUser2.password = 'notRandom';
+        User.update(newUser2, (err2) => {
+          expect(err2).to.not.exist;
+          User.get((err3, users) => {
+            expect(err3).to.not.exist;
+            expect(users[0].password).to.equal('notRandom');
+            done();
+          });
+        });
+      });
     });
   });
 
