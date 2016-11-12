@@ -29,12 +29,20 @@ module.exports.getUserProjects = (userId, cb) => {
   });
 };
 
-module.exports.create = (projectProps, cb) => {
+module.exports.create = (userId, projectProps, cb) => {
   const params = [projectProps.name, projectProps.project_tree];
   const queryString = `insert into projects(name, project_tree)
                        value (?, ?)`;
   db.query(queryString, params, (err, results) => {
-    if (cb) { cb(err, results); }
+    if (err) { cb(err, null); }
+    const projectId = results.insertId;
+    const params2 = [userId, projectId, 1];
+    const queryString2 = `insert into user_project (user_id, project_id, permission_id)
+                          value (?, ?, ?)`;
+    db.query(queryString2, params2, (err2) => {
+      if (err2) { cb(err2, null); }
+      if (cb) { cb(err, results); }
+    });
   });
 };
 

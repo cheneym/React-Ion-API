@@ -4,9 +4,11 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const Project = require('../../db/models/projectModel.js');
+const User = require('../../db/models/userModel.js');
 
 const describe = mocha.describe;
 const it = mocha.it;
+const before = mocha.before;
 const beforeEach = mocha.beforeEach;
 const after = mocha.after;
 
@@ -14,6 +16,14 @@ describe('Project Model', () => {
   const name = 'gold';
   const projectTree = 'hahaha123';
   const newProject = { name, project_tree: projectTree };
+  const userId = 1;
+
+  before((done) => {
+    User.create({ id: 1 }, (err) => {
+      if (err) { console.error(err); }
+      done();
+    });
+  });
 
   beforeEach((done) => {
     Project.remove({}, (err) => {
@@ -25,20 +35,23 @@ describe('Project Model', () => {
   after((done) => {
     Project.remove({}, (err) => {
       if (err) { console.error(err); }
-      done();
+      User.remove({ id: 1 }, (err2) => {
+        if (err) { console.error(err2); }
+        done();
+      });
     });
   });
 
   describe('Project creation: ', () => {
     it('Does not add invalid projects to database', (done) => {
-      Project.create({ name: '123' }, (err) => {
+      Project.create(userId, { name: '123' }, (err) => {
         expect(err).to.exist;
         done();
       });
     });
 
     it('Adds valid projects to database', (done) => {
-      Project.create(newProject, (err) => {
+      Project.create(userId, newProject, (err) => {
         expect(err).to.not.exist;
         Project.get({}, (err2, projects) => {
           expect(err2).to.not.exist;
@@ -52,7 +65,7 @@ describe('Project Model', () => {
 
   describe('Project Update: ', () => {
     it('Does not add or remove projects from database', (done) => {
-      Project.create(newProject, (err, { insertId }) => {
+      Project.create(userId, newProject, (err, { insertId }) => {
         expect(err).to.not.exist;
         const newProject2 = {};
         Object.assign(newProject2, newProject);
@@ -70,7 +83,7 @@ describe('Project Model', () => {
     });
 
     it('Updates existing projects in database', (done) => {
-      Project.create(newProject, (err, { insertId }) => {
+      Project.create(userId, newProject, (err, { insertId }) => {
         expect(err).to.not.exist;
         const newProject2 = Object.assign(newProject);
         newProject2.project_tree = 'notRandom';
@@ -96,11 +109,11 @@ describe('Project Model', () => {
     newProject4.name = 'copper';
 
     it('Gets all projects if passed empty object', (done) => {
-      Project.create(newProject, (err) => {
+      Project.create(userId, newProject, (err) => {
         expect(err).to.not.exist;
-        Project.create(newProject3, (err2) => {
+        Project.create(userId, newProject3, (err2) => {
           expect(err2).to.not.exist;
-          Project.create(newProject4, (err3) => {
+          Project.create(userId, newProject4, (err3) => {
             expect(err3).to.not.exist;
             Project.get({}, (err4, projects) => {
               expect(err4).to.not.exist;
@@ -113,11 +126,11 @@ describe('Project Model', () => {
     });
 
     it('Uses object as search query when passed object with properties', (done) => {
-      Project.create(newProject, (err) => {
+      Project.create(userId, newProject, (err) => {
         expect(err).to.not.exist;
-        Project.create(newProject3, (err2) => {
+        Project.create(userId, newProject3, (err2) => {
           expect(err2).to.not.exist;
-          Project.create(newProject4, (err3) => {
+          Project.create(userId, newProject4, (err3) => {
             expect(err3).to.not.exist;
             Project.get({ name: 'silver' }, (err4, projects) => {
               expect(err4).to.not.exist;
@@ -137,9 +150,9 @@ describe('Project Model', () => {
     newProject3.name = 'silver';
 
     it('Removes project based on search query when passed object with properties', (done) => {
-      Project.create(newProject, (err, { insertId }) => {
+      Project.create(userId, newProject, (err, { insertId }) => {
         expect(err).to.not.exist;
-        Project.create(newProject3, (err2) => {
+        Project.create(userId, newProject3, (err2) => {
           expect(err2).to.not.exist;
           Project.remove({ id: insertId }, (err3) => {
             expect(err3).to.not.exist;
