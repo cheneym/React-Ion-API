@@ -1,7 +1,7 @@
 // const userRouter = require('./routers/userRouter');
-const outlineRouter = require('./routers/outlineRouter');
+const projectRouter = require('./routers/projectRouter');
 
 module.exports = (app) => {
   // app.use('/api/user', userRouter);
-  app.use('/api/outline', outlineRouter);
+  app.use('/api/project', projectRouter);
 };
