@@ -1,25 +1,34 @@
 const Zip = require('node-zip');
+var ejs = require('ejs');
+const path = require('path');
+const worker = require('../../worker');
 
 module.exports.getOutline = (req, res) => {
   const data = {
+    total: 3,
     name: 'Lol',
-    body: '<h1>Hello World<h1>',
-  };
+    children: [
+      {
+        name: 'test',
+        children: []
+      },
+      {
+        name: 'test2',
+        children: []
+      }
+    ]
+  }
 
-  res.render('dynamicComponent', data, (err, html) => {
-    if (err) { res.sendStatus(500); }
-    res.end(JSON.stringify(html));
+  //var html = ejs({url: 'dynamicComponent'}).render(data);
+  //console.log(html);
+
+  //};
+  worker(data, function() {
+    res.end();
   });
-};
 
-module.exports.makeOutline = (req, res) => {
-  const data = {
-    name: 'Lol',
-    body: '<h1>Hello World<h1>',
-  };
-
-  res.render('dynamicComponent', data, (err, html) => {
-    if (err) { res.sendStatus(500); }
-    res.end(JSON.stringify(html));
-  });
+  // res.render('dynamicComponent', data, (err, html) => {
+  //   if (err) { res.sendStatus(500); }
+  //   res.end(JSON.stringify(html));
+  // });
 };
