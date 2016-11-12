@@ -6,7 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   cache: true,
-  entry: <% if (router === 1) { %>'./src/js/Index.jsx', <% } else { %>page,<% } %>
+  entry: <% if (router === 1) { %>'./src/js/App.jsx', <% } else { %>page,<% } %>
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '',

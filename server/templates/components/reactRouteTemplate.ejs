@@ -1,0 +1,14 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Router, Route, browserHistory } from 'react-router';
+<% for(var i=0; i<routes.length; i++) { %>import <%= routes[i].name %> from '../js/<%= routes[i].name %>';
+<% } %>
+
+const App = () => (
+    <Router history={browserHistory}>
+    <% for(var i=0; i<routes.length; i++) { %>  <Route path="/<%= i !== 0 ? routes[i].name : '' %>" component={<%= routes[i].name %>} />
+    <% } %></Router>
+);
+
+ReactDOM.render(<App />, document.getElementById('App'));
+
