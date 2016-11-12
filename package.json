@@ -4,7 +4,7 @@
   "description": "> Pithy project description",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --bail --reporter nyan tests/specs.js",
     "build": "gulp build && webpack -p --config webpack.config.js --progress --profile --colors",
     "dev": "./node_modules/.bin/webpack-dev-server -d --host 0.0.0.0 --config webpack.config.js --content-base src/ --colors --hot --progress --inline --watch"
   },
