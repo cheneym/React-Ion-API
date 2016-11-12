@@ -12,14 +12,15 @@ CREATE TABLE users (
 );
 
 CREATE TABLE projects (
-  id   int            NOT NULL AUTO_INCREMENT,
-  tree varchar(1000)  NOT NULL,
+  id          int            NOT NULL AUTO_INCREMENT,
+  projectname varchar(255)   NOT NULL,
+  tree        varchar(1000)  NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE permissions (
-  id   int         NOT NULL AUTO_INCREMENT,
-  name varchar(40) NOT NULL,
+  id         int          NOT NULL AUTO_INCREMENT,
+  permission varchar(255) NOT NULL,
   PRIMARY KEY (ID)
 );
 
