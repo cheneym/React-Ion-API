@@ -4,7 +4,9 @@
   "description": "Your Awesome Project",
   "main": "index.js",
   "scripts": {
-    "start": "node ./server/server.js"
+    "start": "node ./server/server.js",
+    "build": "gulp build && webpack -p --config webpack.config.js --progress --profile --colors",
+    "dev": "./node_modules/.bin/webpack-dev-server -d --host 0.0.0.0 --config webpack.config.js --content-base src/ --colors --hot --progress --inline --watch"
   },
   "author": "",
   "license": "ISC",

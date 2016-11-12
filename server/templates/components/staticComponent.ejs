@@ -1,0 +1,19 @@
+import React from 'react';
+<% if (initial) { %>import ReactDOM from 'react-dom'<% } %>
+<% for(var i=0; i<children.length; i++) { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';
+<% } %>
+const <%- name %> = () => (
+    <div>
+    <% for(var i=0; i<children.length; i++) { %>  <<%= children[i].name %> /> 
+    <% } %></div>
+);
+
+<% if (initial) {%>
+
+ReactDOM.render(<<%- name %> />, document.getElementById('App'));
+
+<% } else {%>
+
+export default <%- name %>;
+
+<% } %>
