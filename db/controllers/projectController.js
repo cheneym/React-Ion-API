@@ -84,3 +84,11 @@ module.exports.createProject = (req, res) => {
   //   res.end(JSON.stringify(html));
   // });
 };
+
+module.exports.save = (req, res) => {
+  res.end();
+};
+
+module.exports.generateProject = (req, res) => {
+  res.end();
+};
