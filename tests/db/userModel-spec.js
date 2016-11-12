@@ -124,7 +124,7 @@ describe('User Model', () => {
       });
     });
 
-    it('Uses username as search query when passed object with username property', (done) => {
+    it('Uses object as search query when passed object with properties', (done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
         User.create(newUser3, (err2) => {
@@ -148,7 +148,7 @@ describe('User Model', () => {
     Object.assign(newUser3, newUser);
     newUser3.username = 'silver';
 
-    it('Removes user based on search query when passed object with username property', (done) => {
+    it('Removes user based on search query when passed object with properties', (done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
         User.create(newUser3, (err2) => {

@@ -1,9 +1,14 @@
 const db = require('../../server/config/connection');
 
-module.exports.get = ({ username }, cb) => {
-  if (username) {
-    const queryString = 'select * from users where username=?';
-    db.query(queryString, username, (err, results) => {
+module.exports.get = (params, cb) => {
+  const keys = Object.keys(params);
+  const vals = Object.values(params);
+  if (keys.length > 0) {
+    let queryString = 'select * from users where ';
+    for (let i = 0; i < keys.length; i++) {
+      queryString += `${keys[i]}=?`;
+    }
+    db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }
     });
   } else {
@@ -32,10 +37,15 @@ module.exports.update = (userProps, cb) => {
   });
 };
 
-module.exports.remove = ({ username }, cb) => {
-  if (username) {
-    const queryString = 'delete from users where username=?';
-    db.query(queryString, username, (err, results) => {
+module.exports.remove = (params, cb) => {
+  const keys = Object.keys(params);
+  const vals = Object.values(params);
+  if (keys.length > 0) {
+    let queryString = 'delete from users where ';
+    for (let i = 0; i < keys.length; i++) {
+      queryString += `${keys[i]}=?`;
+    }
+    db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }
     });
   } else {

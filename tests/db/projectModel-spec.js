@@ -112,14 +112,14 @@ describe('Project Model', () => {
       });
     });
 
-    it('Uses id as search query when passed object with id property', (done) => {
+    it('Uses object as search query when passed object with properties', (done) => {
       Project.create(newProject, (err) => {
         expect(err).to.not.exist;
-        Project.create(newProject3, (err2, { insertId }) => {
+        Project.create(newProject3, (err2) => {
           expect(err2).to.not.exist;
           Project.create(newProject4, (err3) => {
             expect(err3).to.not.exist;
-            Project.get({ id: insertId }, (err4, projects) => {
+            Project.get({ projectname: 'silver' }, (err4, projects) => {
               expect(err4).to.not.exist;
               expect(projects.length).to.equal(1);
               expect(projects[0].projectname).to.equal('silver');
@@ -136,7 +136,7 @@ describe('Project Model', () => {
     Object.assign(newProject3, newProject);
     newProject3.projectname = 'silver';
 
-    it('Removes project based on search query when passed object with id property', (done) => {
+    it('Removes project based on search query when passed object with properties', (done) => {
       Project.create(newProject, (err, { insertId }) => {
         expect(err).to.not.exist;
         Project.create(newProject3, (err2) => {
