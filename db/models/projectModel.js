@@ -2,7 +2,7 @@ const db = require('../../server/config/connection');
 
 module.exports.get = ({ projectId }, cb) => {
   if (projectId) {
-    const queryString = 'select * from projects where projectId=?';
+    const queryString = 'select * from projects where id=?';
     db.query(queryString, projectId, (err, results) => {
       if (cb) { cb(err, results); }
     });
