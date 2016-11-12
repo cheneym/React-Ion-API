@@ -143,13 +143,27 @@ describe('User Model', () => {
     });
   });
 
-  // describe('User remove: ', () => {
-  //   it('Does not add invalid users to database', (done) => {
-  //     done();
-  //   });
+  describe('User remove: ', () => {
+    const newUser3 = {};
+    Object.assign(newUser3, newUser);
+    newUser3.username = 'silver';
 
-  //   it('Adds valid users to database', (done) => {
-  //     done();
-  //   });
-  // });
+    it('Removes user based on search query when passed object with username property', (done) => {
+      User.create(newUser, (err) => {
+        expect(err).to.not.exist;
+        User.create(newUser3, (err2) => {
+          expect(err2).to.not.exist;
+          User.remove({ username: 'gold' }, (err3) => {
+            expect(err3).to.not.exist;
+            User.get({}, (err4, users) => {
+              expect(err4).to.not.exist;
+              expect(users.length).to.equal(1);
+              expect(users[0].username).to.equal('silver');
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
 });
