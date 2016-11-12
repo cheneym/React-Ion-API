@@ -2,14 +2,15 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+<% if (router === 0) { %>const page = require('./page.json')<% } %>
 
 module.exports = {
   cache: true,
-  entry: './src/js/App.jsx',
+  entry: <% if (router === 1) { %>'./src/js/Index.jsx', <% } else { %>page,<% } %>
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '',
-    filename: 'js/bundle.js',
+    filename: <% if (router === 1) { %>'js/bundle.js', <% } else { %>'js/[name].js',<% } %>
   },
   module: {
     loaders: [
