@@ -1,10 +1,10 @@
 const zip = require('../../server/utils/zip');
 const worker = require('../../server/utils/worker');
 
-module.exports.getProject = (req, res) => {
+module.exports.getProjects = (req, res) => {
   //zip(res);
     const data = {
-    total: 3,
+    total: 5,
     router: 1,
     routes: [
     {
