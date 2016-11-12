@@ -4,9 +4,11 @@ USE reaction;
 
 CREATE TABLE users (
   id        int         NOT NULL AUTO_INCREMENT,
-  user_name varchar(40) NOT NULL,
+  username varchar(40)  NOT NULL,
+  password varchar(255) NOT NULL,
+  salt varchar(255) NOT NULL,
   PRIMARY KEY (ID),
-  UNIQUE KEY (user_name)
+  UNIQUE KEY (username)
 );
 
 CREATE TABLE projects (
