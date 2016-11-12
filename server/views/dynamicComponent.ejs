@@ -1,11 +1,17 @@
 import React from 'react';
-
+import ReactDOM from 'react-dom';
+<% for(var i=0; i<children.length; i++) { %>import <%= children[i].name %> from './<%= children[i].name %>';
+<% } %>
 class <%- name %> extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    return (<%- body %>);
+    return (
+    <div>
+    <% for(var i=0; i<children.length; i++) { %>  <<%= children[i].name %> /> 
+    <% } %></div>
+    );
   }
 }

@@ -6,12 +6,30 @@ module.exports.getProject = (req, res) => {
 
 module.exports.createProject = (req, res) => {
   const data = {
+    total: 3,
     name: 'Lol',
-    body: '<h1>Hello World<h1>',
-  };
+    children: [
+      {
+        name: 'test',
+        children: []
+      },
+      {
+        name: 'test2',
+        children: []
+      }
+    ]
+  }
 
-  res.render('dynamicComponent', data, (err, html) => {
-    if (err) { res.sendStatus(500); }
-    res.end(JSON.stringify(html));
+  //var html = ejs({url: 'dynamicComponent'}).render(data);
+  //console.log(html);
+
+  //};
+  worker(data, function() {
+    res.end();
   });
+  
+  // res.render('dynamicComponent', data, (err, html) => {
+  //   if (err) { res.sendStatus(500); }
+  //   res.end(JSON.stringify(html));
+  // });
 };
