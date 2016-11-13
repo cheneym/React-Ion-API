@@ -2,7 +2,7 @@ const db = require('../../server/config/connection');
 
 module.exports.get = (params, cb) => {
   const keys = Object.keys(params);
-  const vals = Object.values(params);
+  const vals = Object.values(params).map(a => a.toString());
   if (keys.length > 0) {
     let queryString = `select * from users where ${keys[0]}=?`;
     for (let i = 1; i < keys.length; i++) {
@@ -39,7 +39,7 @@ module.exports.create = (userProps, cb) => {
 
 module.exports.remove = (params, cb) => {
   const keys = Object.keys(params);
-  const vals = Object.values(params);
+  const vals = Object.values(params).map(a => a.toString());
   if (keys.length > 0) {
     let queryString = `delete from users where ${keys[0]}=?`;
     for (let i = 1; i < keys.length; i++) {
