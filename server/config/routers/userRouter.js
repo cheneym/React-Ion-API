@@ -1,9 +1,12 @@
-// const express = require('express');
-// const userController = require('../../../db/controllers/userController');
+const express = require('express');
+const userController = require('../../../db/controllers/userController');
 
-// const router = new express.Router();
+const router = new express.Router();
 
-// router.route('/:id')
-//   .get(userController.getOutline);
+router.route('/:userId')
+  .get(userController.getUser);
 
-// module.exports = router;
+router.route('/')
+  .post(userController.createUser);
+
+module.exports = router;

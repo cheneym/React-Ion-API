@@ -17,9 +17,9 @@ describe('Permission Model', () => {
   beforeEach((done) => {
     Permission.remove({ id: 1 }, (err) => {
       if (err) { console.error(err); }
-      Permission.remove({ id: 2 }, (err2) => {
+      Permission.remove({ id: 2, name: 'normal' }, (err2) => {
         if (err2) { console.error(err2); }
-        Permission.remove({ id: 3 }, (err3) => {
+        Permission.remove({ id: 3, name: 'special' }, (err3) => {
           if (err3) { console.error(err3); }
           done();
         });

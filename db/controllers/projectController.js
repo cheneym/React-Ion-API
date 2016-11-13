@@ -1,91 +1,27 @@
-const zip = require('../../server/utils/zip');
-const worker = require('../../server/utils/worker');
+const Project = require('../models/projectModel');
 
 module.exports.getProjects = (req, res) => {
-  //zip(res);
-    const data = {
-    total: 5,
-    router: 1,
-    routes: [
-    {
-      name: 'Index',
-      children: [
-        {
-          name: 'Header',
-          children: []
-        },
-        {
-          name: 'Footer',
-          children: []
-        }
-      ]
-    },
-    {
-      name: 'Login',
-      children: [
-        {
-          name: 'Header',
-          children: []
-        },
-        {
-          name: 'Footer',
-          children: []
-        },
-        {
-          name: 'Body',
-          children: [
-            {
-              name: 'Banner',
-              children: []
-            }
-          ]
-        }
-      ]
-    }
-    ]
-  }
-
-  //var html = ejs({url: 'dynamicComponent'}).render(data);
-  //console.log(html);
-
-  //};
-  worker(data, function() {
-    zip(res, 1);
+  const userId = req.params.userId;
+  Project.getUserProjects(userId, (err, projects) => {
+    if (err) { res.status(404).end('Unable to retrieve projects'); }
+    res.json(projects);
   });
 };
 
 module.exports.createProject = (req, res) => {
-  const data = {
-    total: 3,
-    router: 0,
-    name: 'Lol',
-    children: [
-      {
-        name: 'test',
-        children: []
-      },
-      {
-        name: 'test2',
-        children: []
-      }
-    ]
-  }
-
-  //var html = ejs({url: 'dynamicComponent'}).render(data);
-  //console.log(html);
-
-  //};
-  worker(data, function() {
-    //zip(res, 1);
+  const userId = req.body.userId;
+  const projectProps = req.body;
+  Project.create(userId, projectProps, (err, status) => {
+    if (err) { res.status(404).end('Unable to create project'); }
+    res.json(status.insertId);
   });
-
-  // res.render('dynamicComponent', data, (err, html) => {
-  //   if (err) { res.sendStatus(500); }
-  //   res.end(JSON.stringify(html));
-  // });
 };
 
-module.exports.save = (req, res) => {
+module.exports.removeProject = (req, res) => {
+  res.end();
+};
+
+module.exports.updateProject = (req, res) => {
   res.end();
 };
 
