@@ -1,0 +1,23 @@
+const express = require('express');
+const path = require('path');
+const app = express();
+
+app.use(express.static(path.join(__dirname, './../dist/')));
+
+<% if (router === 0) { %>
+<% for (var i = 0; i < routes.length; i++) { %>
+app.get('/<%= i !== 0 ? routes[i].name : '' %>', function(req,res) {
+  res.sendFile('/<%=routes[i].name%>.html');
+});
+<% } %>
+<% } else { %>
+app.get('/', function(req,res) {
+  res.sendFile('/index.html');
+});
+<% } %>
+
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}`);
+});

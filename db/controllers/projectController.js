@@ -1,11 +1,11 @@
 const zip = require('../../server/utils/zip');
 const worker = require('../../server/utils/worker');
 
-module.exports.getProject = (req, res) => {
+module.exports.getProjects = (req, res) => {
   //zip(res);
     const data = {
-    total: 3,
-    router: 0,
+    total: 5,
+    router: 1,
     routes: [
     {
       name: 'Index',
@@ -83,4 +83,12 @@ module.exports.createProject = (req, res) => {
   //   if (err) { res.sendStatus(500); }
   //   res.end(JSON.stringify(html));
   // });
+};
+
+module.exports.save = (req, res) => {
+  res.end();
+};
+
+module.exports.generateProject = (req, res) => {
+  res.end();
 };

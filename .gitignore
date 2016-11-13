@@ -4,5 +4,5 @@ bower_components/
 .DS_Store
 build/
 dist/
-
 user/
+server/config/config.js
