@@ -4,9 +4,9 @@ module.exports.get = (params, cb) => {
   const keys = Object.keys(params);
   const vals = Object.values(params);
   if (keys.length > 0) {
-    let queryString = 'select * from users where ';
-    for (let i = 0; i < keys.length; i++) {
-      queryString += `${keys[i]}=?`;
+    let queryString = `select * from users where ${keys[0]}=?`;
+    for (let i = 1; i < keys.length; i++) {
+      queryString += `and ${keys[i]}=?`;
     }
     db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }
@@ -41,9 +41,9 @@ module.exports.remove = (params, cb) => {
   const keys = Object.keys(params);
   const vals = Object.values(params);
   if (keys.length > 0) {
-    let queryString = 'delete from users where ';
-    for (let i = 0; i < keys.length; i++) {
-      queryString += `${keys[i]}=?`;
+    let queryString = `delete from users where ${keys[0]}=?`;
+    for (let i = 1; i < keys.length; i++) {
+      queryString += `and ${keys[i]}=?`;
     }
     db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }

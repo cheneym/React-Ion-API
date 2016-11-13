@@ -17,7 +17,8 @@ CREATE TABLE projects (
 CREATE TABLE permissions (
   id         int          NOT NULL AUTO_INCREMENT,
   name       varchar(255) NOT NULL,
-  PRIMARY KEY (ID)
+  PRIMARY KEY (ID),
+  UNIQUE KEY (name)
 );
 
 CREATE TABLE user_project (
