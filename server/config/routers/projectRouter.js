@@ -9,6 +9,12 @@ router.route('/:userId')
 router.route('/')
   .post(projectController.createProject);
 
+router.route('/update')
+  .put(projectController.updateProject);
+
+router.route('/remove')
+  .delete(projectController.removeProject);
+
 router.route('/generate')
   .post(projectController.generateProject);
 

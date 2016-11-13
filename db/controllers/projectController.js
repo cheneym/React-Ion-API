@@ -18,11 +18,19 @@ module.exports.createProject = (req, res) => {
 };
 
 module.exports.removeProject = (req, res) => {
-  res.end();
+  const projectId = req.body.id;
+  Project.remove({ id: projectId }, (err, status) => {
+    if (err) { res.status(404).end('Unable to remove project'); }
+    res.json(status);
+  });
 };
 
 module.exports.updateProject = (req, res) => {
-  res.end();
+  const projectProps = req.body;
+  Project.update(projectProps, (err, status) => {
+    if (err) { res.status(404).end('Unable to update project'); }
+    res.json(status);
+  });
 };
 
 module.exports.generateProject = (req, res) => {

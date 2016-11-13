@@ -57,6 +57,7 @@ module.exports.update = (projectProps, cb) => {
 
 module.exports.remove = (params, cb) => {
   const keys = Object.keys(params);
+  console.log(Object.values(params));
   const vals = Object.values(params).map(a => a.toString());
   if (keys.length > 0) {
     let queryString = `delete from projects where ${keys[0]}=?`;
