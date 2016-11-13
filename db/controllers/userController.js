@@ -12,6 +12,13 @@ module.exports.getUser = (req, res) => {
   });
 };
 
+module.exports.getUsers = (req, res) => {
+  User.get({}, (err, users) => {
+    if (err) { res.status(404).end('Unable to retrieve user'); }
+    res.json(users);
+  });
+};
+
 module.exports.createUser = (req, res) => {
   const userId = req.body.userId;
   User.get({ id: userId }, (err, users) => {
@@ -27,5 +34,10 @@ module.exports.createUser = (req, res) => {
   });
 };
 
-// module.exports.deleteUser = (req, res) => {
-// };
+module.exports.removeUser = (req, res) => {
+  const userId = req.body.userId;
+  User.remove({ id: userId }, (err2, status) => {
+    if (err2) { res.status(404).end('Unable to remove user'); }
+    res.json(status);
+  });
+};
