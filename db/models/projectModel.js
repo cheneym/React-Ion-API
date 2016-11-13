@@ -22,7 +22,7 @@ module.exports.get = (params, cb) => {
 module.exports.getUserProjects = (userId, cb) => {
   const queryString = `select p.id, p.name, p.project_tree from users u
                        left outer join user_project up on (u.id=up.user_id)
-                       left outer join projects projects p on (up.project_id=p.id)
+                       left outer join projects p on (up.project_id=p.id)
                        where u.id=?`;
   db.query(queryString, userId, (err, results) => {
     if (cb) { cb(err, results); }
