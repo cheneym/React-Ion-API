@@ -43,3 +43,38 @@ module.exports.removeUser = (req, res) => {
     res.json(status);
   });
 };
+
+// module.exports.makeOutline = (req, res) => {
+// };
+
+module.exports.loginPage = (req, res) => {
+  res.render('/');
+};
+
+module.exports.login = (req, res) => {
+   passport.authenticate('local-login', {
+     successRedirect: '/profile', // redirect to the secure profile section
+     failureRedirect: '/signup', // redirect back to the signup page if there is an error
+   });
+};
+
+module.exports.logout = (req, res) => {
+  req.logout();
+  res.redirect('/');
+};
+
+module.exports.getProfile = (req, res) => {
+  res.render('/:id');
+};
+
+module.exports.signupPage = (req, res) => {
+  res.render('/signupPage');
+};
+
+module.exports.signup = (req, res) => {
+  passport.authenticate('local-signup', {
+    successRedirect: '/profile', // redirect to the secure profile section
+    failureRedirect: '/signup', // redirect back to the signup page if there is an error
+  });
+}
+
