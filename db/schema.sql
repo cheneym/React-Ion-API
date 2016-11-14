@@ -31,3 +31,8 @@ CREATE TABLE user_project (
   FOREIGN KEY (project_id)    REFERENCES projects (id)    ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (permission_id) REFERENCES permissions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+INSERT INTO permissions(id, name) VALUE(1, 'Admin');
+INSERT INTO permissions(id, name) VALUE(2, 'Normal');
+INSERT INTO permissions(id, name) VALUE(3, 'Restricted');
+INSERT INTO permissions(id, name) VALUE(4, 'Special');
