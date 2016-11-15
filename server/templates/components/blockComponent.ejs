@@ -9,10 +9,8 @@ class <%- name %> extends React.Component {
 
   	return (
   	  <div className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>" >
-      <% for(var i=0; i<children.length; i++) { %><% if (children[i].componentType === 'Text') { %>  <div className="<%= children[i].name.toLowerCase() %>-<%= children[i].componentType.toLowerCase() %>"><%= children[i].content %></div>
-      <% } else { %>  <<%= children[i].name %> /><% } %>
-      <% } %>
-      </div>
+  	  <% for(var i=0; i<children.length; i++) { %>  <%- children[i].codeString %>
+  	  <% } %></div>
   	)
   }
 
