@@ -38,21 +38,27 @@ module.exports = (tree, cb) => {
       tempTreeData.initial = false;
     }
 
-    ejs.renderFile(path.join(__dirname, '../templates/components/staticComponent.ejs'), tempTreeData, (err, html) => {
-      const jsPath = inital ? mainJsPath : componentPath;
+    // tempTreeData.convertedProps = helper.addProps(tempTreeData);
+    // tempTreeData.convertedCss = helper.createCss(tempTreeData);
+    helper.addCss(helper.combineCss(tempTreeData), user, () => {
+      ejs.renderFile(path.join(__dirname, '../templates/components/blockComponent.ejs'), tempTreeData, (err, html) => {
+        const jsPath = inital ? mainJsPath : componentPath;
 
-      fs.writeFile(`${jsPath}/${tempTreeData.name}.jsx`, html, (err2) => {
-        if (err2) {
-          console.error(err2);
-        }
-        counter += 1;
-        if (tempTreeData.children.length !== 0) {
-          tempTreeData.children.forEach((component) => {
-            generateFile(component);
-          });
-        } else if (counter === componentTotal) {
-          cb();
-        }
+        fs.writeFile(`${jsPath}/${tempTreeData.name}.jsx`, html, (err2) => {
+          if (err2) {
+            console.error(err2);
+          }
+          counter += 1;
+          if (tempTreeData.children.length !== 0) {
+            tempTreeData.children.forEach((component) => {
+              if (component.componentType !== 'Text') {
+                generateFile(component);
+              }
+            });
+          } else if (counter === componentTotal) {
+            cb();
+          }
+        });
       });
     });
   };

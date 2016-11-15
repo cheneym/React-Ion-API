@@ -1,0 +1,5 @@
+<% cssResults.forEach(function(css) { %>.<%= css.name.toLowerCase() %>-<%= css.componentType.toLowerCase() %> {
+<% for (var key in css.convertedCss) { %>  <%= key %>: <%= css.convertedCss[key] %>;
+<% } %>}
+
+<% }); %>
