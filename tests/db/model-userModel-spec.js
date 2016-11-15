@@ -135,6 +135,28 @@ describe('User Model', () => {
         done();
       });
     });
+
+    it('findOne returns first found item for query', (done) => {
+      User.find({}, (err, users) => {
+        expect(err).to.not.exist;
+        User.findOne({}, (err2, user) => {
+          expect(err).to.not.exist;
+          expect(user).to.deep.equal(users[0]);
+          done();
+        });
+      });
+    });
+
+    it('findById takes id as parameter and returns user if found', (done) => {
+      User.findOne({}, (err, user) => {
+        expect(err).to.not.exist;
+        User.findById(user.id, (err2, user2) => {
+          expect(err2).to.not.exist;
+          expect(user).to.deep.equal(user2);
+          done();
+        });
+      });
+    });
   });
 
   describe('User remove: ', () => {

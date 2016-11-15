@@ -35,8 +35,8 @@ const Model = class Model {
     });
   }
 
-  findById(params, cb) {
-    this.findOne(params, (err, item) => {
+  findById(id, cb) {
+    this.findOne({ id }, (err, item) => {
       if (err) { cb(err, null); }
       if (item === null) {
         cb(err, item);
