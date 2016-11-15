@@ -34,8 +34,9 @@ const Model = class Model {
 
   findOne(params, cb) {
     this.find(params, (err, items) => {
-      if (err) { cb(err, null); }
-      if (items.length === 0) {
+      if (err) {
+        cb(err, null);
+      } else if (items.length === 0) {
         cb(err, null);
       } else {
         cb(null, items[0]);
@@ -59,7 +60,18 @@ const Model = class Model {
       this.findById(status.insertId, cb);
     });
   }
-  // findOrCreate()
+
+  findOrCreate(props, cb) {
+    this.findOne(props, (err, item) => {
+      if (err) {
+        cb(err, null);
+      } else if (item === null) {
+        this.create(props, cb);
+      } else {
+        cb(null, item);
+      }
+    });
+  }
 
   update(query, props, cb) {
     const pkeys = Object.keys(props);

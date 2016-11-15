@@ -32,28 +32,16 @@ describe('User Model', () => {
   };
 
   beforeEach((done) => {
-    User.remove({ username: 'neverused' }, (err) => {
+    User.remove({ salt: 'notasalt' }, (err) => {
       if (err) { console.error(err); }
-      User.remove({ username: 'hahahaha' }, (err2) => {
-        if (err2) { console.error(err2); }
-        User.remove({ username: 'plsdontuse' }, (err3) => {
-          if (err3) { console.error(err3); }
-          done();
-        });
-      });
+      done();
     });
   });
 
   after((done) => {
-    User.remove({ username: 'neverused' }, (err) => {
+    User.remove({ salt: 'notasalt' }, (err) => {
       if (err) { console.error(err); }
-      User.remove({ username: 'hahahaha' }, (err2) => {
-        if (err2) { console.error(err2); }
-        User.remove({ username: 'plsdontuse' }, (err3) => {
-          if (err3) { console.error(err3); }
-          done();
-        });
-      });
+      done();
     });
   });
 
@@ -154,6 +142,54 @@ describe('User Model', () => {
           expect(err2).to.not.exist;
           expect(user).to.deep.equal(user2);
           done();
+        });
+      });
+    });
+  });
+
+  describe('User findOrCreate: ', () => {
+    const newUser5 = {
+      username: 'newName',
+      password: 'stillwatever',
+      salt: 'notasalt',
+    };
+    beforeEach((done) => {
+      User.create(newUser, (err) => {
+        expect(err).to.not.exist;
+        User.create(newUser3, (err2) => {
+          expect(err2).to.not.exist;
+          User.create(newUser4, (err3) => {
+            expect(err3).to.not.exist;
+            done();
+          });
+        });
+      });
+    });
+    it('Return existing user if exists', (done) => {
+      User.find({}, (err, users) => {
+        expect(err).to.not.exist;
+        User.findOrCreate(newUser4, (err2, user) => {
+          expect(err2).to.not.exist;
+          expect(user.username).to.deep.equal(newUser4.username);
+          User.find({}, (err3, users2) => {
+            expect(err3).to.not.exist;
+            expect(users.length).to.equal(users2.length);
+            done();
+          });
+        });
+      });
+    });
+    it('Create new user if they do not exist', (done) => {
+      User.find({}, (err, users) => {
+        expect(err).to.not.exist;
+        User.findOrCreate(newUser5, (err2, user) => {
+          expect(err2).to.not.exist;
+          expect(user.username).to.deep.equal(newUser5.username);
+          User.find({}, (err3, users2) => {
+            expect(err3).to.not.exist;
+            expect(users.length + 1).to.equal(users2.length);
+            done();
+          });
         });
       });
     });
