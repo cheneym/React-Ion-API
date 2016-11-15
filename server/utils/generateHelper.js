@@ -2,6 +2,7 @@ const ejs = require('ejs');
 const fs = require('fs.extra');
 const filePath = require('./filePaths');
 const utils = require('./utility');
+const component = require('./componentHelper');
 
 module.exports.toSnake = (string) => {
   return string.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
@@ -81,7 +82,7 @@ const combineCss = (tree) => {
 // ********************************************
 // Create Css file for each component
 // ********************************************
-const cssSetup = (cssObj, userId, cb) => {
+const cssSetup = (cssObj, userId, callback) => {
   const cssArry = cssObj.cssResults;
   const cssTemplatePath = filePath.CSS_TEMPLATE_PATH;
   const cssPath = filePath.getCssPath(userId);
@@ -91,7 +92,7 @@ const cssSetup = (cssObj, userId, cb) => {
       if (err2) {
         console.log(err2);
       }
-      cb();
+      callback();
     });
   });
 };
@@ -100,7 +101,7 @@ const cssSetup = (cssObj, userId, cb) => {
 // Create a webpack file that configures the
 // depending on whether there is react router
 // ********************************************
-const webpackSetup = (tree, userId, cb) => {
+const webpackSetup = (tree, userId, callback) => {
   const webpackTemplatePath = filePath.WEBPACK_TEMPLATAE_PATH;
   const webpackConfigPath = filePath.getWebpackPath(userId);
 
@@ -109,7 +110,7 @@ const webpackSetup = (tree, userId, cb) => {
       if (err2) {
         console.log(err2);
       }
-      cb();
+      callback();
     });
   });
 };
@@ -162,7 +163,7 @@ const htmlSetup = (tree, userId, callback) => {
   const pageLength = tree.routes.length;
   let counter = 0;
 
-  const generatePageJson = (cb) => {
+  const generatePageJson = (callback) => {
     page.forEach((single) => {
       pageObj.pageData.push({
         name: single.name,
@@ -174,7 +175,7 @@ const htmlSetup = (tree, userId, callback) => {
         if (err4) {
           console.log(err3);
         }
-        cb();
+        callback();
       });
     });
   };
@@ -200,18 +201,50 @@ const htmlSetup = (tree, userId, callback) => {
   });
 };
 
-const removeUserFolder = (userId, cb) => {
+// ********************
+// Add components code
+// ********************
+const removeUserFolder = (userId, callback) => {
+const componentBodySetup = (treeData) => {
+  const tempTreeData = treeData;
+  tempTreeData.children.forEach((child) => {
+    switch (child.componentType) {
+      case component.TEXT_COMPONENT:
+        // <div className="name-text">text</div>
+        child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">${child.content}</div>`;
+        break;
+      case component.BLOCK_COMPONENT:
+        // <BLOCK />
+        child.codeString = `<${child.name} />`;
+        break;
+      case component.MENU_COMPONENT:
+        // 
+        break;
+      default:
+        break;
+    }
+  });
+  return tempTreeData;
+};
+
+// *******************
+// Remove user folder
+// *******************
+const removeUserFolder = (userId, callback) => {
   const userPath = filePath.getUserPath(userId);
 
   fs.rmrf(userPath, (err) => {
     if (err) {
       console.error(err);
     }
-    cb();
+    callback();
   });
 };
 
-const copyStructure = (userId, cb) => {
+// *************************************
+// Copy structure folder to user folder
+// *************************************
+const copyStructure = (userId, callback) => {
   const userPath = filePath.getUserPath(userId);
   const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
@@ -219,34 +252,41 @@ const copyStructure = (userId, cb) => {
     if (err) {
       console.error(err);
     }
-    cb();
+    callback();
   });
 };
 
-const structureSetup = (tree, userId, cb) => {
+// ********************************************************
+// Will setup the strucutre depending on w/wo react router
+// ********************************************************
+const structureSetup = (tree, userId, callback) => {
   webpackSetup(tree, userId, () => {
     serverSetup(tree, userId, () => {
       if (tree.router === 1) {
         routerSetup(tree, userId, () => {
-          cb();
+          callback();
         });
       } else {
         htmlSetup(tree, userId, () => {
-          cb();
+          callback();
         });
       }
     });
   });
 };
 
-const initialize = (tree, userId, cb) => {
+
+// ******************************************************************
+// Will remove user folder and create a new one with the strucuture
+// ******************************************************************
+const initialize = (tree, userId, callback) => {
   removeUserFolder(userId, () => {
     utils.consoleLog('Finish removing');
     copyStructure(userId, () => {
       utils.consoleLog("Copied 'structure' to 'user'");
       structureSetup(tree, userId, () => {
         utils.consoleLog('Finish building structure');
-        cb();
+        callback();
       });
     });
   });
@@ -255,6 +295,7 @@ const initialize = (tree, userId, cb) => {
 module.exports = {
   initialize: initialize,
   removeUserFolder: removeUserFolder,
+  componentBodySetup: componentBodySetup,
   createCss: createCss,
   combineCss: combineCss,
   cssSetup: cssSetup,
