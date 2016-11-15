@@ -16,7 +16,8 @@ describe('Project Model', () => {
   const name = 'gold';
   const projectTree = 'hahaha123';
   const newProject = { name, project_tree: projectTree };
-  const userId = 1;
+  let userId;
+  let userId2;
 
   const newProject3 = {};
   Object.assign(newProject3, newProject);
@@ -25,11 +26,24 @@ describe('Project Model', () => {
   Object.assign(newProject4, newProject);
   newProject4.name = 'copper';
 
+  const newUser = {
+    username: 'neverused',
+    password: 'watever',
+    salt: 'notasalt',
+  };
+  const newUser2 = {
+    username: 'alwaysused',
+    password: 'watever2',
+    salt: 'notasalt',
+  };
+
   before((done) => {
-    User.create({ id: 1 }, (err) => {
+    User.create(newUser, (err, { insertId }) => {
       if (err) { console.error(err); }
-      User.create({ id: 2 }, (err2) => {
+      userId = insertId;
+      User.create(newUser2, (err2, status) => {
         if (err2) { console.error(err2); }
+        userId2 = status.insertId;
         done();
       });
     });
@@ -45,9 +59,9 @@ describe('Project Model', () => {
   after((done) => {
     Project.remove({}, (err) => {
       if (err) { console.error(err); }
-      User.remove({ id: 1 }, (err2) => {
+      User.remove({ username: 'neverused' }, (err2) => {
         if (err2) { console.error(err2); }
-        User.remove({ id: 2 }, (err3) => {
+        User.remove({ username: 'alwaysused' }, (err3) => {
           if (err3) { console.error(err3); }
           done();
         });
@@ -176,7 +190,7 @@ describe('Project Model', () => {
         expect(err).to.not.exist;
         Project.create(userId, newProject3, (err2) => {
           expect(err2).to.not.exist;
-          Project.create(2, newProject4, (err3) => {
+          Project.create(userId2, newProject4, (err3) => {
             expect(err3).to.not.exist;
             Project.getUserProjects(userId, (err4, projects) => {
               expect(err4).to.not.exist;

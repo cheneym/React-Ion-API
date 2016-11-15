@@ -29,14 +29,14 @@ module.exports.create = (userProps, cb) => {
   });
 };
 
-// module.exports.update = (userProps, cb) => {
-//   const params = [userProps.newId, userProps.id];
-//   const queryString = `update users set id=?
-//                        where id=?`;
-//   db.query(queryString, params, (err, results) => {
-//     if (cb) { cb(err, results); }
-//   });
-// };
+module.exports.update = (userProps, cb) => {
+  const params = [userProps.password, userProps.salt, userProps.username];
+  const queryString = `update users set password=?, salt=?
+                       where username=?`;
+  db.query(queryString, params, (err, results) => {
+    if (cb) { cb(err, results); }
+  });
+};
 
 module.exports.remove = (params, cb) => {
   const keys = Object.keys(params);
