@@ -68,7 +68,7 @@ describe('User Model', () => {
     it('Adds valid users to database', (done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
-        User.get(newUser, (err2, users) => {
+        User.fetch(newUser, (err2, users) => {
           expect(err2).to.not.exist;
           expect(users.length).to.not.equal(0);
           expect(users[0].username).to.equal('neverused');
@@ -84,7 +84,7 @@ describe('User Model', () => {
         expect(err).to.not.exist;
         User.update(newUser2, (err2) => {
           expect(err2).to.not.exist;
-          User.get({ username: 'neverused' }, (err3, users) => {
+          User.fetch({ username: 'neverused' }, (err3, users) => {
             expect(err3).to.not.exist;
             expect(users.length).to.not.equal(0);
             done();
@@ -98,7 +98,7 @@ describe('User Model', () => {
         expect(err).to.not.exist;
         User.update(newUser2, (err2) => {
           expect(err2).to.not.exist;
-          User.get({ username: 'neverused' }, (err3, users) => {
+          User.fetch({ username: 'neverused' }, (err3, users) => {
             expect(err3).to.not.exist;
             expect(users[0].password).to.equal('watever2');
             done();
@@ -108,15 +108,15 @@ describe('User Model', () => {
     });
   });
 
-  describe('User get: ', () => {
-    it('Gets all users if passed empty object', (done) => {
+  describe('User fetch: ', () => {
+    it('fetch all users if passed empty object', (done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
         User.create(newUser3, (err2) => {
           expect(err2).to.not.exist;
           User.create(newUser4, (err3) => {
             expect(err3).to.not.exist;
-            User.get({}, (err4, users) => {
+            User.fetch({}, (err4, users) => {
               expect(err4).to.not.exist;
               expect(users.length).to.be.above(2);
               done();
@@ -133,7 +133,7 @@ describe('User Model', () => {
           expect(err2).to.not.exist;
           User.create(newUser4, (err3) => {
             expect(err3).to.not.exist;
-            User.get({ username: 'hahahaha' }, (err4, users) => {
+            User.fetch({ username: 'hahahaha' }, (err4, users) => {
               expect(err4).to.not.exist;
               expect(users.length).to.equal(1);
               expect(users[0].password).to.equal('watever3');
@@ -153,7 +153,7 @@ describe('User Model', () => {
           expect(err2).to.not.exist;
           User.remove({ username: 'neverused' }, (err3) => {
             expect(err3).to.not.exist;
-            User.get({ username: 'neverused' }, (err4, users) => {
+            User.fetch({ username: 'neverused' }, (err4, users) => {
               expect(err4).to.not.exist;
               expect(users.length).to.equal(0);
               done();

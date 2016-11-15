@@ -1,7 +1,7 @@
 const db = require('../../server/config/connection');
 require('airbnb-js-shims');
 
-module.exports.get = (params, cb) => {
+module.exports.fetch = (params, cb) => {
   const keys = Object.keys(params);
   const vals = Object.values(params).map(a => a.toString());
   if (keys.length > 0) {
