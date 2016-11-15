@@ -3,24 +3,24 @@ CREATE DATABASE reaction;
 USE reaction;
 
 CREATE TABLE users (
-  id int NOT NULL AUTO_INCREMENT,
-  username varchar(50) NOT NULL,
+  id       int          NOT NULL AUTO_INCREMENT,
+  username varchar(50)  NOT NULL,
   password varchar(255) NOT NULL,
-  salt varchar(255) NOT NULL,
+  salt     varchar(255) NOT NULL,
   PRIMARY KEY (ID),
-  UNIQUE KEY (username)
+  UNIQUE KEY  (username)
 );
 
 CREATE TABLE projects (
-  id          int             NOT NULL AUTO_INCREMENT,
-  name        varchar(255)    NOT NULL,
-  project_tree varchar(1000)  NOT NULL,
+  id           int             NOT NULL AUTO_INCREMENT,
+  name         varchar(255)    NOT NULL,
+  project_tree varchar(1000)   NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE permissions (
-  id         int          NOT NULL AUTO_INCREMENT,
-  name       varchar(255) NOT NULL,
+  id   int          NOT NULL AUTO_INCREMENT,
+  name varchar(255) NOT NULL,
   PRIMARY KEY (ID),
   UNIQUE KEY (name)
 );
