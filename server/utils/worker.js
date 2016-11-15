@@ -5,22 +5,6 @@ const filePath = require('./filePaths');
 const componentHelper = require('./componentHelper');
 const utils = require('./utility');
 
-const structureSetup = (tree, user, callback) => {
-  helper.webpackSetup(tree, user, () => {
-    helper.serverSetup(tree, user, () => {
-      if (tree.router === 1) {
-        helper.routerSetup(tree, user, () => {
-          callback();
-        });
-      } else {
-        helper.htmlSetup(tree, user, () => {
-          callback();
-        });
-      }
-    });
-  });
-};
-
 module.exports = (tree, userId, cb) => {
   const componentTotal = tree.total;
   let counter = 0;
@@ -28,8 +12,6 @@ module.exports = (tree, userId, cb) => {
   // Paths
   const componentPath = filePath.getComponentPath(userId);
   const mainJsPath = filePath.getMainJsPath(userId);
-  const userPath = filePath.getUserPath(userId);
-  const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
   const generateFile = (treeData, inital) => {
     utils.consoleLog(`Generate Files for: ${treeData.name}`);
@@ -68,23 +50,9 @@ module.exports = (tree, userId, cb) => {
   };
 
   utils.consoleLog('Ready to remove');
-  fs.rmrf(userPath, (err) => {
-    if (err) {
-      console.error(err);
+  helper.initialize(tree, userId, () => {
+    for (let i = 0; i < tree.routes.length; i += 1) {
+      generateFile(tree.routes[i], true);
     }
-
-    utils.consoleLog('Finish removing');
-    fs.copyRecursive(structurePath, userPath, (err2) => {
-      if (err2) {
-        throw err2;
-      }
-      utils.consoleLog("Copied 'structure' to 'user'");
-      structureSetup(tree, userId, () => {
-        utils.consoleLog('Finish building structure');
-        for (let i = 0; i < tree.routes.length; i += 1) {
-          generateFile(tree.routes[i], true);
-        }
-      });
-    });
   });
 };
