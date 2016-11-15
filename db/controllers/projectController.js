@@ -11,6 +11,7 @@ module.exports.getProject = (req, res) => {
   const projectId = req.params.projectId;
   Project.findById(projectId, (err, project) => {
     if (err) { res.status(404).end('Unable to retrieve project'); }
+    console.log(project);
     res.json(project);
   });
 };
