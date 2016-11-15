@@ -8,8 +8,8 @@ connection.connect((err) => {
     console.error(`error connecting: ${err.stack}`);
     return;
   }
-
   console.log(`connected as id ${connection.threadId}`);
+  connection.query('SET sql_mode = STRICT_ALL_TABLES');
 });
 
 module.exports = connection;
