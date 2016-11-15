@@ -132,4 +132,56 @@ describe('Project Routes', () => {
       });
     });
   });
+
+  describe('PUT /api/project/:projectId ', () => {
+    it('Updates a project from database', (done) => {
+      const options = {
+        method: 'PUT',
+        uri: `${host}/api/project/${projectId}/`,
+        json: {
+          name: 'heaven',
+        },
+      };
+      request(options, (error, res, body) => {
+        expect(body[0].name).to.equal('heaven');
+        done();
+      });
+    });
+    it('Returns null if invalid id', (done) => {
+      const options = {
+        method: 'PUT',
+        uri: `${host}/api/project/154894845/`,
+        json: {},
+      };
+      request(options, (error, res, body) => {
+        expect(body.length).to.equal(0);
+        done();
+      });
+    });
+  });
+
+  // describe('DELETE /api/project/:projectId ', () => {
+  //   it('Gets one project from database', (done) => {
+  //     const options = {
+  //       method: 'GET',
+  //       uri: `${host}/api/project/${projectId}/`,
+  //       json: {},
+  //     };
+  //     request(options, (error, res, body) => {
+  //       expect(body.name).to.equal('monalisa');
+  //       done();
+  //     });
+  //   });
+  //   it('Returns null if invalid id', (done) => {
+  //     const options = {
+  //       method: 'GET',
+  //       uri: `${host}/api/project/154894845/`,
+  //       json: {},
+  //     };
+  //     request(options, (error, res, body) => {
+  //       expect(body).to.not.exist;
+  //       done();
+  //     });
+  //   });
+  // });
 });
