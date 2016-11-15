@@ -1,7 +1,6 @@
 const ejs = require('ejs');
 const fs = require('fs.extra');
-const path = require('path');
-
+const filePath = require('./filePaths');
 
 module.exports.toSnake = (string) => {
   return string.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
@@ -27,9 +26,8 @@ module.exports.addProps = (tree) => {
 };
 
 const createCss = (tree) => {
-
-  const width = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
-  const height = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
+  const w = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
+  const h = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
 
   const convertedCss = {
     flex: tree.props.flex || 1,
@@ -37,8 +35,8 @@ const createCss = (tree) => {
     display: tree.props.display || 'flex',
     'align-items': tree.props.alignItems || 'center',
     'justify-content': tree.props.justifyContent || 'center',
-    height: height,
-    width: width,
+    height: h,
+    width: w,
     padding: tree.props.padding || '20px',
     margin: tree.props.margin || '20px',
     position: tree.props.position || 'relative',
@@ -48,6 +46,8 @@ const createCss = (tree) => {
 
   return convertedCss;
 };
+
+module.exports.createCss = createCss;
 
 module.exports.combineCss = (tree) => {
   // let tempTree = tree;
@@ -72,10 +72,10 @@ module.exports.combineCss = (tree) => {
   return { cssResults: cssArry };
 };
 
-module.exports.addCss = (cssObj, userId, cb) => {
+module.exports.cssSetup = (cssObj, userId, cb) => {
   const cssArry = cssObj.cssResults;
-  const cssTemplatePath = path.join(__dirname, '../templates/cssTemplate.ejs');
-  const cssPath = path.join(__dirname, `../../user/${userId}/src/css`);
+  const cssTemplatePath = filePath.CSS_TEMPLATE_PATH;
+  const cssPath = filePath.getCssPath(userId);
 
   ejs.renderFile(cssTemplatePath, cssObj, (err, css) => {
     fs.writeFile(`${cssPath}/${cssArry[0].name}.css`, css, (err2) => {
@@ -87,9 +87,13 @@ module.exports.addCss = (cssObj, userId, cb) => {
   });
 };
 
+// ********************************************
+// Create a webpack file that configures the
+// depending on whether there is react router
+// ********************************************
 module.exports.webpackSetup = (tree, userId, cb) => {
-  const webpackTemplatePath = path.join(__dirname, '../templates/webpackConfigTemplate.ejs');
-  const webpackConfigPath = path.join(__dirname, `../../user/${userId}`);
+  const webpackTemplatePath = filePath.WEBPACK_TEMPLATAE_PATH;
+  const webpackConfigPath = filePath.getWebpackPath(userId);
 
   ejs.renderFile(webpackTemplatePath, tree, (err, html) => {
     fs.writeFile(`${webpackConfigPath}/webpack.config.js`, html, (err2) => {
@@ -101,9 +105,12 @@ module.exports.webpackSetup = (tree, userId, cb) => {
   });
 };
 
+// ********************************************
+// Setup the server file for the html pages
+// ********************************************
 module.exports.serverSetup = (tree, userId, callback) => {
-  const serverTemplatePath = path.join(__dirname, '../templates/serverTemplate.ejs');
-  const serverPath = path.join(__dirname, `../../user/${userId}/server`);
+  const serverTemplatePath = filePath.SERVER_TEMPLATE_PATH;
+  const serverPath = filePath.getServerPath(userId);
 
   ejs.renderFile(serverTemplatePath, tree, (err, html) => {
     fs.writeFile(`${serverPath}/server.js`, html, (err2) => {
@@ -115,9 +122,12 @@ module.exports.serverSetup = (tree, userId, callback) => {
   });
 };
 
+// ********************************************
+// Generate a App.jsx file for react router
+// ********************************************
 module.exports.routerSetup = (tree, userId, callback) => {
-  const routerTemplatePath = path.join(__dirname, '../templates/components/reactRouteTemplate.ejs');
-  const routerAppPath = path.join(__dirname, `../../user/${userId}/src/js`);
+  const routerTemplatePath = filePath.ROUTER_TEMPLATE_PATH;
+  const routerAppPath = filePath.getRouterPath(userId);
 
   ejs.renderFile(routerTemplatePath, tree, (err, html) => {
     fs.writeFile(`${routerAppPath}/App.jsx`, html, (err2) => {
@@ -129,12 +139,14 @@ module.exports.routerSetup = (tree, userId, callback) => {
   });
 };
 
-
+// ********************************************
+// Used to generate HTML when not using react router
+// ********************************************
 module.exports.htmlSetup = (tree, userId, callback) => {
-  const htmlTemplatePath = path.join(__dirname, '../templates/htmlTemplate.ejs');
-  const htmlPath = path.join(__dirname, `../../user/${userId}/src`);
-  const pageTemplatePath = path.join(__dirname, '../templates/pageTemplate.ejs');
-  const pageJsonPath = path.join(__dirname, `../../user/${userId}`);
+  const htmlTemplatePath = filePath.HTML_TEMPLATE_PATH;
+  const htmlPath = filePath.getHtmlPath(userId);
+  const pageTemplatePath = filePath.PAGE_TEMPLATE_PATH;
+  const pageJsonPath = filePath.getPagePath(userId);
 
   const page = tree.routes;
   const pageObj = { pageData: [] };

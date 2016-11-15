@@ -1,7 +1,7 @@
 const ejs = require('ejs');
 const fs = require('fs.extra');
-const path = require('path');
 const helper = require('./generateHelper');
+const filePath = require('./filePaths');
 
 const structureSetup = (tree, user, callback) => {
   helper.webpackSetup(tree, user, () => {
@@ -20,15 +20,15 @@ const structureSetup = (tree, user, callback) => {
 };
 
 module.exports = (tree, cb) => {
-  const user = 1;
+  const userId = 1;
   const componentTotal = tree.total;
   let counter = 0;
 
   // Paths
-  const componentPath = path.join(__dirname, `../../user/${user}/src/components`);
-  const mainJsPath = path.join(__dirname, `../../user/${user}/src/js`);
-  const userPath = path.join(__dirname, `../../user/${user}`);
-  const structurePath = path.join(__dirname, '../../server/structure');
+  const componentPath = filePath.getComponentPath(userId);
+  const mainJsPath = filePath.getMainJsPath(userId);
+  const userPath = filePath.getUserPath(userId);
+  const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
   const generateFile = (treeData, inital) => {
     const tempTreeData = treeData;
@@ -40,8 +40,8 @@ module.exports = (tree, cb) => {
 
     // tempTreeData.convertedProps = helper.addProps(tempTreeData);
     // tempTreeData.convertedCss = helper.createCss(tempTreeData);
-    helper.addCss(helper.combineCss(tempTreeData), user, () => {
-      ejs.renderFile(path.join(__dirname, '../templates/components/blockComponent.ejs'), tempTreeData, (err, html) => {
+    helper.cssSetup(helper.combineCss(tempTreeData), userId, () => {
+      ejs.renderFile(filePath.BLOCK_TEMPLATE_PATH, tempTreeData, (err, html) => {
         const jsPath = inital ? mainJsPath : componentPath;
 
         fs.writeFile(`${jsPath}/${tempTreeData.name}.jsx`, html, (err2) => {
@@ -73,7 +73,7 @@ module.exports = (tree, cb) => {
         throw err2;
       }
       console.log("Copied 'structure' to 'user'");
-      structureSetup(tree, user, () => {
+      structureSetup(tree, userId, () => {
         for (let i = 0; i < tree.routes.length; i += 1) {
           generateFile(tree.routes[i], true);
         }
