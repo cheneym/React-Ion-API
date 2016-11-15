@@ -1,4 +1,6 @@
 const User = require('../models/userModel');
+const bcrypt = require('bcrypt-nodejs');
+const passport = require('passport');
 
 module.exports.getUser = (req, res) => {
   const id = req.params.userId;
@@ -41,6 +43,42 @@ module.exports.removeUser = (req, res) => {
   User.remove({ id }, (err2, status) => {
     if (err2) { res.status(404).end('Unable to remove user'); }
     res.json(status);
+  });
+};
+
+module.exports.login = passport.authenticate('local',
+  {
+    successRedirect: '/',
+    failureRedirect: '/login',
+  });
+
+module.exports.signup = (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.get({ username }, (err, users) => {
+    if (err) {
+      res.status(404).end('unable to retrieve user');
+    }
+    if (users.length) {
+      res.send('username exists');
+    } else {
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(password, salt, null, (err, hash) => {
+          if (err) {
+            res.send(err);
+          }
+
+          User.create({
+            username,
+            password: hash,
+            salt,
+          });
+
+          res.send('user created');
+        });
+      });
+    }
   });
 };
 
