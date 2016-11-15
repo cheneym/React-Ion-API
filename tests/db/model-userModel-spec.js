@@ -59,30 +59,27 @@ describe('User Model', () => {
 
   describe('User creation: ', () => {
     it('Does not add invalid users to database', (done) => {
-      User.create({ username: '123' }, (err) => {
+      User.create({ username: '123' }, (err, user) => {
         expect(err).to.exist;
+        expect(user).to.equal(null);
         done();
       });
     });
 
-    it('Adds valid users to database', (done) => {
-      User.create(newUser, (err) => {
+    it('Adds valid users to database and returns user', (done) => {
+      User.create(newUser, (err, user) => {
         expect(err).to.not.exist;
-        User.find(newUser, (err2, users) => {
-          expect(err2).to.not.exist;
-          expect(users.length).to.not.equal(0);
-          expect(users[0].username).to.equal('neverused');
-          done();
-        });
+        expect(user.username).to.equal('neverused');
+        done();
       });
     });
   });
 
   describe('User Update: ', () => {
     beforeEach((done) => {
-      User.create(newUser, (err) => {
+      User.create(newUser, (err, user) => {
         expect(err).to.not.exist;
-        User.update(newUser, newUser2, (err2) => {
+        User.update(user, newUser2, (err2) => {
           expect(err2).to.not.exist;
           done();
         });

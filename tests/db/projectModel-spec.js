@@ -39,12 +39,12 @@ describe('Project Model', () => {
   };
 
   before((done) => {
-    User.create(newUser, (err, { insertId }) => {
+    User.create(newUser, (err, { id }) => {
       if (err) { console.error(err); }
-      userId = insertId;
-      User.create(newUser2, (err2, status) => {
+      userId = id;
+      User.create(newUser2, (err2, user) => {
         if (err2) { console.error(err2); }
-        userId2 = status.insertId;
+        userId2 = user.id;
         done();
       });
     });
@@ -79,26 +79,22 @@ describe('Project Model', () => {
     });
 
     it('Adds valid projects to database', (done) => {
-      Project.create({ userId, permissionId }, newProject, (err) => {
+      Project.create({ userId, permissionId }, newProject, (err, project) => {
         expect(err).to.not.exist;
-        Project.find({}, (err2, projects) => {
-          expect(err2).to.not.exist;
-          expect(projects.length).to.not.equal(0);
-          expect(projects[0].name).to.equal('gold');
-          done();
-        });
+        expect(project.name).to.equal('gold');
+        done();
       });
     });
   });
 
   describe('Project Update: ', () => {
     it('Does not add or remove projects from database', (done) => {
-      Project.create({ userId, permissionId }, newProject, (err, { insertId }) => {
+      Project.create({ userId, permissionId }, newProject, (err, project) => {
         expect(err).to.not.exist;
         const newProject2 = {};
         Object.assign(newProject2, newProject);
         newProject2.project_tree = 'captainfalcon';
-        newProject2.id = insertId;
+        newProject2.id = project.id;
         Project.update(newProject, newProject2, (err2) => {
           expect(err2).to.not.exist;
           Project.find({}, (err3, projects) => {

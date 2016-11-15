@@ -53,8 +53,12 @@ const Model = class Model {
     const valString = `(${_.range(keys.length).map(() => '?').join(',')})`;
     const queryString = `insert into ${this.model}${propString}
                          value ${valString}`;
-    db.query(queryString, vals, (err, results) => {
-      if (cb) { cb(err, results); }
+    db.query(queryString, vals, (err, status) => {
+      if (err) { cb(err, null); }
+      this.findById(status.insertId, (err2, item) => {
+        if (err2) { cb(err2, null); }
+        if (cb) { cb(err, item); }
+      });
     });
   }
   // findOrCreate()

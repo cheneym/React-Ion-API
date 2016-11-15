@@ -16,16 +16,19 @@ class Project extends Model {
     const userId = projectSettings.userId;
     const permissionId = projectSettings.permissionId;
 
-    super.create(projectProps, (err, status) => {
-      if (err) { cb(err, null); }
-      const projectId = status.insertId;
-      const params2 = [userId, projectId, permissionId];
-      const queryString2 = `insert into user_project (user_id, project_id, permission_id)
-                            value (?, ?, ?)`;
-      db.query(queryString2, params2, (err2) => {
-        if (err2) { cb(err2, null); }
-        if (cb) { cb(err, status); }
-      });
+    super.create(projectProps, (err, project) => {
+      if (err) {
+        cb(err, null);
+      } else {
+        const projectId = project.id;
+        const params2 = [userId, projectId, permissionId];
+        const queryString2 = `insert into user_project (user_id, project_id, permission_id)
+                              value (?, ?, ?)`;
+        db.query(queryString2, params2, (err2) => {
+          if (err2) { cb(err2, null); }
+          if (cb) { cb(err, project); }
+        });
+      }
     });
   }
 }
