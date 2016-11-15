@@ -5,6 +5,7 @@
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const Helper = require('../../server/utils/generateHelper.js');
+const filePath = require('../../server/utils/filePaths');
 const fs = require('fs.extra');
 const path = require('path');
 
@@ -13,10 +14,10 @@ const it = mocha.it;
 const beforeEach = mocha.beforeEach;
 const after = mocha.after;
 
-describe('File Creation', () => {
+describe('Generate Helper', () => {
   const userId = 100000;
   const treeData = {
-    total: 3,
+    total: 5,
     router: 1,
     routes: [
       {
@@ -69,7 +70,7 @@ describe('File Creation', () => {
         },
         children: [
           {
-            name: 'Body',
+            name: 'Body2',
             componentType: 'Block',
             props: {
               backgroundColor: '#4ccbf1 ',
@@ -86,9 +87,9 @@ describe('File Creation', () => {
   };
 
   beforeEach((done) => {
-    const folderPath = path.join(__dirname, `../../user/${userId}`);
-    const userPath = path.join(__dirname, `../../user/${userId}`);
-    const structurePath = path.join(__dirname, '../../server/structure');
+    const folderPath = filePath.getUserPath(userId);
+    const userPath = filePath.getUserPath(userId);
+    const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
     fs.rmrf(folderPath, (err) => {
       if (err) {
@@ -104,7 +105,7 @@ describe('File Creation', () => {
   });
 
   after((done) => {
-    const folderPath = path.join(__dirname, `../../user/${userId}`);
+    const folderPath = filePath.getUserPath(userId);
     fs.rmrf(folderPath, (err) => {
       if (err) {
         console.log(err);
@@ -138,9 +139,10 @@ describe('File Creation', () => {
 
 
   beforeEach((done) => {
-    const folderPath = path.join(__dirname, `../../user/${userId}`);
-    const userPath = path.join(__dirname, `../../user/${userId}`);
-    const structurePath = path.join(__dirname, '../../server/structure');
+    const folderPath = filePath.getUserPath(userId);
+    const userPath = filePath.getUserPath(userId);
+    const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
+
     treeData.router = 0;
     fs.rmrf(folderPath, (err) => {
       if (err) {

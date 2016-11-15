@@ -1,6 +1,7 @@
 const ejs = require('ejs');
 const fs = require('fs.extra');
 const filePath = require('./filePaths');
+const utils = require('./utility');
 
 module.exports.toSnake = (string) => {
   return string.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
@@ -25,6 +26,9 @@ module.exports.addProps = (tree) => {
   return convertedProps;
 };
 
+// ********************************************
+// Converts react style to css style
+// ********************************************
 const createCss = (tree) => {
   const w = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
   const h = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
@@ -47,9 +51,11 @@ const createCss = (tree) => {
   return convertedCss;
 };
 
-module.exports.createCss = createCss;
-
-module.exports.combineCss = (tree) => {
+// ********************************************
+// Combines css depending if the child components
+// are Text ...
+// ********************************************
+const combineCss = (tree) => {
   // let tempTree = tree;
   const cssArry = [];
 
@@ -72,7 +78,10 @@ module.exports.combineCss = (tree) => {
   return { cssResults: cssArry };
 };
 
-module.exports.cssSetup = (cssObj, userId, cb) => {
+// ********************************************
+// Create Css file for each component
+// ********************************************
+const cssSetup = (cssObj, userId, cb) => {
   const cssArry = cssObj.cssResults;
   const cssTemplatePath = filePath.CSS_TEMPLATE_PATH;
   const cssPath = filePath.getCssPath(userId);
@@ -91,7 +100,7 @@ module.exports.cssSetup = (cssObj, userId, cb) => {
 // Create a webpack file that configures the
 // depending on whether there is react router
 // ********************************************
-module.exports.webpackSetup = (tree, userId, cb) => {
+const webpackSetup = (tree, userId, cb) => {
   const webpackTemplatePath = filePath.WEBPACK_TEMPLATAE_PATH;
   const webpackConfigPath = filePath.getWebpackPath(userId);
 
@@ -108,7 +117,7 @@ module.exports.webpackSetup = (tree, userId, cb) => {
 // ********************************************
 // Setup the server file for the html pages
 // ********************************************
-module.exports.serverSetup = (tree, userId, callback) => {
+const serverSetup = (tree, userId, callback) => {
   const serverTemplatePath = filePath.SERVER_TEMPLATE_PATH;
   const serverPath = filePath.getServerPath(userId);
 
@@ -125,7 +134,7 @@ module.exports.serverSetup = (tree, userId, callback) => {
 // ********************************************
 // Generate a App.jsx file for react router
 // ********************************************
-module.exports.routerSetup = (tree, userId, callback) => {
+const routerSetup = (tree, userId, callback) => {
   const routerTemplatePath = filePath.ROUTER_TEMPLATE_PATH;
   const routerAppPath = filePath.getRouterPath(userId);
 
@@ -142,7 +151,7 @@ module.exports.routerSetup = (tree, userId, callback) => {
 // ********************************************
 // Used to generate HTML when not using react router
 // ********************************************
-module.exports.htmlSetup = (tree, userId, callback) => {
+const htmlSetup = (tree, userId, callback) => {
   const htmlTemplatePath = filePath.HTML_TEMPLATE_PATH;
   const htmlPath = filePath.getHtmlPath(userId);
   const pageTemplatePath = filePath.PAGE_TEMPLATE_PATH;
@@ -189,4 +198,68 @@ module.exports.htmlSetup = (tree, userId, callback) => {
   generatePageJson(() => {
     generateHtml(page[counter]);
   });
+};
+
+const removeUserFolder = (userId, cb) => {
+  const userPath = filePath.getUserPath(userId);
+
+  fs.rmrf(userPath, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    cb();
+  });
+};
+
+const copyStructure = (userId, cb) => {
+  const userPath = filePath.getUserPath(userId);
+  const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
+
+  fs.copyRecursive(structurePath, userPath, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    cb();
+  });
+};
+
+const structureSetup = (tree, userId, cb) => {
+  webpackSetup(tree, userId, () => {
+    serverSetup(tree, userId, () => {
+      if (tree.router === 1) {
+        routerSetup(tree, userId, () => {
+          cb();
+        });
+      } else {
+        htmlSetup(tree, userId, () => {
+          cb();
+        });
+      }
+    });
+  });
+};
+
+const initialize = (tree, userId, cb) => {
+  removeUserFolder(userId, () => {
+    utils.consoleLog('Finish removing');
+    copyStructure(userId, () => {
+      utils.consoleLog("Copied 'structure' to 'user'");
+      structureSetup(tree, userId, () => {
+        utils.consoleLog('Finish building structure');
+        cb();
+      });
+    });
+  });
+};
+
+module.exports = {
+  initialize: initialize,
+  removeUserFolder: removeUserFolder,
+  createCss: createCss,
+  combineCss: combineCss,
+  cssSetup: cssSetup,
+  webpackSetup: webpackSetup,
+  serverSetup: serverSetup,
+  routerSetup: routerSetup,
+  htmlSetup: htmlSetup,
 };

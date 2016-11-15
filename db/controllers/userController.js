@@ -4,7 +4,7 @@ const passport = require('passport');
 
 module.exports.getUser = (req, res) => {
   const id = req.params.userId;
-  User.get({ id }, (err, users) => {
+  User.fetch({ id }, (err, users) => {
     if (err) { res.status(404).end('Unable to retrieve user'); }
     if (users.length > 0) {
       res.json(users[0]);
@@ -15,7 +15,7 @@ module.exports.getUser = (req, res) => {
 };
 
 module.exports.getUsers = (req, res) => {
-  User.get({}, (err, users) => {
+  User.fetch({}, (err, users) => {
     if (err) { res.status(404).end('Unable to retrieve user'); }
     res.json(users);
   });
@@ -23,7 +23,7 @@ module.exports.getUsers = (req, res) => {
 
 module.exports.createUser = (req, res) => {
   const id = req.body.userId;
-  User.get({ id }, (err, users) => {
+  User.fetch({ id }, (err, users) => {
     if (err) { res.status(404).end('Unable to retrieve user'); }
     if (users.length > 0) {
       res.status(404).end('User already exists');

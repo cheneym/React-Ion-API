@@ -10,7 +10,7 @@ const it = mocha.it;
 describe('Permission Model', () => {
   describe('Permission get: ', () => {
     it('Gets all permissions if passed empty object', (done) => {
-      Permission.get({}, (err, permissions) => {
+      Permission.find({}, (err, permissions) => {
         expect(err).to.not.exist;
         expect(permissions.length).to.equal(4);
         done();
@@ -18,7 +18,7 @@ describe('Permission Model', () => {
     });
 
     it('Uses object as search query when passed object with properties', (done) => {
-      Permission.get({ id: 2 }, (err, permissions) => {
+      Permission.find({ id: 2 }, (err, permissions) => {
         expect(err).to.not.exist;
         expect(permissions.length).to.equal(1);
         expect(permissions[0].id).to.equal(2);
