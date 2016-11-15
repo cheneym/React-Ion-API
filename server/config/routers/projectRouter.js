@@ -9,7 +9,7 @@ router.route('/')
 
 // Get one project
 router.route('/:projectId')
-  .post(projectController.getProject);
+  .get(projectController.getProject);
 
 // Create one project
 router.route('/')
@@ -29,12 +29,4 @@ router.route('/generate')
 
 module.exports = router;
 
-
 // /api/user/:userId/projects
-// /api/project
-// GET /   all projects
-// get /:projectid       specific projectid
-// get /user/userId
-// put /:projectid    update project
-// delete /:projectid delete project
-// post   /           create project
