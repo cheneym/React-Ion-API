@@ -3,6 +3,7 @@ const fs = require('fs.extra');
 const helper = require('./generateHelper');
 const filePath = require('./filePaths');
 const componentHelper = require('./componentHelper');
+const utils = require('./utility');
 
 const structureSetup = (tree, user, callback) => {
   helper.webpackSetup(tree, user, () => {
@@ -31,7 +32,7 @@ module.exports = (tree, userId, cb) => {
   const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
   const generateFile = (treeData, inital) => {
-    console.log("Generate Files for", treeData.name);
+    utils.consoleLog(`Generate Files for: ${treeData.name}`);
     const tempTreeData = treeData;
     if (inital && tree.router === 0) {
       tempTreeData.initial = true;
@@ -65,19 +66,19 @@ module.exports = (tree, userId, cb) => {
       });
     });
   };
-  console.log("Ready to remove");
+  utils.consoleLog('Ready to remove');
   fs.rmrf(userPath, (err) => {
     if (err) {
       console.error(err);
     }
-    console.log("Finish removing");
+    utils.consoleLog('Finish removing');
     fs.copyRecursive(structurePath, userPath, (err2) => {
       if (err2) {
         throw err2;
       }
-      console.log("Copied 'structure' to 'user'");
+      utils.consoleLog("Copied 'structure' to 'user'");
       structureSetup(tree, userId, () => {
-        console.log("Finish building structure");
+        utils.consoleLog('Finish building structure');
         for (let i = 0; i < tree.routes.length; i += 1) {
           generateFile(tree.routes[i], true);
         }
