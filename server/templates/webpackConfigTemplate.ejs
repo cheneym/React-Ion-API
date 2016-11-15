@@ -23,15 +23,13 @@ module.exports = {
         },
       },
       {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!sass')
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
       }
     ],
   },
   plugins: [
-    new ExtractTextPlugin('css/style.css', {
-        allChunks: true
-    })
+    <% if (router === 0) { %>new ExtractTextPlugin("css/[name].css")<% } else { %>new ExtractTextPlugin('css/style.css')<% } %>
   ],
   resolve: {
     extensions: ['', '.js', '.jsx'],
