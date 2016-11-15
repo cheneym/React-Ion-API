@@ -3,14 +3,14 @@ require('airbnb-js-shims');
 const _ = require('lodash');
 
 const Model = class Model {
-  constructor(modelName) {
-    this.modelName = modelName;
+  constructor(model) {
+    this.model = model;
   }
 
   find(params, cb) {
     const keys = Object.keys(params);
     const vals = Object.values(params).map(a => a.toString());
-    let queryString = `select * from ${this.modelName}`;
+    let queryString = `select * from ${this.model}`;
 
     if (keys.length > 0) {
       queryString += ` where ${keys.map(a => `${a}=?`).join(' and ')}`;
@@ -29,7 +29,7 @@ const Model = class Model {
     const vals = Object.values(props);
     const propString = `(${keys.join(',')})`;
     const valString = `(${_.range(keys.length).map(() => '?').join(',')})`;
-    const queryString = `insert into ${this.modelName}${propString}
+    const queryString = `insert into ${this.model}${propString}
                          value ${valString}`;
     db.query(queryString, vals, (err, results) => {
       if (cb) { cb(err, results); }
@@ -41,7 +41,7 @@ const Model = class Model {
     const pvals = Object.values(props);
     const qkeys = Object.keys(query);
     const qvals = Object.values(query);
-    const queryString = `update ${this.modelName} set ${pkeys.map(a => `${a}=?`).join(', ')}
+    const queryString = `update ${this.model} set ${pkeys.map(a => `${a}=?`).join(', ')}
                          where ${qkeys.map(a => `${a}=?`).join(' and ')}`;
     db.query(queryString, pvals.concat(qvals), (err, results) => {
       if (cb) { cb(err, results); }
@@ -51,7 +51,7 @@ const Model = class Model {
   remove(params, cb) {
     const keys = Object.keys(params);
     const vals = Object.values(params).map(a => a.toString());
-    let queryString = `delete from ${this.modelName}`;
+    let queryString = `delete from ${this.model}`;
 
     if (keys.length > 0) {
       queryString += ` where ${keys.map(a => `${a}=?`).join(' and ')}`;
@@ -65,6 +65,5 @@ const Model = class Model {
     }
   }
 };
-
 
 module.exports = Model;
