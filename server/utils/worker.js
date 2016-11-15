@@ -20,8 +20,7 @@ const structureSetup = (tree, user, callback) => {
   });
 };
 
-module.exports = (tree, cb) => {
-  const userId = 2;
+module.exports = (tree, userId, cb) => {
   const componentTotal = tree.total;
   let counter = 0;
 
@@ -32,6 +31,7 @@ module.exports = (tree, cb) => {
   const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
   const generateFile = (treeData, inital) => {
+    console.log("Generate Files for", treeData.name);
     const tempTreeData = treeData;
     if (inital && tree.router === 0) {
       tempTreeData.initial = true;
@@ -54,6 +54,8 @@ module.exports = (tree, cb) => {
             tempTreeData.children.forEach((component) => {
               if (component.componentType !== 'Text') {
                 generateFile(component);
+              } else {
+                counter += 1;
               }
             });
           } else if (counter === componentTotal) {
@@ -63,18 +65,19 @@ module.exports = (tree, cb) => {
       });
     });
   };
-
+  console.log("Ready to remove");
   fs.rmrf(userPath, (err) => {
     if (err) {
       console.error(err);
     }
-
+    console.log("Finish removing");
     fs.copyRecursive(structurePath, userPath, (err2) => {
       if (err2) {
         throw err2;
       }
       console.log("Copied 'structure' to 'user'");
       structureSetup(tree, userId, () => {
+        console.log("Finish building structure");
         for (let i = 0; i < tree.routes.length; i += 1) {
           generateFile(tree.routes[i], true);
         }
