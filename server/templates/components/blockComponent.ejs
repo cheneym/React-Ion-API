@@ -1,0 +1,24 @@
+import React from 'react';
+<% if (initial) { %>import ReactDOM from 'react-dom'<% } %>
+<% for(var i=0; i<children.length; i++) { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';
+<% } %>
+require('../css/<%= name %>.css');
+
+class <%- name %> extends React.Component {
+  render() {
+
+  	return (
+  	  <div className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>" >
+      <% for(var i=0; i<children.length; i++) { %><% if (children[i].componentType === 'Text') { %>  <div className="<%= children[i].name.toLowerCase() %>-<%= children[i].componentType.toLowerCase() %>"><%= children[i].content %></div>
+      <% } else { %>  <<%= children[i].name %> /><% } %>
+      <% } %>
+      </div>
+  	)
+  }
+
+};
+<% if (initial) { %>
+ReactDOM.render(<<%- name %> />, document.getElementById('App'));
+<% } else { %>
+export default <%- name %>;
+<% } %>

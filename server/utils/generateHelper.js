@@ -2,6 +2,91 @@ const ejs = require('ejs');
 const fs = require('fs.extra');
 const path = require('path');
 
+
+module.exports.toSnake = (string) => {
+  return string.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
+};
+
+module.exports.addProps = (tree) => {
+  const convertedProps = {
+    flex: tree.props.flex || 1,
+    backgroundColor: tree.props.backgroundColor || 'black',
+    display: tree.props.display || 'flex',
+    alignItems: tree.props.alignItems || 'center',
+    justifyContent: tree.props.justifyContent || 'center',
+    height: `${tree.props.height}px` || '20%',
+    width: `${tree.props.width}%` || '20%',
+    padding: tree.props.padding || '20px',
+    margin: tree.props.margin || '20px',
+    position: tree.props.position || 'relative',
+    flexWrap: tree.props.flexWrap || 'wrap',
+    boxSizing: tree.props.boxSizing || 'border-box',
+  };
+
+  return convertedProps;
+};
+
+const createCss = (tree) => {
+
+  const width = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
+  const height = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
+
+  const convertedCss = {
+    flex: tree.props.flex || 1,
+    'background-color': tree.props.backgroundColor || 'black',
+    display: tree.props.display || 'flex',
+    'align-items': tree.props.alignItems || 'center',
+    'justify-content': tree.props.justifyContent || 'center',
+    height: height,
+    width: width,
+    padding: tree.props.padding || '20px',
+    margin: tree.props.margin || '20px',
+    position: tree.props.position || 'relative',
+    'flex-wrap': tree.props.flexWrap || 'wrap',
+    'box-sizing': tree.props.boxSizing || 'border-box',
+  };
+
+  return convertedCss;
+};
+
+module.exports.combineCss = (tree) => {
+  // let tempTree = tree;
+  const cssArry = [];
+
+  const pushToCss = (data) => {
+    cssArry.push({
+      name: data.name,
+      componentType: data.componentType,
+      convertedCss: createCss(data),
+    });
+  };
+
+  pushToCss(tree);
+
+  tree.children.forEach((child) => {
+    if (child.componentType === 'Text') {
+      pushToCss(child);
+    }
+  });
+
+  return { cssResults: cssArry };
+};
+
+module.exports.addCss = (cssObj, userId, cb) => {
+  const cssArry = cssObj.cssResults;
+  const cssTemplatePath = path.join(__dirname, '../templates/cssTemplate.ejs');
+  const cssPath = path.join(__dirname, `../../user/${userId}/src/css`);
+
+  ejs.renderFile(cssTemplatePath, cssObj, (err, css) => {
+    fs.writeFile(`${cssPath}/${cssArry[0].name}.css`, css, (err2) => {
+      if (err2) {
+        console.log(err2);
+      }
+      cb();
+    });
+  });
+};
+
 module.exports.webpackSetup = (tree, userId, cb) => {
   const webpackTemplatePath = path.join(__dirname, '../templates/webpackConfigTemplate.ejs');
   const webpackConfigPath = path.join(__dirname, `../../user/${userId}`);
