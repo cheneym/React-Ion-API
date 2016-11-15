@@ -112,13 +112,10 @@ describe('Project Model', () => {
         const newProject2 = {};
         Object.assign(newProject2, newProject);
         newProject2.project_tree = 'notRandom';
-        Project.update(newProject, newProject2, (err2) => {
+        Project.update(newProject, newProject2, (err2, projects) => {
           expect(err2).to.not.exist;
-          Project.find({}, (err3, projects) => {
-            expect(err3).to.not.exist;
-            expect(projects[0].project_tree).to.equal('notRandom');
-            done();
-          });
+          expect(projects[0].project_tree).to.equal('notRandom');
+          done();
         });
       });
     });

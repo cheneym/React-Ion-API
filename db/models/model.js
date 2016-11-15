@@ -15,11 +15,19 @@ const Model = class Model {
     if (keys.length > 0) {
       queryString += ` where ${keys.map(a => `${a}=?`).join(' and ')}`;
       db.query(queryString, vals, (err, results) => {
-        if (cb) { cb(err, results); }
+        if (err) {
+          cb(err, null);
+        } else {
+          cb(null, results);
+        }
       });
     } else {
       db.query(queryString, (err, results) => {
-        if (cb) { cb(err, results); }
+        if (err) {
+          cb(err, null);
+        } else {
+          cb(null, results);
+        }
       });
     }
   }
@@ -30,20 +38,13 @@ const Model = class Model {
       if (items.length === 0) {
         cb(err, null);
       } else {
-        cb(err, items[0]);
+        cb(null, items[0]);
       }
     });
   }
 
   findById(id, cb) {
-    this.findOne({ id }, (err, item) => {
-      if (err) { cb(err, null); }
-      if (item === null) {
-        cb(err, item);
-      } else {
-        cb(err, item);
-      }
-    });
+    this.findOne({ id }, cb);
   }
 
   create(props, cb) {
@@ -55,10 +56,7 @@ const Model = class Model {
                          value ${valString}`;
     db.query(queryString, vals, (err, status) => {
       if (err) { cb(err, null); }
-      this.findById(status.insertId, (err2, item) => {
-        if (err2) { cb(err2, null); }
-        if (cb) { cb(err, item); }
-      });
+      this.findById(status.insertId, cb);
     });
   }
   // findOrCreate()
@@ -70,8 +68,9 @@ const Model = class Model {
     const qvals = Object.values(query);
     const queryString = `update ${this.model} set ${pkeys.map(a => `${a}=?`).join(', ')}
                          where ${qkeys.map(a => `${a}=?`).join(' and ')}`;
-    db.query(queryString, pvals.concat(qvals), (err, results) => {
-      if (cb) { cb(err, results); }
+    db.query(queryString, pvals.concat(qvals), (err) => {
+      if (err) { cb(err, null); }
+      this.find(Object.assign(query, props), cb);
     });
   }
 
@@ -79,17 +78,28 @@ const Model = class Model {
     const keys = Object.keys(params);
     const vals = Object.values(params).map(a => a.toString());
     let queryString = `delete from ${this.model}`;
-
-    if (keys.length > 0) {
-      queryString += ` where ${keys.map(a => `${a}=?`).join(' and ')}`;
-      db.query(queryString, vals, (err, results) => {
-        if (cb) { cb(err, results); }
-      });
-    } else {
-      db.query(queryString, (err, results) => {
-        if (cb) { cb(err, results); }
-      });
-    }
+    this.find(params, (err, items) => {
+      if (err) {
+        cb(err, null);
+      } else if (keys.length > 0) {
+        queryString += ` where ${keys.map(a => `${a}=?`).join(' and ')}`;
+        db.query(queryString, vals, (err2) => {
+          if (err2) {
+            cb(err2, null);
+          } else {
+            cb(null, items);
+          }
+        });
+      } else {
+        db.query(queryString, (err2) => {
+          if (err2) {
+            cb(err2, null);
+          } else {
+            cb(null, items);
+          }
+        });
+      }
+    });
   }
 };
 
