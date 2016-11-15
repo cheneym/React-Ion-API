@@ -129,79 +129,81 @@ describe('Project Model', () => {
   });
 
   describe('Project get: ', () => {
-    it('Gets all projects if passed empty object', (done) => {
+    beforeEach((done) => {
       Project.create({ userId, permissionId }, newProject, (err) => {
         expect(err).to.not.exist;
         Project.create({ userId, permissionId }, newProject3, (err2) => {
           expect(err2).to.not.exist;
           Project.create({ userId, permissionId }, newProject4, (err3) => {
             expect(err3).to.not.exist;
-            Project.find({}, (err4, projects) => {
-              expect(err4).to.not.exist;
-              expect(projects.length).to.be.above(2);
-              done();
-            });
+            done();
           });
         });
       });
     });
 
+    it('Gets all projects if passed empty object', (done) => {
+      Project.find({}, (err4, projects) => {
+        expect(err4).to.not.exist;
+        expect(projects.length).to.be.above(2);
+        done();
+      });
+    });
+
     it('Uses object as search query when passed object with properties', (done) => {
-      Project.create({ userId, permissionId }, newProject, (err) => {
-        expect(err).to.not.exist;
-        Project.create({ userId, permissionId }, newProject3, (err2) => {
-          expect(err2).to.not.exist;
-          Project.create({ userId, permissionId }, newProject4, (err3) => {
-            expect(err3).to.not.exist;
-            Project.find({ name: 'silver' }, (err4, projects) => {
-              expect(err4).to.not.exist;
-              expect(projects.length).to.equal(1);
-              expect(projects[0].name).to.equal('silver');
-              done();
-            });
-          });
-        });
+      Project.find({ name: 'silver' }, (err4, projects) => {
+        expect(err4).to.not.exist;
+        expect(projects.length).to.equal(1);
+        expect(projects[0].name).to.equal('silver');
+        done();
       });
     });
   });
 
   describe('Project remove: ', () => {
-    it('Removes project based on search query when passed object with properties', (done) => {
-      Project.create({ userId, permissionId }, newProject, (err, { insertId }) => {
+    beforeEach((done) => {
+      Project.create({ userId, permissionId }, newProject, (err) => {
         expect(err).to.not.exist;
         Project.create({ userId, permissionId }, newProject3, (err2) => {
           expect(err2).to.not.exist;
-          Project.remove({ id: insertId }, (err3) => {
-            expect(err3).to.not.exist;
-            Project.find({}, (err4, projects) => {
-              expect(err4).to.not.exist;
-              expect(projects.length).to.equal(1);
-              expect(projects[0].name).to.equal('silver');
-              done();
-            });
-          });
+          done();
+        });
+      });
+    });
+
+    it('Removes project based on search query when passed object with properties', (done) => {
+      Project.remove({ name: 'gold' }, (err3) => {
+        expect(err3).to.not.exist;
+        Project.find({}, (err4, projects) => {
+          expect(err4).to.not.exist;
+          expect(projects.length).to.equal(1);
+          expect(projects[0].name).to.equal('silver');
+          done();
         });
       });
     });
   });
 
   describe('Getting user projects: ', () => {
-    it('Gets all project of a user', (done) => {
+    beforeEach((done) => {
       Project.create({ userId, permissionId }, newProject, (err) => {
         expect(err).to.not.exist;
         Project.create({ userId, permissionId }, newProject3, (err2) => {
           expect(err2).to.not.exist;
           Project.create({ userId: userId2, permissionId }, newProject4, (err3) => {
             expect(err3).to.not.exist;
-            Project.findUserProjects(userId, (err4, projects) => {
-              expect(err4).to.not.exist;
-              expect(projects.length).to.equal(2);
-              expect(projects[0].name).to.equal('gold');
-              expect(projects[1].name).to.equal('silver');
-              done();
-            });
+            done();
           });
         });
+      });
+    });
+    it('Gets all project of a user', (done) => {
+      Project.findUserProjects(userId, (err4, projects) => {
+        expect(err4).to.not.exist;
+        expect(projects.length).to.equal(2);
+        expect(projects[0].name).to.equal('gold');
+        expect(projects[1].name).to.equal('silver');
+        done();
       });
     });
   });

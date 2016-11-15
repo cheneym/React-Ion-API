@@ -24,6 +24,28 @@ const Model = class Model {
     }
   }
 
+  findOne(params, cb) {
+    this.find(params, (err, items) => {
+      if (err) { cb(err, null); }
+      if (items.length === 0) {
+        cb(err, null);
+      } else {
+        cb(err, items[0]);
+      }
+    });
+  }
+
+  findById(params, cb) {
+    this.findOne(params, (err, item) => {
+      if (err) { cb(err, null); }
+      if (item === null) {
+        cb(err, item);
+      } else {
+        cb(err, item);
+      }
+    });
+  }
+
   create(props, cb) {
     const keys = Object.keys(props);
     const vals = Object.values(props);
@@ -35,6 +57,7 @@ const Model = class Model {
       if (cb) { cb(err, results); }
     });
   }
+  // findOrCreate()
 
   update(query, props, cb) {
     const pkeys = Object.keys(props);

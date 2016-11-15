@@ -79,86 +79,81 @@ describe('User Model', () => {
   });
 
   describe('User Update: ', () => {
-    it('Does not add or remove users from database', (done) => {
+    beforeEach((done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
         User.update(newUser, newUser2, (err2) => {
           expect(err2).to.not.exist;
-          User.find({ username: 'neverused' }, (err3, users) => {
-            expect(err3).to.not.exist;
-            expect(users.length).to.not.equal(0);
-            done();
-          });
+          done();
         });
       });
     });
 
+    it('Does not add or remove users from database', (done) => {
+      User.find({ username: 'neverused' }, (err3, users) => {
+        expect(err3).to.not.exist;
+        expect(users.length).to.not.equal(0);
+        done();
+      });
+    });
+
     it('Updates existing users from database', (done) => {
-      User.create(newUser, (err) => {
-        expect(err).to.not.exist;
-        User.update(newUser, newUser2, (err2) => {
-          expect(err2).to.not.exist;
-          User.find({ username: 'neverused' }, (err3, users) => {
-            expect(err3).to.not.exist;
-            expect(users[0].password).to.equal('watever2');
-            done();
-          });
-        });
+      User.find({ username: 'neverused' }, (err3, users) => {
+        expect(err3).to.not.exist;
+        expect(users[0].password).to.equal('watever2');
+        done();
       });
     });
   });
 
   describe('User find: ', () => {
-    it('Find all users if passed empty object', (done) => {
+    beforeEach((done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
         User.create(newUser3, (err2) => {
           expect(err2).to.not.exist;
           User.create(newUser4, (err3) => {
             expect(err3).to.not.exist;
-            User.find({}, (err4, users) => {
-              expect(err4).to.not.exist;
-              expect(users.length).to.be.above(2);
-              done();
-            });
+            done();
           });
         });
       });
     });
+    it('Find all users if passed empty object', (done) => {
+      User.find({}, (err4, users) => {
+        expect(err4).to.not.exist;
+        expect(users.length).to.be.above(2);
+        done();
+      });
+    });
 
     it('Uses object as search query when passed object with properties', (done) => {
-      User.create(newUser, (err) => {
-        expect(err).to.not.exist;
-        User.create(newUser3, (err2) => {
-          expect(err2).to.not.exist;
-          User.create(newUser4, (err3) => {
-            expect(err3).to.not.exist;
-            User.find({ username: 'hahahaha' }, (err4, users) => {
-              expect(err4).to.not.exist;
-              expect(users.length).to.equal(1);
-              expect(users[0].password).to.equal('watever3');
-              done();
-            });
-          });
-        });
+      User.find({ username: 'hahahaha' }, (err4, users) => {
+        expect(err4).to.not.exist;
+        expect(users.length).to.equal(1);
+        expect(users[0].password).to.equal('watever3');
+        done();
       });
     });
   });
 
   describe('User remove: ', () => {
-    it('Removes user based on search query when passed object with properties', (done) => {
+    beforeEach((done) => {
       User.create(newUser, (err) => {
         expect(err).to.not.exist;
         User.create(newUser3, (err2) => {
           expect(err2).to.not.exist;
-          User.remove({ username: 'neverused' }, (err3) => {
-            expect(err3).to.not.exist;
-            User.find({ username: 'neverused' }, (err4, users) => {
-              expect(err4).to.not.exist;
-              expect(users.length).to.equal(0);
-              done();
-            });
-          });
+          done();
+        });
+      });
+    });
+    it('Removes user based on search query when passed object with properties', (done) => {
+      User.remove({ username: 'neverused' }, (err3) => {
+        expect(err3).to.not.exist;
+        User.find({ username: 'neverused' }, (err4, users) => {
+          expect(err4).to.not.exist;
+          expect(users.length).to.equal(0);
+          done();
         });
       });
     });
