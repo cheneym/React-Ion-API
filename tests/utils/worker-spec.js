@@ -114,10 +114,10 @@ describe('Worker Utility', () => {
   describe('With React Router', () => {
     it('Should create the necessary files server, webpack, and App.jsx', (done) => {
       worker(treeData, userId, () => {
+        expect(fs.existsSync(path.join(__dirname, `../../user/${userId}/src/js/App.jsx`))).to.be.true;
         done();
       });
     });
   });
 
-  
 });
