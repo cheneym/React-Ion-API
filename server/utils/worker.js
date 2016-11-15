@@ -66,11 +66,13 @@ module.exports = (tree, userId, cb) => {
       });
     });
   };
+
   utils.consoleLog('Ready to remove');
   fs.rmrf(userPath, (err) => {
     if (err) {
       console.error(err);
     }
+
     utils.consoleLog('Finish removing');
     fs.copyRecursive(structurePath, userPath, (err2) => {
       if (err2) {
