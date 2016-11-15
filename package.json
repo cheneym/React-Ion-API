@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/anxsaiyuki/React-Ion#readme",
   "dependencies": {
+    "airbnb-js-shims": "^1.0.1",
     "archiver": "^1.2.0",
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.7",
