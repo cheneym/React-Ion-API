@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
 
 
-module.exports = (app) => {
+module.exports = () => {
   passport.serializeUser((user, done) => {
     done(null, user.id);
   });
@@ -16,35 +16,21 @@ module.exports = (app) => {
   });
 
   const validateUserPass = (username, password, done) => {
-    User.get({ username }, (err, users) => {
+    User.findOne({ username }, (err, user) => {
       if (err) {
         return done(null, false, { message: 'Incorrect username or password.' });
       }
-      if (users.length) {
-        const salt = users[0].salt;
-        const encryptpw = users[0].password;
-
+      if (user) {
+        const salt = user.salt;
+        const encryptpw = user.password;
         if (bcrypt.hashSync(password, salt) === encryptpw) {
-          console.log('match');
-          return done(null, users[0]);
-        } else {
-          console.log('not a match');
-          return done(null, false, { message: 'Incorrect username or password.' });
+          return done(null, user);
         }
-      } else {
-        console.log('no username exists');
         return done(null, false, { message: 'Incorrect username or password.' });
       }
+      return done(null, false, { message: 'Incorrect username or password.' });
     });
   };
 
   passport.use(new LocalStrategy(validateUserPass));
-};
-
-const loggedIn = (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    res.redirect('/login');
-  }
 };

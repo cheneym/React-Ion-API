@@ -3,19 +3,30 @@ const projectController = require('../../../db/controllers/projectController');
 
 const router = new express.Router();
 
-router.route('/:userId')
+// Get all projects
+router.route('/')
   .get(projectController.getProjects);
 
+// Get one project
+router.route('/:projectId')
+  .get(projectController.getProject);
+
+// Create one project
 router.route('/')
   .post(projectController.createProject);
 
-router.route('/update')
+// Update one project
+router.route('/:projectId')
   .put(projectController.updateProject);
 
-router.route('/remove')
+// Remove one project
+router.route('/:projectId')
   .delete(projectController.removeProject);
 
+// Generate files for project
 router.route('/generate')
   .post(projectController.generateProject);
 
 module.exports = router;
+
+// /api/user/:userId/projects

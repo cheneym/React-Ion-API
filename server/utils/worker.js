@@ -15,15 +15,15 @@ module.exports = (tree, userId, cb) => {
 
   const generateFile = (treeData, inital) => {
     utils.consoleLog(`Generate Files for: ${treeData.name}`);
-    const tempTreeData = treeData;
+    let tempTreeData = treeData;
     if (inital && tree.router === 0) {
       tempTreeData.initial = true;
     } else {
       tempTreeData.initial = false;
     }
 
-    // tempTreeData.convertedProps = helper.addProps(tempTreeData);
-    // tempTreeData.convertedCss = helper.createCss(tempTreeData);
+    tempTreeData = helper.componentBodySetup(tempTreeData);
+
     helper.cssSetup(helper.combineCss(tempTreeData), userId, () => {
       ejs.renderFile(componentHelper.getComponent(tempTreeData), tempTreeData, (err, html) => {
         const jsPath = inital ? mainJsPath : componentPath;
