@@ -12,7 +12,6 @@ const host = `http://localhost:${port}`;
 const describe = mocha.describe;
 const it = mocha.it;
 const before = mocha.before;
-const beforeEach = mocha.beforeEach;
 const after = mocha.after;
 
 describe('Project Routes', () => {
