@@ -1,8 +1,8 @@
 const express = require('express');
-const db = require('./config/connection');
 
 const app = express();
 
+require('./config/connection');
 require('./config/middleware')(app, express);
 require('./config/routes')(app, express);
 require('./config/auth')(app);
