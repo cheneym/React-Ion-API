@@ -81,13 +81,18 @@ const Model = class Model {
     let queryString = `update ${this.model} set ${pkeys.map(a => `${a}=?`).join(', ')}`;
     if (pkeys.length === 0) {
       this.find(Object.assign(query, props), cb);
-    } else if (qkeys.length !== 0) {
+    } else if (qkeys.length > 0) {
       queryString += ` where ${qkeys.map(a => `${a}=?`).join(' and ')}`;
+      db.query(queryString, pvals.concat(qvals), (err) => {
+        if (err) { cb(err, null); }
+        this.find(Object.assign(query, props), cb);
+      });
+    } else {
+      db.query(queryString, pvals.concat(qvals), (err) => {
+        if (err) { cb(err, null); }
+        this.find(Object.assign(query, props), cb);
+      });
     }
-    db.query(queryString, pvals.concat(qvals), (err) => {
-      if (err) { cb(err, null); }
-      this.find(Object.assign(query, props), cb);
-    });
   }
 
   remove(params, cb) {

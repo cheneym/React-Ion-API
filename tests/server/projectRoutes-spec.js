@@ -116,6 +116,7 @@ describe('Project Routes', () => {
         json: {},
       };
       request(options, (error, res, body) => {
+        expect(error).to.not.exist;
         expect(body.name).to.equal('monalisa');
         done();
       });
@@ -127,6 +128,7 @@ describe('Project Routes', () => {
         json: {},
       };
       request(options, (error, res, body) => {
+        expect(error).to.not.exist;
         expect(body).to.not.exist;
         done();
       });
@@ -143,45 +145,58 @@ describe('Project Routes', () => {
         },
       };
       request(options, (error, res, body) => {
+        expect(error).to.not.exist;
         expect(body[0].name).to.equal('heaven');
         done();
       });
     });
-    it('Returns null if invalid id', (done) => {
+    it('Returns empty array if invalid id', (done) => {
       const options = {
         method: 'PUT',
         uri: `${host}/api/project/154894845/`,
         json: {},
       };
       request(options, (error, res, body) => {
+        expect(error).to.not.exist;
         expect(body.length).to.equal(0);
         done();
       });
     });
   });
 
-  // describe('DELETE /api/project/:projectId ', () => {
-  //   it('Gets one project from database', (done) => {
-  //     const options = {
-  //       method: 'GET',
-  //       uri: `${host}/api/project/${projectId}/`,
-  //       json: {},
-  //     };
-  //     request(options, (error, res, body) => {
-  //       expect(body.name).to.equal('monalisa');
-  //       done();
-  //     });
-  //   });
-  //   it('Returns null if invalid id', (done) => {
-  //     const options = {
-  //       method: 'GET',
-  //       uri: `${host}/api/project/154894845/`,
-  //       json: {},
-  //     };
-  //     request(options, (error, res, body) => {
-  //       expect(body).to.not.exist;
-  //       done();
-  //     });
-  //   });
-  // });
+  describe('DELETE /api/project/:projectId ', () => {
+    it('Removes one project from database', (done) => {
+      const options = {
+        method: 'DELETE',
+        uri: `${host}/api/project/${projectId}/`,
+        json: {},
+      };
+      request(options, (error, res, body) => {
+        expect(error).to.not.exist;
+        expect(body[0].name).to.equal('heaven');
+        const options2 = {
+          method: 'GET',
+          uri: `${host}/api/project/${projectId}/`,
+          json: {},
+        };
+        request(options2, (error2, res2, body2) => {
+          expect(error2).to.not.exist;
+          expect(body2).to.not.exist;
+          done();
+        });
+      });
+    });
+    it('Returns empty array if invalid id', (done) => {
+      const options = {
+        method: 'DELETE',
+        uri: `${host}/api/project/154894845/`,
+        json: {},
+      };
+      request(options, (error, res, body) => {
+        expect(error).to.not.exist;
+        expect(body.length).to.equal(0);
+        done();
+      });
+    });
+  });
 });
