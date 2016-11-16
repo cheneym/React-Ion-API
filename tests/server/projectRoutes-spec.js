@@ -57,7 +57,7 @@ describe('Project Routes', () => {
   after((done) => {
     Project.remove({ project_tree: '123' }, (err) => {
       if (err) { console.error(err); }
-      User.remove({ salt: 'notasalt' }, (err2) => {
+      User.remove({ username: 'Cheney' }, (err2) => {
         if (err2) { console.error(err2); }
         done();
       });

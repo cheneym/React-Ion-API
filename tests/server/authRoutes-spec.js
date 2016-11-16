@@ -15,28 +15,38 @@ const before = mocha.before;
 const after = mocha.after;
 
 describe('Auth Routes', () => {
-  let userId;
   before((done) => {
-    const newUser = {
-      username: 'Cheney',
-      password: 'secret',
-      salt: 'notasalt',
+    const options = {
+      method: 'GET',
+      uri: `${host}/api/project/logout`,
     };
-    User.create(newUser, (err, user) => {
+    request(options, (err) => {
       if (err) { console.error(err); }
-      userId = user.id;
       done();
     });
   });
 
   after((done) => {
+    const options = {
+      method: 'GET',
+      uri: `${host}/api/project/logout`,
+    };
     User.remove({ salt: 'notasalt' }, (err) => {
       if (err) { console.error(err); }
-      done();
+      request(options, (err2) => {
+        if (err2) { console.error(err2); }
+        done();
+      });
     });
   });
 
   describe('POST /login ', () => {
+    // const requestWithSession = request.defaults({ jar: true });
+    // beforeEach((done) => {
+    //   User.create({
+    //   });
+    // });
+
     it('Logs user in and creates session', (done) => {
       done();
     });
