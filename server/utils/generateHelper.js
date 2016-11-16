@@ -204,7 +204,6 @@ const htmlSetup = (tree, userId, callback) => {
 // ********************
 // Add components code
 // ********************
-const removeUserFolder = (userId, callback) => {
 const componentBodySetup = (treeData) => {
   const tempTreeData = treeData;
   tempTreeData.children.forEach((child) => {
