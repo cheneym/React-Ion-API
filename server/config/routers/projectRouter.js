@@ -28,5 +28,3 @@ router.route('/generate')
   .post(projectController.generateProject);
 
 module.exports = router;
-
-// /api/user/:userId/projects

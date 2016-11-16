@@ -3,41 +3,51 @@
 ## API endpoints
 --------------------------------------------------------------
 
-### Users
+### Authentication
 
 userObject = {
-  id: (integer)
+  id: (integer),
+  username: (string),
+  password: (string),
+  salt: (string)
 }
 
-#### Create a User
+
+#### Create a User / Sign Up
 Method: POST
-Path: /api/user/
-Input: userObject
-Response: 200 and status object
+Path: /signup
+Input:
+{
+  username: (string),
+  password: (string),
+}
+Response:
+{
+  id: (integer),
+  username: (string),
+}
 
-#### Delete a User
-Method: DELETE
-Path: /api/meal/delete
-Input: userObject
-Response: 200 and status Object
 
-#### Get a User
+#### Login
+Method: POST
+Path: /login
+Input:
+{
+  username: (string),
+  password: (string),
+}
+Response:
+{
+  id: (integer),
+  username: (string),
+}
+
+
+#### Logout
 Method: GET
-Path: /api/user/"userId"
-Input: userId through the url
-Response: 200 and userObject
-
-#### Get all Users
-Method: GET
-Path: /api/user/
-Input: 
-Response: 200 and Array of userObjects
-
-#### Get projects of a user
-Method: GET
-Path: /api/project/"userId"
-Input: userId through the url
-Response: 200 and Array of projectObjects
+Path: /logout
+Input: None
+Response: 'Logout Successful'
 
 
 --------------------------------------------------------------
@@ -49,6 +59,7 @@ projectObject = {
   name: (string),
   project_tree: (string)
 }
+
 
 #### Get All Projects
 Method: GET
@@ -105,3 +116,14 @@ Method: POST
 Path: /api/project/generate
 Input: JSON with property username and password
 Response: 200 and Object with properties token, username and userId
+
+
+--------------------------------------------------------------
+
+### Authentication
+
+#### Get projects of a user
+Method: GET
+Path: /api/user/projects
+Input: None but need to be authenticated 
+Response: Array of projectObjects
