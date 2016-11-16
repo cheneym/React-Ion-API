@@ -1,4 +1,6 @@
 const Project = require('../models/projectModel');
+const Worker = require('../../server/utils/worker');
+const Zip = require('../../server/utils/zip');
 
 module.exports.getProjects = (req, res) => {
   Project.find({}, (err, projects) => {
@@ -57,5 +59,11 @@ module.exports.removeProject = (req, res) => {
 };
 
 module.exports.generateProject = (req, res) => {
-  res.end();
+  const tree = req.body.tree;
+  const userId = 1;
+
+  Worker(tree, () => {
+    Zip(res, userId);
+  });
+  // res.end();
 };
