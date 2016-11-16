@@ -19,7 +19,6 @@ const copyObj = (o) => {
 };
 
 class User extends Model {
-
   create(userProps, cb) {
     const username = userProps.username;
     const password = userProps.password;

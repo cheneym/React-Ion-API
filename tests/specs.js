@@ -1,3 +1,4 @@
+require('./server/authRoutes-spec.js');
 require('./server/projectRoutes-spec.js');
 require('./db/model-userModel-spec.js');
 require('./db/permissionModel-spec.js');

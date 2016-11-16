@@ -1,10 +1,11 @@
 const express = require('express');
 const authController = require('../../../db/controllers/authController');
+const passport = require('passport');
 
 const router = new express.Router();
 
 router.route('/login')
-  .post(authController.login);
+  .post(passport.authenticate('local'), authController.login);
 
 router.route('/signup')
   .post(authController.signup);

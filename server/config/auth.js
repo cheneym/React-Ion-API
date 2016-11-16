@@ -10,7 +10,7 @@ module.exports = () => {
   });
 
   passport.deserializeUser((id, done) => {
-    User.get({ id }, (err, user) => {
+    User.findOne({ id }, (err, user) => {
       done(err, user);
     });
   });

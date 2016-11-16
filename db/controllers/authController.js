@@ -1,12 +1,12 @@
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt-nodejs');
-const passport = require('passport');
 
-module.exports.login = passport.authenticate('local',
-  { failureRedirect: '/user/login' },
-  (req, res) => {
-    res.end('works');
-  });
+module.exports.login = (req, res) => {
+  if (req.user) {
+    return res.json(req.user);
+  }
+  return res.status(404).end('Failed to authenticate user');
+};
 
 module.exports.signup = (req, res) => {
   const username = req.body.username;
@@ -19,9 +19,9 @@ module.exports.signup = (req, res) => {
       if (err2) { return res.status(404).end('Unable to create salt'); }
       return bcrypt.hash(password, salt, null, (err3, hash) => {
         if (err3) { return res.status(404).end('Unable to hash password'); }
-        return User.create({ username, password: hash, salt }, (err4) => {
+        return User.create({ username, password: hash, salt }, (err4, newUser) => {
           if (err4) { return res.status(404).end('Unable to create user'); }
-          return res.end('works');
+          return res.json(newUser);
         });
       });
     });

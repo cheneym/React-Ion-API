@@ -22,33 +22,59 @@ describe('Auth Routes', () => {
     };
     request(options, (err) => {
       if (err) { console.error(err); }
-      done();
-    });
-  });
-
-  after((done) => {
-    const options = {
-      method: 'GET',
-      uri: `${host}/api/project/logout`,
-    };
-    User.remove({ salt: 'notasalt' }, (err) => {
-      if (err) { console.error(err); }
-      request(options, (err2) => {
-        if (err2) { console.error(err2); }
+      User.create({
+        username: 'Cheney',
+        password: 'notsafe',
+      }, (err2) => {
+        expect(err2).to.not.exist;
         done();
       });
     });
   });
 
+  after((done) => {
+    User.remove({}, (err) => {
+      expect(err).to.not.exist;
+      done();
+    });
+  });
+
   describe('POST /login ', () => {
-    // const requestWithSession = request.defaults({ jar: true });
-    // beforeEach((done) => {
-    //   User.create({
-    //   });
-    // });
+    const requestWithSession = request.defaults({ jar: true });
+    it('Logs user in and creates session', (done) => {
+      const options = {
+        method: 'POST',
+        followAllRedirects: true,
+        uri: `${host}/login`,
+        json: {
+          username: 'Cheney',
+          password: 'wrong',
+        },
+      };
+
+      requestWithSession(options, (err2, res, body) => {
+        expect(body).to.equal('Unauthorized');
+        done();
+      });
+    });
 
     it('Logs user in and creates session', (done) => {
-      done();
+      const options = {
+        method: 'POST',
+        followAllRedirects: true,
+        uri: `${host}/login`,
+        json: {
+          username: 'Cheney',
+          password: 'notsafe',
+        },
+      };
+
+      requestWithSession(options, (err2, res, body) => {
+        expect(err2).to.not.exist;
+        console.log(body);
+        expect(body).to.not.equal('Failed to authenticate user');
+        done();
+      });
     });
   });
 
@@ -60,7 +86,17 @@ describe('Auth Routes', () => {
 
   describe('GET /logout ', () => {
     it('Signs user out and destroys session', (done) => {
-      done();
+      const options = {
+        method: 'GET',
+        uri: `${host}/api/project/logout`,
+      };
+      User.remove({}, (err) => {
+        expect(err).to.not.exist;
+        request(options, (err2) => {
+          expect(err2).to.not.exist;
+          done();
+        });
+      });
     });
   });
 });
