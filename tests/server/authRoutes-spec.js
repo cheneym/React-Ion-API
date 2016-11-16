@@ -130,7 +130,7 @@ describe('Auth Routes', () => {
       request(options, (err2, res, body) => {
         expect(err2).to.not.exist;
         expect(res.statusCode).to.equal(200);
-        expect(body).to.equal('Logout successful');
+        expect(body).to.equal('Logout Successful');
         done();
       });
     });

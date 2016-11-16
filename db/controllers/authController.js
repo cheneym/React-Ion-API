@@ -30,6 +30,6 @@ module.exports.signup = (req, res) => {
 module.exports.logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) { return res.status(404).send('Failed to destroy session'); }
-    return res.status(200).send('Logout successful');
+    return res.status(200).send('Logout Successful');
   });
 };

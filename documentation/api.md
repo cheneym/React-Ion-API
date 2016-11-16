@@ -36,7 +36,11 @@ Input:
   username: (string),
   password: (string),
 }
-Response: 200 and userObject
+Response:
+{
+  id: (integer),
+  username: (string),
+}
 
 
 #### Logout
