@@ -1,4 +1,12 @@
 language: node_js
 node_js:
   - '6'
-  - '4'
+
+before_script:
+  - cp server/config/config-example.js server/config/config.js
+  - mysql -u travis < db/schema.sql
+
+script:
+  - npm start &
+  - npm test
+  
