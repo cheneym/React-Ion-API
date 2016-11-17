@@ -61,17 +61,17 @@ const Model = class Model {
     });
   }
 
-  findOrCreate(props, cb) {
-    this.findOne(props, (err, item) => {
-      if (err) {
-        cb(err, null);
-      } else if (item === null) {
-        this.create(props, cb);
-      } else {
-        cb(null, item);
-      }
-    });
-  }
+  // findOrCreate(props, cb) {
+  //   this.findOne(props, (err, item) => {
+  //     if (err) {
+  //       cb(err, null);
+  //     } else if (item === null) {
+  //       this.create(props, cb);
+  //     } else {
+  //       cb(null, item);
+  //     }
+  //   });
+  // }
 
   update(query, props, cb) {
     const pkeys = Object.keys(props);
@@ -84,13 +84,13 @@ const Model = class Model {
     } else if (qkeys.length > 0) {
       queryString += ` where ${qkeys.map(a => `${a}=?`).join(' and ')}`;
       db.query(queryString, pvals.concat(qvals), (err) => {
-        if (err) { cb(err, null); }
-        this.find(Object.assign(query, props), cb);
+        if (err) { return cb(err, null); }
+        return this.find(Object.assign(query, props), cb);
       });
     } else {
       db.query(queryString, pvals.concat(qvals), (err) => {
-        if (err) { cb(err, null); }
-        this.find(Object.assign(query, props), cb);
+        if (err) { return cb(err, null); }
+        return this.find(Object.assign(query, props), cb);
       });
     }
   }
