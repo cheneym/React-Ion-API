@@ -6,3 +6,4 @@ build/
 dist/
 user/
 server/config/config-local.js
+src/css/*
