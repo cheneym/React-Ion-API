@@ -8,6 +8,9 @@ module.exports = (app) => {
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();
   });
+  app.get('/', (req, res) => {
+    res.sendFile('/index.html');
+  });
   app.use('/api/user', userRouter);
   app.use('/api/project', projectRouter);
   app.use('/', authRouter);
