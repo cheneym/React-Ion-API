@@ -5,4 +5,4 @@ bower_components/
 build/
 dist/
 user/
-server/config/local-config.js
+server/config/config-local.js
