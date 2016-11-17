@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
-    "test": "mocha --bail --reporter nyan tests/specs.js",
+    "test": "mocha --bail tests/specs.js",
     "build": "gulp build && webpack -p --config webpack.config.js --progress --profile --colors",
     "dev": "./node_modules/.bin/webpack-dev-server -d --host 0.0.0.0 --config webpack.config.js --content-base src/ --colors --hot --progress --inline --watch",
     "postinstall": "npm run build"
