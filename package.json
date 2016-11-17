@@ -71,5 +71,8 @@
     "nodemon": "^1.11.0",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1"
+  },
+  "engines": {
+    "node": "6.9.1"
   }
 }
