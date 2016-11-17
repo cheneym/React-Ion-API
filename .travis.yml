@@ -1,12 +1,14 @@
 language: node_js
 node_js:
-  - '6'
-
+- '6'
 before_script:
-  - cp server/config/config-example.js server/config/config.js
-  - mysql -u travis < db/schema.sql
-
+- cp server/config/config-example.js server/config/config.js
+- mysql -u travis < db/schema.sql
 script:
-  - npm start &
-  - npm test
-  
+- npm start &
+- npm test
+deploy:
+  provider: heroku
+  api_key:
+    secure: tfFppP9Ejt4dux9UtsURVsFCVeezrsGufZhMkSlnUlgZuZbx8bzzw+VOmrp1BmYi9JDU1eNtYgX854XhjHz+ZKU2CUwgSAzW989y1buyDZsPvuKOoE3jsokmLdV/W0IBh7Zcw514VJuccjBp0FzhlR6qwpp1TCHKay+mXaxHBhwg9cctzoZNpvOylPVpJVoAHC3fWjM7CybpwofaWAnrVchGd/GT0sBWp907x1A7730jpt15Y7WM2Z5zD98OzyCUuLZS4SjkwRQ1yK/9m1pN2fP/pbbU0KfxtNtA3Evse55abO5/ISaPkJnbHaFru5Gfx8JuHYB6KKMRRecuhdD6dTND8V17O1eYOinhFNI82ZcPWRrdRdBQ9txJTchuQMpk06zPX4TqoaJcMydiFktBs2dmZf4dr/AbVQpy3MWLgkdGEEVRKAo03VdW7EO+5EZ/Wr3dTuo/NtD0hZdJXZAhK/tCW4h+JcBoKX0P7mPoKqgUCeyVn0LOseRaZ0H56VzODCCqpJAYxT+P/I3Zk9T0ANzzKWVyMSCdsl4mEYRgq/1Lqsa/+Ryj15F8ZFf6lPgNLKVZpKFwMC3zFcQ4o+5tFyTmxKZK46PX40F1nkjcCDu+67eU2YxbV6TRlZgR8wdOoiT0Xx2DcVD3ZD9PRz8QtiSXaO/pOOwpMgvIt0Bjqy8=
+  app: react-ion

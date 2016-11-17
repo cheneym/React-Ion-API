@@ -1,5 +1,5 @@
 const mysql = require('mysql');
-const config = process.env.NODE_ENV === 'development' ? require('./local-config') : require('./config');
+const config = process.env.NODE_ENV === 'development' ? require('./config-local') : require('./config');
 
 const connection = mysql.createConnection(config);
 
