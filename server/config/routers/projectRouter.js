@@ -1,5 +1,6 @@
 const express = require('express');
 const projectController = require('../../../db/controllers/projectController');
+const authCheck = require('../../utils/authCheck').authCheck;
 
 const router = new express.Router();
 
@@ -17,11 +18,11 @@ router.route('/:projectId')
 
 // Create one project
 router.route('/')
-  .post(projectController.createProject);
+  .post(authCheck, projectController.createProject);
 
 // Update one project
 router.route('/:projectId')
-  .put(projectController.updateProject);
+  .put(authCheck, projectController.updateProject);
 
 // Remove one project
 router.route('/:projectId')
