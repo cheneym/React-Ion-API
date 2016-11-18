@@ -6,12 +6,10 @@ const LocalStrategy = require('passport-local').Strategy;
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
-    console.log('serialized', user);
     done(null, user.id);
   });
 
   passport.deserializeUser((id, done) => {
-    console.log('deserialized', id);
     User.findOne({ id }, (err, user) => {
       done(err, user);
     });
