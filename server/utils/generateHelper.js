@@ -256,6 +256,37 @@ const copyStructure = (userId, callback) => {
   });
 };
 
+
+// *************************************
+// Copy structure folder to user folder
+// *************************************
+const createFolder = (userId, callback) => {
+  const cssPath = filePath.getCssPath(userId);
+  const componentPath = filePath.getComponentPath(userId);
+  const jsPath = filePath.getMainJsPath(userId);
+
+  utils.consoleLog('Starting to create folders');
+  fs.mkdir(cssPath, (err) => {
+    if (err) {
+      console.error(err);
+    }
+    utils.consoleLog('Created css folder');
+    fs.mkdir(componentPath, (err2) => {
+      if (err2) {
+        console.error(err2);
+      }
+      utils.consoleLog('Created component folder');
+      fs.mkdir(jsPath, (err3) => {
+        if (err3) {
+          console.error(err3);
+        }
+        utils.consoleLog('Created main js folder');
+        callback();
+      });
+    });
+  });
+};
+
 // ********************************************************
 // Will setup the strucutre depending on w/wo react router
 // ********************************************************
@@ -284,9 +315,12 @@ const initialize = (tree, userId, callback) => {
     utils.consoleLog('Finish removing');
     copyStructure(userId, () => {
       utils.consoleLog("Copied 'structure' to 'user'");
-      structureSetup(tree, userId, () => {
-        utils.consoleLog('Finish building structure');
-        callback();
+      createFolder(userId, () => {
+        utils.consoleLog('Created folders for user');
+        structureSetup(tree, userId, () => {
+          utils.consoleLog('Finish building structure');
+          callback();
+        });
       });
     });
   });
