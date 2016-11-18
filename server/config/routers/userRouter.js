@@ -1,9 +1,10 @@
 const express = require('express');
 const userController = require('../../../db/controllers/userController');
+const authCheck = require('../../utils/authCheck').authCheck;
 
 const router = new express.Router();
 
 router.route('/projects')
-  .get(userController.getProjects);
+  .get(authCheck, userController.getProjects);
 
 module.exports = router;
