@@ -14,6 +14,7 @@ module.exports = (tree, userId, cb) => {
   const mainJsPath = filePath.getMainJsPath(userId);
 
   const generateFile = (treeData, inital) => {
+    console.log(treeData);
     utils.consoleLog(`Generate Files for: ${treeData.name}`);
     let tempTreeData = treeData;
     if (inital && tree.router === 0) {
