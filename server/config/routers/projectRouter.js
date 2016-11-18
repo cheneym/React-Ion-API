@@ -7,6 +7,10 @@ const router = new express.Router();
 router.route('/')
   .get(projectController.getProjects);
 
+// Generate files for project
+router.route('/generate')
+  .get(projectController.generateProject);
+
 // Get one project
 router.route('/:projectId')
   .get(projectController.getProject);
@@ -22,9 +26,5 @@ router.route('/:projectId')
 // Remove one project
 router.route('/:projectId')
   .delete(projectController.removeProject);
-
-// Generate files for project
-router.route('/generate')
-  .post(projectController.generateProject);
 
 module.exports = router;

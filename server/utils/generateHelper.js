@@ -246,7 +246,8 @@ const removeUserFolder = (userId, callback) => {
 const copyStructure = (userId, callback) => {
   const userPath = filePath.getUserPath(userId);
   const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
-
+  console.log('userPath', userPath);
+  console.log('structurePath', structurePath);
   fs.copyRecursive(structurePath, userPath, (err) => {
     if (err) {
       console.error(err);
