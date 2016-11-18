@@ -1,6 +1,7 @@
 const Project = require('../models/projectModel');
 const Worker = require('../../server/utils/worker');
 const Zip = require('../../server/utils/zip');
+const qs = require('query-string');
 
 module.exports.getProjects = (req, res) => {
   Project.find({}, (err, projects) => {
@@ -59,10 +60,13 @@ module.exports.removeProject = (req, res) => {
 };
 
 module.exports.generateProject = (req, res) => {
-  const tree = req.body.tree;
+  // console.log('reqquery', req);
+  console.log('rrrrqqq', req.query.tree);
+  console.log('rrrrqqqparse', JSON.parse(req.query.tree));
+  const tree = JSON.parse(req.query.tree);
   const userId = 1;
 
-  Worker(tree, () => {
+  Worker(tree, userId, () => {
     Zip(res, userId);
   });
   // res.end();
