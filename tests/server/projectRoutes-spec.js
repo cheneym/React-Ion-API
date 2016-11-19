@@ -18,11 +18,12 @@ describe('Project Routes', () => {
   let userId;
   let projectId;
   const permissionId = 1;
+  const requestWithSession = request.defaults({ jar: true });
+
   before((done) => {
     const newUser = {
       username: 'Cheney',
       password: 'secret',
-      salt: 'notasalt',
     };
     const p1 = {
       name: 'monalisa',
@@ -47,7 +48,20 @@ describe('Project Routes', () => {
           if (err3) { console.error(err3); }
           Project.create(settings, p3, (err4) => {
             if (err4) { console.error(err4); }
-            done();
+            const options = {
+              method: 'POST',
+              followAllRedirects: true,
+              uri: `${host}/login`,
+              json: {
+                username: 'Cheney',
+                password: 'secret',
+              },
+            };
+
+            requestWithSession(options, (err5) => {
+              expect(err5).to.not.exist;
+              done();
+            });
           });
         });
       });
@@ -59,7 +73,14 @@ describe('Project Routes', () => {
       if (err) { console.error(err); }
       User.remove({ username: 'Cheney' }, (err2) => {
         if (err2) { console.error(err2); }
-        done();
+        const options = {
+          method: 'GET',
+          uri: `${host}/logout`,
+        };
+        requestWithSession(options, (err3) => {
+          expect(err3).to.not.exist;
+          done();
+        });
       });
     });
   });
@@ -71,7 +92,7 @@ describe('Project Routes', () => {
         uri: `${host}/api/project`,
         json: {},
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body.length).to.be.above(2);
         done();
@@ -89,13 +110,13 @@ describe('Project Routes', () => {
             name: 'gundam',
             project_tree: '123',
           },
-          projectSettings: { userId, permissionId },
+          permissionId,
         },
         headers: {
           'Content-Type': 'application/json',
         },
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body.name).to.equal('gundam');
         Project.find({ project_tree: '123' }, (err, projects) => {
@@ -114,7 +135,7 @@ describe('Project Routes', () => {
         uri: `${host}/api/project/${projectId}/`,
         json: {},
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body.name).to.equal('monalisa');
         done();
@@ -126,7 +147,7 @@ describe('Project Routes', () => {
         uri: `${host}/api/project/154894845/`,
         json: {},
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body).to.not.exist;
         done();
@@ -143,7 +164,7 @@ describe('Project Routes', () => {
           name: 'heaven',
         },
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body[0].name).to.equal('heaven');
         done();
@@ -155,7 +176,7 @@ describe('Project Routes', () => {
         uri: `${host}/api/project/154894845/`,
         json: {},
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body.length).to.equal(0);
         done();
@@ -170,7 +191,7 @@ describe('Project Routes', () => {
         uri: `${host}/api/project/${projectId}/`,
         json: {},
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body[0].name).to.equal('heaven');
         const options2 = {
@@ -178,7 +199,7 @@ describe('Project Routes', () => {
           uri: `${host}/api/project/${projectId}/`,
           json: {},
         };
-        request(options2, (error2, res2, body2) => {
+        requestWithSession(options2, (error2, res2, body2) => {
           expect(error2).to.not.exist;
           expect(body2).to.not.exist;
           done();
@@ -191,7 +212,7 @@ describe('Project Routes', () => {
         uri: `${host}/api/project/154894845/`,
         json: {},
       };
-      request(options, (error, res, body) => {
+      requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
         expect(body.length).to.equal(0);
         done();

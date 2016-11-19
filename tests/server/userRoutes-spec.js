@@ -103,6 +103,21 @@ describe('User Routes', () => {
       });
     });
 
+    it('Gets nothing if user is not authenticated', (done) => {
+      const options = {
+        method: 'GET',
+        followAllRedirects: true,
+        uri: `${host}/api/user/projects`,
+        json: {},
+      };
+      requestWithSession(options, (err, res, body) => {
+        expect(err).to.not.exist;
+        expect(res.statusCode).to.equal(401);
+        expect(body).to.equal('Unauthorized');
+        done();
+      });
+    });
+
     it('Should get all projects of a user', (done) => {
       const options = {
         method: 'POST',
