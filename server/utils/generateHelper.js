@@ -37,13 +37,13 @@ const createCss = (tree) => {
   let convertedCss = {};
   if (tree.componentType === 'Text') {
     convertedCss = {
-      'font-size': tree.props.fontSize || '100px',
+      'font-size': tree.props.fontSize ? `${tree.props.fontSize}px` : '100px',
       color: tree.props.color || 'rgb(2, 255, 22)',
       width: 'calc(100% - 0px)',
       padding: tree.props.padding || '10px',
       'flex-wrap': tree.props.flexWrap || 'wrap',
       'white-space': tree.props.whiteSpace || 'initial',
-      'text-align': tree.props.textAlign || 'center',
+      'text-align': tree.props.textAlign || 'left',
     };
   } else {
     convertedCss = {
@@ -224,7 +224,6 @@ const componentBodySetup = (treeData) => {
     switch (child.componentType) {
       case component.TEXT_COMPONENT:
         // <div className="name-text">text</div>
-        console.log("Text", child.props.content);
         child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">${child.props.content}</div>`;
         break;
       case component.BLOCK_COMPONENT:
