@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '6'
+before_script:
+- mysql -u travis < db/schema.sql
+script:
+- npm start &
+- npm test
+deploy:
+  provider: heroku
+  api_key:
+    secure: GL1wHVu1BFEJ7u+AYd8AgSfqzIJ3x9g8VrQMO1QxWwrRVtxSbFBSALo0ljui7W2+vjaXosYRjw1zXSQaAPmV0Ldvy2axaKrd/hlzr6dioS+rKiZZDLPRHRpAGx6kdBlqyPDZcvVc0k+N5CNwcGMm2d2Mqd4CrRMPoVfiARCBt+hPj2k8KwYa20iB3VPa9B6/e0VYrGdpWRyGCJRegO3jbloHwN1Uee9BZs++qriucMZ5cCkYExwgNhyMi+4PTGg0EMejm9y9anczZaryDeA4zHXh02HhgQ5jBqUfTbwrN+gZJSFtMQAt2b1PT6rujVU3dXlLnL65hai4bXhwNuZTfBRuFhM2nUDF7wuS32lRu6n0qHvEtzPXlXXCBP6L05jzN1hCWM8peCBEKTP6lQvbQsSnS7Q13QjDMKQsyVANG99ME2t/d71u7ANeGTI2Dt+DvF/uS86pA8jJ/AXCzhH+DcoWp5jjaL/CM7YqY/mEwyMULEqm3IGX1tI8BGTqSntDqfbyDW5Yh40R6phIdmYSqLfn5em77q9SJF0VTbabh0pCCcJMeaJl9zQyq2X9Gr4FkXt2FJe+ZJ71MfwGiIhw7eu3Q0UIORDDDxTuG1CB0w2qdqpSLIP0VUMHWuf3zKqz+E+UgjYbpQrPAOqorxZ+sn/rniQZEvIMNyk/JAuLpYU=
+  app: react-ion
+  on:
+    repo: React-Ion/React-Ion

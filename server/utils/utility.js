@@ -1,8 +1,5 @@
-
-const ENV = 'development';
-
 module.exports.consoleLog = (msg) => {
-  if (ENV !== 'production') {
+  if (process.env.NODE_ENV !== 'production') {
     console.log(msg);
   }
 };

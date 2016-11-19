@@ -8,7 +8,11 @@ class Project extends Model {
                          left outer join ${this.model} p on (up.project_id=p.id)
                          where u.id=?`;
     db.query(queryString, userId, (err, results) => {
-      if (cb) { cb(err, results); }
+      if (err) {
+        cb(err, null);
+      } else {
+        cb(null, results);
+      }
     });
   }
 
@@ -25,8 +29,11 @@ class Project extends Model {
         const queryString2 = `insert into user_project (user_id, project_id, permission_id)
                               value (?, ?, ?)`;
         db.query(queryString2, params2, (err2) => {
-          if (err2) { cb(err2, null); }
-          if (cb) { cb(err, project); }
+          if (err2) {
+            cb(err2, null);
+          } else {
+            cb(err, project);
+          }
         });
       }
     });

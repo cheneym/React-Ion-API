@@ -3,35 +3,52 @@
 ## API endpoints
 --------------------------------------------------------------
 
-### Users
+### Authentication
 
 userObject = {
-  id: (integer)
+  id: (integer),
+  username: (string),
+  password: (string),
+  salt: (string)
 }
 
-#### Create a User
+
+#### Create a User / Sign Up
 Method: POST
-Path: /api/user/
-Input: userObject
-Response: 200 and status object
+Path: /signup
+Input:
+{
+  username: (string),
+  password: (string),
+}
+Response:
+{
+  id: (integer),
+  username: (string),
+}
 
-#### Delete a User
-Method: DELETE
-Path: /api/meal/delete
-Input: userObject
-Response: 200 and status Object
 
-#### Get a User
+#### Login
+Method: POST
+Path: /login
+Input:
+{
+  username: (string),
+  password: (string),
+}
+Response:
+{
+  id: (integer),
+  username: (string),
+}
+
+
+#### Logout
 Method: GET
-Path: /api/user/"userId"
-Input: userId through the url
-Response: 200 and userObject
+Path: /logout
+Input: None
+Response: 'Logout Successful'
 
-#### Get all Users
-Method: GET
-Path: /api/user/
-Input: 
-Response: 200 and Array of userObjects
 
 --------------------------------------------------------------
 
@@ -43,40 +60,70 @@ projectObject = {
   project_tree: (string)
 }
 
-#### Get projects of a user
-Method: GET
-Path: /api/project/"userId"
-Input: userId through the url
-Response: 200 and Array of projectObjects
 
-#### Create Projects
+#### Get All Projects
+Method: GET
+Path: /api/project/
+Input: None
+Response: Array of projectObjects
+
+
+#### Get One Project
+Method: GET
+Path: /api/project/<projectId>
+Input: projectId via route parameter
+Response: projectObject
+
+
+#### Create Project
 Method: POST
 Path: /api/project/
 Input:
 {
-  userId: (integer),
-  name: (string),
-  project_tree: (string)
+  projectSettings: {
+    userId: (integer),
+    permissionId: (integer),
+  }
+  projectProps: {
+    name: (string),
+    project_tree: (string)
+  }
 }
-Response: 200 and projectId, as string
+Response: projectObject (newly created one)
 
-#### Remove Project
-Method: DELETE
-Path: /api/project/remove
-Input: projectId,
-{
-  id: (string)
-}
-Response: 200 and projectObject (of removed project)
 
 #### Update Project
 Method: PUT
-Path: /api/project/update
-Input: projectObject
-Response: 200 and status Object
+Path: /api/project/<projectId>
+Input: projectId via route parameter
+projectProps {
+  id: (integer) //OPTIONAL <--- please do not to put this,
+  name: (string), //OPTIONAL
+  project_tree: (string), //OPTIONAL
+}
+Response: projectObject (newly updated one)
+
+
+#### Delete Project
+Method: DELETE
+Path: /api/project/<projectId>
+Input: projectId via route parameter
+Response: projectObject (removed one)
+
 
 #### Generate Project
 Method: POST
 Path: /api/project/generate
 Input: JSON with property username and password
 Response: 200 and Object with properties token, username and userId
+
+
+--------------------------------------------------------------
+
+### User
+
+#### Get projects of a user
+Method: GET
+Path: /api/user/projects
+Input: None but need to be authenticated 
+Response: Array of projectObjects

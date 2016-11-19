@@ -1,21 +1,31 @@
 const express = require('express');
 const projectController = require('../../../db/controllers/projectController');
+const authCheck = require('../../utils/authCheck').authCheck;
 
 const router = new express.Router();
 
-router.route('/:userId')
+// Get all projects
+router.route('/')
   .get(projectController.getProjects);
 
-router.route('/')
-  .post(projectController.createProject);
-
-router.route('/update')
-  .put(projectController.updateProject);
-
-router.route('/remove')
-  .delete(projectController.removeProject);
-
+// Generate files for project
 router.route('/generate')
-  .post(projectController.generateProject);
+  .get(projectController.generateProject);
+
+// Get one project
+router.route('/:projectId')
+  .get(projectController.getProject);
+
+// Create one project
+router.route('/')
+  .post(authCheck, projectController.createProject);
+
+// Update one project
+router.route('/:projectId')
+  .put(authCheck, projectController.updateProject);
+
+// Remove one project
+router.route('/:projectId')
+  .delete(projectController.removeProject);
 
 module.exports = router;

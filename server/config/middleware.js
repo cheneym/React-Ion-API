@@ -10,7 +10,7 @@ module.exports = (app, express) => {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(morgan('dev'));
-  app.use(express.static(path.join(__dirname, '/../../client')));
+  app.use(express.static(path.join(__dirname, '/../../dist')));
   app.use(session({ secret: 'password', resave: true, saveUninitialized: true }));
   app.use(passport.initialize());
   app.use(passport.session());

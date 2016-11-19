@@ -10,7 +10,9 @@ module.exports = (res, userId) => {
 
   archive.on('end', () => {
     console.log('Archive wrote %d bytes', archive.pointer());
-    helper.removeUserFolder(userId, () => {});
+    if (process.env.NODE_ENV === 'production') {
+      helper.removeUserFolder(userId, () => {});
+    }
   });
 
   res.attachment('project.zip');

@@ -121,7 +121,7 @@ describe('Project Model', () => {
     });
   });
 
-  describe('Project get: ', () => {
+  describe('Project find: ', () => {
     beforeEach((done) => {
       Project.create({ userId, permissionId }, newProject, (err) => {
         expect(err).to.not.exist;

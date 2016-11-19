@@ -14,16 +14,24 @@ module.exports = (tree, userId, cb) => {
   const mainJsPath = filePath.getMainJsPath(userId);
 
   const generateFile = (treeData, inital) => {
+    console.log(treeData);
     utils.consoleLog(`Generate Files for: ${treeData.name}`);
-    const tempTreeData = treeData;
+    let tempTreeData = treeData;
+
+    if (inital) {
+      tempTreeData.main = true;
+    } else {
+      tempTreeData.main = false;
+    }
+
     if (inital && tree.router === 0) {
       tempTreeData.initial = true;
     } else {
       tempTreeData.initial = false;
     }
 
-    // tempTreeData.convertedProps = helper.addProps(tempTreeData);
-    // tempTreeData.convertedCss = helper.createCss(tempTreeData);
+    tempTreeData = helper.componentBodySetup(tempTreeData);
+
     helper.cssSetup(helper.combineCss(tempTreeData), userId, () => {
       ejs.renderFile(componentHelper.getComponent(tempTreeData), tempTreeData, (err, html) => {
         const jsPath = inital ? mainJsPath : componentPath;
@@ -37,11 +45,12 @@ module.exports = (tree, userId, cb) => {
             tempTreeData.children.forEach((component) => {
               if (component.componentType !== 'Text') {
                 generateFile(component);
-              } else {
-                counter += 1;
               }
             });
-          } else if (counter === componentTotal) {
+          };
+          console.log("test");
+          if (counter === componentTotal) {
+            console.log("test2");
             cb();
           }
         });
