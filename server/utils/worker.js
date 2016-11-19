@@ -14,7 +14,6 @@ module.exports = (tree, userId, cb) => {
   const mainJsPath = filePath.getMainJsPath(userId);
 
   const generateFile = (treeData, inital) => {
-    console.log(treeData);
     utils.consoleLog(`Generate Files for: ${treeData.name}`);
     let tempTreeData = treeData;
 
@@ -47,10 +46,8 @@ module.exports = (tree, userId, cb) => {
                 generateFile(component);
               }
             });
-          };
-          console.log("test");
+          }
           if (counter === componentTotal) {
-            console.log("test2");
             cb();
           }
         });

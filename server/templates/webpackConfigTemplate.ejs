@@ -1,16 +1,15 @@
-//This file configures webpack to run on the production files
+// This file configures webpack to run on the production files
 const path = require('path');
-const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 <% if (router === 0) { %>const page = require('./page.json')<% } %>
 
 module.exports = {
   cache: true,
-  entry: <% if (router === 1) { %>'./src/js/App.jsx', <% } else { %>page,<% } %>
+  entry: <% if (router === 1) { %>'./src/js/App.jsx',<% } else { %>page,<% } %>
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '',
-    filename: <% if (router === 1) { %>'js/bundle.js', <% } else { %>'js/[name].js',<% } %>
+    filename: <% if (router === 1) { %>'js/bundle.js',<% } else { %>'js/[name].js',<% } %>
   },
   module: {
     loaders: [
@@ -24,12 +23,12 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader'),
       }
     ],
   },
   plugins: [
-    <% if (router === 0) { %>new ExtractTextPlugin("css/[name].css")<% } else { %>new ExtractTextPlugin('css/style.css')<% } %>
+    <% if (router === 0) { %>new ExtractTextPlugin("css/[name].css"),<% } else { %>new ExtractTextPlugin('css/style.css'),<% } %>
   ],
   resolve: {
     extensions: ['', '.js', '.jsx'],
