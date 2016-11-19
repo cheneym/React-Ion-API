@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 let config = process.env.NODE_ENV === 'production' ? require('./config-prod') : require('./config-test');
-config = process.env.NODE_ENV === 'test' ? config : require('./config-dev');
+config = process.env.NODE_ENV === 'development' ? require('./config-dev') : config;
 
 const connection = mysql.createConnection(config);
 
