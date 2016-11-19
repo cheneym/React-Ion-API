@@ -62,7 +62,7 @@ const createCss = (tree) => {
       'box-sizing': tree.props.boxSizing || 'border-box',
     };
   }
-
+  console.log(convertedCss);
   return convertedCss;
 };
 
