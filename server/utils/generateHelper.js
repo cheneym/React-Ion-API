@@ -34,23 +34,35 @@ module.exports.addProps = (tree) => {
 const createCss = (tree) => {
   const w = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
   const h = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
+  let convertedCss = {};
+  if (tree.componentType === 'Text') {
+    convertedCss = {
+      'font-size': tree.props.fontSize ? `${tree.props.fontSize}px` : '100px',
+      color: tree.props.color || 'rgb(2, 255, 22)',
+      width: 'calc(100% - 0px)',
+      padding: tree.props.padding || '10px',
+      'flex-wrap': tree.props.flexWrap || 'wrap',
+      'white-space': tree.props.whiteSpace || 'initial',
+      'text-align': tree.props.textAlign || 'left',
+    };
+  } else {
+    convertedCss = {
+      flex: tree.props.flex || 1,
+      'background-color': tree.props.backgroundColor || 'black',
+      display: tree.props.display || 'flex',
+      'align-items': tree.props.alignItems || 'center',
+      'justify-content': tree.props.justifyContent || 'center',
+      'flex-direction': tree.props.flexDirection || 'row',
+      height: h,
+      width: w,
+      padding: tree.props.padding || '20px',
+      margin: tree.props.margin !== undefined ? tree.props.margin : '20px',
+      position: tree.props.position || 'relative',
+      'flex-wrap': tree.props.flexWrap || 'wrap',
+      'box-sizing': tree.props.boxSizing || 'border-box',
+    };
+  }
 
-  const convertedCss = {
-    flex: tree.props.flex || 1,
-    'background-color': tree.props.backgroundColor || 'black',
-    display: tree.props.display || 'flex',
-    'align-items': tree.props.alignItems || 'center',
-    'justify-content': tree.props.justifyContent || 'center',
-    flexDirection: tree.props.flexDirection || 'row',
-    height: h,
-    width: w,
-    padding: tree.props.padding || '20px',
-    margin: tree.props.margin !== undefined ? tree.props.margin : '20px',
-    position: tree.props.position || 'relative',
-    'flex-wrap': tree.props.flexWrap || 'wrap',
-    'box-sizing': tree.props.boxSizing || 'border-box',
-  };
-  console.log(tree.props);
   return convertedCss;
 };
 
@@ -212,7 +224,7 @@ const componentBodySetup = (treeData) => {
     switch (child.componentType) {
       case component.TEXT_COMPONENT:
         // <div className="name-text">text</div>
-        child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">${child.content}</div>`;
+        child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">${child.props.content}</div>`;
         break;
       case component.BLOCK_COMPONENT:
         // <BLOCK />

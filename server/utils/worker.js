@@ -45,11 +45,12 @@ module.exports = (tree, userId, cb) => {
             tempTreeData.children.forEach((component) => {
               if (component.componentType !== 'Text') {
                 generateFile(component);
-              } else {
-                counter += 1;
               }
             });
-          } else if (counter === componentTotal) {
+          };
+          console.log("test");
+          if (counter === componentTotal) {
+            console.log("test2");
             cb();
           }
         });
