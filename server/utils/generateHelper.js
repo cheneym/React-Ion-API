@@ -61,8 +61,11 @@ const createCss = (tree) => {
       'flex-wrap': tree.props.flexWrap || 'wrap',
       'box-sizing': tree.props.boxSizing || 'border-box',
     };
+    if (tree.props.backgroundImage) {
+      convertedCss['background-image'] = `url(${tree.props.backgroundImage})`;
+    }
   }
-
+  console.log(convertedCss);
   return convertedCss;
 };
 
