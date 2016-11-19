@@ -1,8 +1,7 @@
 const gulp = require('gulp');
 const del = require('del');
-const sass = require('gulp-sass');
 
-gulp.task('copy', function() {
+gulp.task('copy', () => {
   const folders = ['src/**/*.html', 'src/lib/**/*', 'src/**/*.png'];
   // folders.map(function(folder) {
   //  return gulp.src(folder)
@@ -17,10 +16,6 @@ gulp.task('copy', function() {
       .pipe(gulp.dest('./dist/'));
 });
 
-gulp.task('clean', function() {
-  return del.sync([
-    './dist/**',
-  ]);
-});
+gulp.task('clean', () => del.sync(['./dist/**']));
 
 gulp.task('build', ['clean', 'copy']);
