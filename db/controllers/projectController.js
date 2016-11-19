@@ -24,7 +24,6 @@ module.exports.getProject = (req, res) => {
 };
 
 module.exports.createProject = (req, res) => {
-  console.log(req.user);
   const userId = req.user.id;
   const permissionId = req.body.permissionId;
   const projectSettings = { userId, permissionId };
