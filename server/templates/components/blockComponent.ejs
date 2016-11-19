@@ -1,22 +1,20 @@
-import React from 'react';
-<% if (initial) { %>import ReactDOM from 'react-dom'<% } %>
-<% for(var i=0; i<children.length; i++) { if (children[i].componentType !== 'Text') { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';
-<% } } %>
+import React from 'react';<% if (initial) { %>import ReactDOM from 'react-dom'
+<% } %>
+<% for(var i=0; i<children.length; i++) { if (children[i].componentType !== 'Text') { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';<% } } %>
+
 require('../css/<%= name %>.css');
 
 class <%- name %> extends React.Component {
   render() {
-
-  	return (
-  	<% if (main) { %>  <div style={{ flex: 1, display: 'flex' }}><% } %>
-  	    <div className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>" >
-  	  <% for(var i=0; i<children.length; i++) { %>    <%- children[i].codeString %>
-  	  <% } %>  </div>
-  	<% if (main) { %>  </div><% } %>
-  	)
+    return (
+<% if (main) { %>      <div style={{ flex: 1, display: 'flex' }}><% } %>
+        <div className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>" >
+<% for(var i=0; i<children.length; i++) { %>          <%- children[i].codeString %>
+<% } %>        </div>
+<% if (main) { %>      </div><% } %>
+    );
   }
-
-};
+}
 <% if (initial) { %>
 ReactDOM.render(<<%- name %> />, document.getElementById('App'));
 <% } else { %>

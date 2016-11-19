@@ -181,7 +181,7 @@ const htmlSetup = (tree, userId, callback) => {
   const pageLength = tree.routes.length;
   let counter = 0;
 
-  const generatePageJson = (callback) => {
+  const generatePageJson = (cb) => {
     page.forEach((single) => {
       pageObj.pageData.push({
         name: single.name,
@@ -193,7 +193,7 @@ const htmlSetup = (tree, userId, callback) => {
         if (err4) {
           console.log(err3);
         }
-        callback();
+        cb();
       });
     });
   };
@@ -235,7 +235,7 @@ const componentBodySetup = (treeData) => {
         child.codeString = `<${child.name} />`;
         break;
       case component.MENU_COMPONENT:
-        // 
+        // Test
         break;
       default:
         break;
@@ -345,14 +345,15 @@ const initialize = (tree, userId, callback) => {
 };
 
 module.exports = {
-  initialize: initialize,
-  removeUserFolder: removeUserFolder,
-  componentBodySetup: componentBodySetup,
-  createCss: createCss,
-  combineCss: combineCss,
-  cssSetup: cssSetup,
-  webpackSetup: webpackSetup,
-  serverSetup: serverSetup,
-  routerSetup: routerSetup,
-  htmlSetup: htmlSetup,
+  initialize,
+  removeUserFolder,
+  createFolder,
+  componentBodySetup,
+  createCss,
+  combineCss,
+  cssSetup,
+  webpackSetup,
+  serverSetup,
+  routerSetup,
+  htmlSetup,
 };

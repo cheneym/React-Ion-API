@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+
 const mocha = require('mocha');
 const expect = require('chai').expect;
 const worker = require('../../server/utils/worker.js');
@@ -7,13 +9,12 @@ const path = require('path');
 
 const describe = mocha.describe;
 const it = mocha.it;
-const beforeEach = mocha.beforeEach;
 const after = mocha.after;
 
 describe('Worker Utility', () => {
   const userId = 100000;
   const treeData = {
-    total: 5,
+    total: 4,
     router: 1,
     routes: [
       {
@@ -83,23 +84,6 @@ describe('Worker Utility', () => {
     ],
   };
 
-  beforeEach((done) => {
-    const folderPath = filePath.getUserPath(userId);
-    const userPath = filePath.getUserPath(userId);
-    const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
-
-    fs.rmrf(folderPath, (err) => {
-      if (err) {
-        console.log(err);
-      }
-      fs.copyRecursive(structurePath, userPath, (err2) => {
-        if (err2) {
-          throw err2;
-        }
-        done();
-      });
-    });
-  });
 
   after((done) => {
     const folderPath = filePath.getUserPath(userId);
@@ -119,5 +103,4 @@ describe('Worker Utility', () => {
       });
     });
   });
-
 });

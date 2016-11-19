@@ -1,6 +1,4 @@
-
 /* eslint-disable no-unused-expressions */
-// uses usernames 'gold', 'silver', 'copper';
 
 const mocha = require('mocha');
 const expect = require('chai').expect;
@@ -17,7 +15,7 @@ const after = mocha.after;
 describe('Generate Helper', () => {
   const userId = 100000;
   const treeData = {
-    total: 5,
+    total: 4,
     router: 1,
     routes: [
       {
@@ -86,35 +84,38 @@ describe('Generate Helper', () => {
     ],
   };
 
-  beforeEach((done) => {
-    const folderPath = filePath.getUserPath(userId);
-    const userPath = filePath.getUserPath(userId);
-    const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
-    fs.rmrf(folderPath, (err) => {
-      if (err) {
-        console.log(err);
-      }
-      fs.copyRecursive(structurePath, userPath, (err2) => {
-        if (err2) {
-          throw err2;
+  describe('React Router creation: ', () => {
+    beforeEach((done) => {
+      const folderPath = filePath.getUserPath(userId);
+      const userPath = filePath.getUserPath(userId);
+      const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
+
+      fs.rmrf(folderPath, (err) => {
+        if (err) {
+          console.log(err);
+        }
+        fs.copyRecursive(structurePath, userPath, (err2) => {
+          if (err2) {
+            throw err2;
+          }
+          Helper.createFolder(userId, () => {
+            done();
+          });
+        });
+      });
+    });
+
+    after((done) => {
+      const folderPath = filePath.getUserPath(userId);
+      fs.rmrf(folderPath, (err) => {
+        if (err) {
+          console.log(err);
         }
         done();
       });
     });
-  });
 
-  after((done) => {
-    const folderPath = filePath.getUserPath(userId);
-    fs.rmrf(folderPath, (err) => {
-      if (err) {
-        console.log(err);
-      }
-      done();
-    });
-  });
-
-  describe('React Router creation: ', () => {
     it('Should create server file', (done) => {
       Helper.serverSetup(treeData, userId, () => {
         expect(fs.existsSync(path.join(__dirname, `../../user/${userId}/server/server.js`))).to.be.true;
@@ -138,26 +139,28 @@ describe('Generate Helper', () => {
   });
 
 
-  beforeEach((done) => {
-    const folderPath = filePath.getUserPath(userId);
-    const userPath = filePath.getUserPath(userId);
-    const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
+  describe('No React Router creation: ', () => {
+    beforeEach((done) => {
+      const folderPath = filePath.getUserPath(userId);
+      const userPath = filePath.getUserPath(userId);
+      const structurePath = filePath.STRUCTURE_TEMPLATE_PATH;
 
-    treeData.router = 0;
-    fs.rmrf(folderPath, (err) => {
-      if (err) {
-        console.log(err);
-      }
-      fs.copyRecursive(structurePath, userPath, (err2) => {
-        if (err2) {
-          throw err2;
+      treeData.router = 0;
+      fs.rmrf(folderPath, (err) => {
+        if (err) {
+          console.log(err);
         }
-        done();
+        fs.copyRecursive(structurePath, userPath, (err2) => {
+          if (err2) {
+            throw err2;
+          }
+          Helper.createFolder(userId, () => {
+            done();
+          });
+        });
       });
     });
-  });
 
-  describe('No React Router creation: ', () => {
     it('Should create server file', (done) => {
       Helper.serverSetup(treeData, userId, () => {
         expect(fs.existsSync(path.join(__dirname, `../../user/${userId}/server/server.js`))).to.be.true;
@@ -227,7 +230,9 @@ describe('Generate Helper', () => {
       const cssObj = Helper.createCss(treeData.routes[0]);
       const expectedValue = {
         flex: 1,
+        'flex-direction': 'column',
         'background-color': '#4ccbf1 ',
+        'background-size': 'cover',
         display: 'flex',
         'align-items': 'center',
         'justify-content': 'center',
