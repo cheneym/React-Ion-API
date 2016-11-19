@@ -120,7 +120,7 @@ Response: 200 and Object with properties token, username and userId
 
 --------------------------------------------------------------
 
-### Authentication
+### User
 
 #### Get projects of a user
 Method: GET
