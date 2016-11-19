@@ -12,6 +12,7 @@ module.exports.addProps = (tree) => {
   const convertedProps = {
     flex: tree.props.flex || 1,
     backgroundColor: tree.props.backgroundColor || 'black',
+    flexDirection: tree.props.flexDirection || 'row',
     display: tree.props.display || 'flex',
     alignItems: tree.props.alignItems || 'center',
     justifyContent: tree.props.justifyContent || 'center',
@@ -40,15 +41,16 @@ const createCss = (tree) => {
     display: tree.props.display || 'flex',
     'align-items': tree.props.alignItems || 'center',
     'justify-content': tree.props.justifyContent || 'center',
+    flexDirection: tree.props.flexDirection || 'row',
     height: h,
     width: w,
     padding: tree.props.padding || '20px',
-    margin: tree.props.margin || '20px',
+    margin: tree.props.margin !== undefined ? tree.props.margin : '20px',
     position: tree.props.position || 'relative',
     'flex-wrap': tree.props.flexWrap || 'wrap',
     'box-sizing': tree.props.boxSizing || 'border-box',
   };
-
+  console.log(tree.props);
   return convertedCss;
 };
 
