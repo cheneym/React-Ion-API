@@ -29,8 +29,16 @@ module.exports = (tree, userId, cb) => {
       tempTreeData.initial = false;
     }
 
-    tempTreeData = helper.componentBodySetup(tempTreeData);
+    if (tempTreeData.aUrl) {
+      tempTreeData.tag = 'a';
+    } else {
+      tempTreeData.tag = 'div';
+    }
 
+    console.log(tempTreeData);
+    
+    tempTreeData = helper.componentBodySetup(tempTreeData);
+    console.log(tempTreeData);
     helper.cssSetup(helper.combineCss(tempTreeData), userId, () => {
       ejs.renderFile(componentHelper.getComponent(tempTreeData), tempTreeData, (err, html) => {
         const jsPath = inital ? mainJsPath : componentPath;
