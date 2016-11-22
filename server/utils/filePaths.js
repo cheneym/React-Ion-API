@@ -12,6 +12,7 @@ module.exports.STRUCTURE_TEMPLATE_PATH = path.join(__dirname, '../../server/stru
 
 // COMPONENT TEMPLATES
 module.exports.BLOCK_TEMPLATE_PATH = path.join(__dirname, '../templates/components/blockComponent.ejs');
+module.exports.IMAGE_TEMPLATE_PATH = path.join(__dirname, '../templates/components/imageComponent.ejs');
 
 // USER PATHS
 module.exports.getWebpackPath = userId => path.join(__dirname, `../../user/${userId}`);

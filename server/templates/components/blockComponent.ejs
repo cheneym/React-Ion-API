@@ -1,6 +1,6 @@
 import React from 'react';<% if (initial) { %>import ReactDOM from 'react-dom'
 <% } %>
-<% for(var i=0; i<children.length; i++) { if (children[i].componentType !== 'Text') { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';<% } } %>
+<% for(var i=0; i<children.length; i++) { if (children[i].componentType !== 'Text' && children[i].componentType !== 'List') { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';<% } } %>
 
 require('../css/<%= name %>.css');
 
