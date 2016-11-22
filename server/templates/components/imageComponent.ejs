@@ -1,0 +1,18 @@
+import React from 'react';<% if (initial) { %>import ReactDOM from 'react-dom'
+<% } %>
+<% for(var i=0; i<children.length; i++) { if (children[i].componentType !== 'Text') { %>import <%= children[i].name %> from '../components/<%= children[i].name %>';<% } } %>
+
+require('../css/<%= name %>.css');
+
+class <%- name %> extends React.Component {
+  render() {
+    return (
+      <img className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>" src="<%= props.url %>" />
+    );
+  }
+}
+<% if (initial) { %>
+ReactDOM.render(<<%- name %> />, document.getElementById('App'));
+<% } else { %>
+export default <%- name %>;
+<% } %>

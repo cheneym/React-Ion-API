@@ -34,8 +34,6 @@ module.exports = (tree, userId, cb) => {
     } else {
       tempTreeData.tag = 'div';
     }
-
-    console.log(tempTreeData);
     
     tempTreeData = helper.componentBodySetup(tempTreeData);
     console.log(tempTreeData);
@@ -50,7 +48,7 @@ module.exports = (tree, userId, cb) => {
           counter += 1;
           if (tempTreeData.children.length !== 0) {
             tempTreeData.children.forEach((component) => {
-              if (component.componentType !== 'Text') {
+              if (component.componentType !== 'Text' && component.componentType !== 'List') {
                 generateFile(component);
               }
             });
