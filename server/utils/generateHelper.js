@@ -35,7 +35,7 @@ const createCss = (tree) => {
   const w = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
   const h = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
   let convertedCss = {};
-  if (tree.componentType === 'Text') {
+  if (tree.componentType === 'Text' || tree.componentType === 'List') {
     convertedCss = {
       'font-size': tree.props.fontSize ? `${tree.props.fontSize}px` : '100px',
       color: tree.props.color || 'rgb(2, 255, 22)',
@@ -44,6 +44,22 @@ const createCss = (tree) => {
       'flex-wrap': tree.props.flexWrap || 'wrap',
       'white-space': tree.props.whiteSpace || 'initial',
       'text-align': tree.props.textAlign || 'left',
+    };
+  } else if (tree.componentType === 'Image') {
+    convertedCss = {
+      flex: tree.props.flex || 1,
+      display: tree.props.display || 'flex',
+      'align-items': tree.props.alignItems || 'center',
+      'justify-content': tree.props.justifyContent || 'center',
+      'flex-direction': tree.props.flexDirection || 'row',
+      height: h,
+      width: w,
+      padding: tree.props.padding || '20px',
+      margin: tree.props.margin !== undefined ? tree.props.margin : '20px',
+      position: tree.props.position || 'relative',
+      'flex-wrap': tree.props.flexWrap || 'wrap',
+      'box-sizing': tree.props.boxSizing || 'border-box',
+      'background-size': 'cover',
     };
   } else {
     convertedCss = {
@@ -89,7 +105,7 @@ const combineCss = (tree) => {
   pushToCss(tree);
 
   tree.children.forEach((child) => {
-    if (child.componentType === 'Text') {
+    if (component.inlineComponent) {
       pushToCss(child);
     }
   });
@@ -225,19 +241,26 @@ const htmlSetup = (tree, userId, callback) => {
 const componentBodySetup = (treeData) => {
   const tempTreeData = treeData;
   tempTreeData.children.forEach((child) => {
+    console.log(child.componentType);
     switch (child.componentType) {
       case component.TEXT_COMPONENT:
         // <div className="name-text">text</div>
         child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">${child.props.content}</div>`;
         break;
-      case component.BLOCK_COMPONENT:
-        // <BLOCK />
-        child.codeString = `<${child.name} />`;
-        break;
-      case component.MENU_COMPONENT:
-        // Test
+      case component.LIST_COMPONENT:
+        let listItem = '';
+        for (let i = 0; i < child.props.content.length; i++) {
+          listItem += `<li>${child.props.content[i]}</li>
+              `;
+        }
+        child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">
+            <ul style={{ display: 'inline-block' }}>
+              ${listItem}
+            </ul>
+          </div>`;
         break;
       default:
+        child.codeString = `<${child.name} />`;
         break;
     }
   });
