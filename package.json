@@ -6,9 +6,16 @@
   "scripts": {
     "start": "node server/server.js",
     "test": "mocha --bail tests/specs.js",
+    "jest": "jest --bail",
     "build": "gulp build && webpack -p --config webpack.config.js --progress --profile --colors",
     "dev": "./node_modules/.bin/webpack-dev-server -d --host 0.0.0.0 --config webpack.config.js --content-base src/ --colors --hot --progress --inline --watch",
     "postinstall": "npm run build"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|scss|less)$": "<rootDir>/__mocks__/styleMock.js"
+    }
   },
   "repository": {
     "type": "git",
@@ -65,12 +72,17 @@
     "webpack-dev-server": "^1.16.2"
   },
   "devDependencies": {
+    "babel-jest": "^17.0.2",
+    "enzyme": "^2.6.0",
     "eslint": "^3.9.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.6.0",
-    "nodemon": "^1.11.0"
+    "jest": "^17.0.3",
+    "nodemon": "^1.11.0",
+    "react-addons-test-utils": "^15.4.0",
+    "react-dom": "^15.4.0"
   },
   "engines": {
     "node": "6.9.1"
