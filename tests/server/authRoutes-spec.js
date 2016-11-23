@@ -57,7 +57,7 @@ describe('Auth Routes', () => {
 
       requestWithSession(options, (err2, res, body) => {
         expect(err2).to.not.exist;
-        expect(body).to.equal('Unauthorized');
+        expect(body.errorMessage).to.equal('Unauthorized');
         expect(res.statusCode).to.equal(401);
         done();
       });
