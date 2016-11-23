@@ -1,6 +1,7 @@
 const userRouter = require('./routers/userRouter');
 const projectRouter = require('./routers/projectRouter');
 const authRouter = require('./routers/authRouter');
+const path = require('path');
 
 module.exports = (app) => {
   app.all('/', (req, res, next) => {
@@ -8,8 +9,8 @@ module.exports = (app) => {
     res.header('Access-Control-Allow-Headers', 'X-Requested-With');
     next();
   });
-  app.get('/', (req, res) => {
-    res.sendFile('/index.html');
+  app.get('/editor', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../dist/editor.html'));
   });
   app.use('/api/user', userRouter);
   app.use('/api/project', projectRouter);
