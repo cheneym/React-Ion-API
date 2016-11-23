@@ -6,7 +6,7 @@ const request = require('request');
 const User = require('../../db/models/userModel.js');
 const Project = require('../../db/models/projectModel.js');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const host = `http://localhost:${port}`;
 
 const describe = mocha.describe;
