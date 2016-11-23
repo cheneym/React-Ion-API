@@ -44,6 +44,16 @@ module.exports.logout = (req, res) => {
         errorMessage: 'Failed to destroy session',
       });
     }
-    return res.status(304).json({ data: 'Logout Successful' });
+    return res.status(200).json({ data: 'Logout Successful' });
+  });
+};
+
+module.exports.authenticate = (req, res) => {
+  if (req.user) {
+    return res.status(200).json({ data: 'Authorized' });
+  }
+  return res.status(401).json({
+    errorCode: 401,
+    errorMessage: 'Unauthorized',
   });
 };

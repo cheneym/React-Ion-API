@@ -27,7 +27,7 @@ router.route('/signup')
 router.route('/logout')
   .get(authController.logout);
 
-// router.route('/authenticated')
-//   .get(authController.checkAuthentication);
+router.route('/authenticate')
+  .get(authController.authenticate);
 
 module.exports = router;

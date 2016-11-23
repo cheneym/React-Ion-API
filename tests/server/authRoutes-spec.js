@@ -42,8 +42,8 @@ describe('Auth Routes', () => {
     });
   });
 
+  const requestWithSession = request.defaults({ jar: true });
   describe('POST /login ', () => {
-    const requestWithSession = request.defaults({ jar: true });
     it('Rejects user with wrong password', (done) => {
       const options = {
         method: 'POST',
@@ -84,7 +84,6 @@ describe('Auth Routes', () => {
   });
 
   describe('POST /signup ', () => {
-    const requestWithSession = request.defaults({ jar: true });
     it('Signs new user up and creates session', (done) => {
       const options = {
         method: 'POST',
@@ -126,11 +125,63 @@ describe('Auth Routes', () => {
       const options = {
         method: 'GET',
         uri: `${host}/logout`,
+        json: {},
       };
-      request(options, (err2, res) => {
-        expect(err2).to.not.exist;
-        expect(res.statusCode).to.equal(304);
+      requestWithSession(options, (err, res, body) => {
+        expect(err).to.not.exist;
+        expect(res.statusCode).to.equal(200);
+        expect(body.data).to.exist;
         done();
+      });
+    });
+  });
+
+  describe('GET /authenticate ', () => {
+    it('returns 200 if user is authenticated', (done) => {
+      const options = {
+        method: 'POST',
+        followAllRedirects: true,
+        uri: `${host}/login`,
+        json: {
+          username: 'Cheney',
+          password: 'notsafe',
+        },
+      };
+      requestWithSession(options, (err) => {
+        expect(err).to.not.exist;
+        const options2 = {
+          method: 'GET',
+          uri: `${host}/authenticate`,
+          json: {},
+        };
+        requestWithSession(options2, (err2, res, body) => {
+          expect(err2).to.not.exist;
+          expect(res.statusCode).to.equal(200);
+          expect(body.data).to.exist;
+          done();
+        });
+      });
+    });
+
+    it('returns 401 if user is not authenticated', (done) => {
+      const options = {
+        method: 'GET',
+        uri: `${host}/logout`,
+        json: {},
+      };
+      requestWithSession(options, (err) => {
+        expect(err).to.not.exist;
+        const options2 = {
+          method: 'GET',
+          uri: `${host}/authenticate`,
+          json: {},
+        };
+        requestWithSession(options2, (err2, res2, body) => {
+          expect(err2).to.not.exist;
+          expect(res2.statusCode).to.equal(401);
+          expect(body.errorCode).to.equal(401);
+          done();
+        });
       });
     });
   });
