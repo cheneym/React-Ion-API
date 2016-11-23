@@ -1,8 +1,7 @@
 const passport = require('passport');
-const User = require('../../db/models/userModel');
 const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
-
+const User = require('../../db/models/userModel');
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
@@ -34,3 +33,5 @@ module.exports = () => {
 
   passport.use(new LocalStrategy(validateUserPass));
 };
+
+module.exports.passport = passport;
