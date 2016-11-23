@@ -1,4 +1,4 @@
-const passport = require('passport');
+const { passport } = require('./middleware');
 const User = require('../../db/models/userModel');
 const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
@@ -6,10 +6,12 @@ const LocalStrategy = require('passport-local').Strategy;
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
+    console.log('yo dawg');
     done(null, user.id);
   });
 
   passport.deserializeUser((id, done) => {
+    console.log('yo bro');
     User.findOne({ id }, (err, user) => {
       done(err, user);
     });
@@ -34,3 +36,5 @@ module.exports = () => {
 
   passport.use(new LocalStrategy(validateUserPass));
 };
+
+module.exports.passport = passport;

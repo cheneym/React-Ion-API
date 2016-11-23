@@ -13,7 +13,6 @@ module.exports.login = (req, res) => {
 
 module.exports.signup = (req, res) => {
   const username = req.body.username;
-
   User.findOne({ username }, (err, user) => {
     if (err) { return res.status(404).end('Unable to retrieve user'); }
     if (user) { return res.status(404).end('Username taken'); }
@@ -29,7 +28,7 @@ module.exports.signup = (req, res) => {
 
 module.exports.logout = (req, res) => {
   req.session.destroy((err) => {
-    if (err) { return res.status(404).send('Failed to destroy session'); }
-    return res.status(200).send('Logout Successful');
+    if (err) { return res.status(404).end('Failed to destroy session'); }
+    return res.status(304).end('Logout Successful');
   });
 };

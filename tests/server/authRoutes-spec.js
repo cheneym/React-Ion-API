@@ -127,10 +127,9 @@ describe('Auth Routes', () => {
         method: 'GET',
         uri: `${host}/logout`,
       };
-      request(options, (err2, res, body) => {
+      request(options, (err2, res) => {
         expect(err2).to.not.exist;
-        expect(res.statusCode).to.equal(200);
-        expect(body).to.equal('Logout Successful');
+        expect(res.statusCode).to.equal(304);
         done();
       });
     });
