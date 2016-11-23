@@ -4,11 +4,13 @@ const authRouter = require('./routers/authRouter');
 const path = require('path');
 
 module.exports = (app) => {
-  app.all('/', (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Credentials', true);
     next();
   });
+
   app.get('/editor', (req, res) => {
     res.sendFile(path.join(__dirname, '../../dist/editor.html'));
   });
