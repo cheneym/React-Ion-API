@@ -1,8 +1,7 @@
-const { passport } = require('./middleware');
-const User = require('../../db/models/userModel');
+const passport = require('passport');
 const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
-
+const User = require('../../db/models/userModel');
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
