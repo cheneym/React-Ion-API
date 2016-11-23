@@ -6,7 +6,7 @@ const request = require('request');
 const User = require('../../db/models/userModel.js');
 const Project = require('../../db/models/projectModel.js');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const host = `http://localhost:${port}`;
 
 const describe = mocha.describe;
@@ -94,7 +94,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body.length).to.be.above(2);
+        expect(body.data.length).to.be.above(2);
         done();
       });
     });
@@ -118,7 +118,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body.name).to.equal('gundam');
+        expect(body.data.name).to.equal('gundam');
         Project.find({ project_tree: '123' }, (err, projects) => {
           expect(err).to.not.exist;
           expect(projects.length).to.equal(4);
@@ -137,7 +137,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body.name).to.equal('monalisa');
+        expect(body.data.name).to.equal('monalisa');
         done();
       });
     });
@@ -149,7 +149,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body).to.not.exist;
+        expect(body.data).to.not.exist;
         done();
       });
     });
@@ -166,7 +166,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body[0].name).to.equal('heaven');
+        expect(body.data[0].name).to.equal('heaven');
         done();
       });
     });
@@ -178,7 +178,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body.length).to.equal(0);
+        expect(body.data.length).to.equal(0);
         done();
       });
     });
@@ -193,7 +193,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body[0].name).to.equal('heaven');
+        expect(body.data[0].name).to.equal('heaven');
         const options2 = {
           method: 'GET',
           uri: `${host}/api/project/${projectId}/`,
@@ -201,7 +201,7 @@ describe('Project Routes', () => {
         };
         requestWithSession(options2, (error2, res2, body2) => {
           expect(error2).to.not.exist;
-          expect(body2).to.not.exist;
+          expect(body2.data).to.not.exist;
           done();
         });
       });
@@ -214,7 +214,7 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body.length).to.equal(0);
+        expect(body.data.length).to.equal(0);
         done();
       });
     });

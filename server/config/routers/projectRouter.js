@@ -6,7 +6,7 @@ const router = new express.Router();
 
 // Get all projects
 router.route('/')
-  .get(projectController.getProjects);
+  .get(authCheck, projectController.getProjects);
 
 // Generate files for project
 router.route('/generate')
@@ -14,7 +14,7 @@ router.route('/generate')
 
 // Get one project
 router.route('/:projectId')
-  .get(projectController.getProject);
+  .get(authCheck, projectController.getProject);
 
 // Create one project
 router.route('/')
@@ -26,6 +26,6 @@ router.route('/:projectId')
 
 // Remove one project
 router.route('/:projectId')
-  .delete(projectController.removeProject);
+  .delete(authCheck, projectController.removeProject);
 
 module.exports = router;

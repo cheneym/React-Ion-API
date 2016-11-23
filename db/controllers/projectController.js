@@ -5,9 +5,12 @@ const Zip = require('../../server/utils/zip');
 module.exports.getProjects = (req, res) => {
   Project.find({}, (err, projects) => {
     if (err) {
-      res.status(404).end('Unable to retrieve projects');
+      res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to retrieve projects',
+      });
     } else {
-      res.json(projects);
+      res.json({ data: projects });
     }
   });
 };
@@ -16,9 +19,12 @@ module.exports.getProject = (req, res) => {
   const projectId = +req.params.projectId;
   Project.findById(projectId, (err, project) => {
     if (err) {
-      res.status(404).end('Unable to retrieve project');
+      res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to retrieve projects',
+      });
     } else {
-      res.json(project);
+      res.json({ data: project });
     }
   });
 };
@@ -30,9 +36,12 @@ module.exports.createProject = (req, res) => {
   const projectProps = req.body.projectProps;
   Project.create(projectSettings, projectProps, (err, project) => {
     if (err) {
-      res.status(404).end('Unable to create project');
+      res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to create project',
+      });
     } else {
-      res.json(project);
+      res.json({ data: project });
     }
   });
 };
@@ -42,9 +51,12 @@ module.exports.updateProject = (req, res) => {
   const projectProps = req.body;
   Project.update({ id: projectId }, projectProps, (err, projects) => {
     if (err) {
-      res.status(404).end('Unable to update project');
+      res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to update project',
+      });
     } else {
-      res.json(projects);
+      res.json({ data: projects });
     }
   });
 };
@@ -53,9 +65,12 @@ module.exports.removeProject = (req, res) => {
   const projectId = +req.params.projectId;
   Project.remove({ id: projectId }, (err, projects) => {
     if (err) {
-      res.status(404).end('Unable to remove project');
+      res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to remove project',
+      });
     } else {
-      res.json(projects);
+      res.json({ data: projects });
     }
   });
 };

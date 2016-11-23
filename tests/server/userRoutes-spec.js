@@ -6,7 +6,7 @@ const request = require('request');
 const User = require('../../db/models/userModel.js');
 const Project = require('../../db/models/projectModel.js');
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const host = `http://localhost:${port}`;
 
 const describe = mocha.describe;
@@ -113,7 +113,7 @@ describe('User Routes', () => {
       requestWithSession(options, (err, res, body) => {
         expect(err).to.not.exist;
         expect(res.statusCode).to.equal(401);
-        expect(body).to.equal('Unauthorized');
+        expect(body.errorMessage).to.equal('Unauthorized');
         done();
       });
     });
@@ -138,7 +138,7 @@ describe('User Routes', () => {
         };
         requestWithSession(options2, (err3, res2, body2) => {
           expect(err3).to.not.exist;
-          expect(body2.length).to.equal(3);
+          expect(body2.data.length).to.equal(3);
           done();
         });
       });
