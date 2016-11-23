@@ -1,34 +1,49 @@
 const User = require('../models/userModel');
 
-module.exports.login = (req, res) => {
-  if (req.user) {
-    const user = req.user;
-    return res.json({
-      id: user.id,
-      username: user.username,
-    });
-  }
-  return res.status(404).end('Failed to authenticate user');
-};
+module.exports.login = (req, res) =>
+  res.json({ data: {
+    id: req.user.id,
+    username: req.user.username,
+  } });
 
 module.exports.signup = (req, res) => {
   const username = req.body.username;
   User.findOne({ username }, (err, user) => {
-    if (err) { return res.status(404).end('Unable to retrieve user'); }
-    if (user) { return res.status(404).end('Username taken'); }
+    if (err) {
+      return res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to retrieve user',
+      });
+    }
+    if (user) {
+      return res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Username taken',
+      });
+    }
     return User.create(req.body, (err2, newUser) => {
-      if (err2) { res.status(404).end('Unable to create user'); }
-      return res.json({
+      if (err2) {
+        return res.status(400).json({
+          errorCode: 400,
+          errorMessage: 'Unable to create user',
+        });
+      }
+      return res.json({ data: {
         id: newUser.id,
         username: newUser.username,
-      });
+      } });
     });
   });
 };
 
 module.exports.logout = (req, res) => {
   req.session.destroy((err) => {
-    if (err) { return res.status(404).end('Failed to destroy session'); }
-    return res.status(304).end('Logout Successful');
+    if (err) {
+      return res.status(500).json({
+        errorCode: 500,
+        errorMessage: 'Failed to destroy session',
+      });
+    }
+    return res.status(304).json({ data: 'Logout Successful' });
   });
 };

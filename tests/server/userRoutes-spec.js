@@ -113,7 +113,7 @@ describe('User Routes', () => {
       requestWithSession(options, (err, res, body) => {
         expect(err).to.not.exist;
         expect(res.statusCode).to.equal(401);
-        expect(body).to.equal('Unauthorized');
+        expect(body.errorMessage).to.equal('Unauthorized');
         done();
       });
     });
@@ -138,7 +138,7 @@ describe('User Routes', () => {
         };
         requestWithSession(options2, (err3, res2, body2) => {
           expect(err3).to.not.exist;
-          expect(body2.length).to.equal(3);
+          expect(body2.data.length).to.equal(3);
           done();
         });
       });

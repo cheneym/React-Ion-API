@@ -77,7 +77,7 @@ describe('Auth Routes', () => {
       requestWithSession(options, (err2, res, body) => {
         expect(err2).to.not.exist;
         expect(res.statusCode).to.equal(200);
-        expect(body.username).to.equal('Cheney');
+        expect(body.data.username).to.equal('Cheney');
         done();
       });
     });
@@ -98,12 +98,12 @@ describe('Auth Routes', () => {
       requestWithSession(options, (err2, res, body) => {
         expect(err2).to.not.exist;
         expect(res.statusCode).to.equal(200);
-        expect(body.username).to.equal('Cheney1');
+        expect(body.data.username).to.equal('Cheney1');
         done();
       });
     });
 
-    it('Returns 404 when user already exists', (done) => {
+    it('Returns 400 when user already exists', (done) => {
       const options = {
         method: 'POST',
         followAllRedirects: true,
@@ -115,7 +115,7 @@ describe('Auth Routes', () => {
       };
       requestWithSession(options, (err2, res) => {
         expect(err2).to.not.exist;
-        expect(res.statusCode).to.equal(404);
+        expect(res.statusCode).to.equal(400);
         done();
       });
     });
