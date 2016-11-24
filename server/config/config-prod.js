@@ -8,6 +8,6 @@ module.exports = {
   password: process.env.MYSQLPASSWORD,
   database: process.env.MYSQLDATABASE,
   ssl: {
-    ca: fs.readFileSync(path.join(__dirname, '/mysql-ca.crt')),
+    ca: fs.readFileSync(path.join(__dirname, '/amazon-rds-ca-cert.pem')),
   },
 };
