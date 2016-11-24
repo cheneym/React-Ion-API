@@ -28,10 +28,18 @@ module.exports.signup = (req, res) => {
           errorMessage: 'Unable to create user',
         });
       }
-      return res.json({ data: {
-        id: newUser.id,
-        username: newUser.username,
-      } });
+      return req.logIn(newUser, (err3) => {
+        if (err3) {
+          return res.status(400).json({
+            errorCode: 400,
+            errorMessage: 'Unable to log in user',
+          });
+        }
+        return res.json({ data: {
+          id: newUser.id,
+          username: newUser.username,
+        } });
+      });
     });
   });
 };
