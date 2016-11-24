@@ -10,8 +10,7 @@ module.exports = (app) => {
     res.header('Access-Control-Allow-Credentials', true);
     next();
   });
-
-  app.get('/editor', (req, res) => {
+  app.get('/editor/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../../dist/editor.html'));
   });
   app.use('/api/user', userRouter);
