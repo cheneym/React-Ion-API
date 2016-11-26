@@ -56,8 +56,8 @@ const Model = class Model {
     const queryString = `insert into ${this.model}${propString}
                          value ${valString}`;
     db.query(queryString, vals, (err, status) => {
-      if (err) { cb(err, null); }
-      this.findById(status.insertId, cb);
+      if (err) { return cb(err, null); }
+      return this.findById(status.insertId, cb);
     });
   }
 
