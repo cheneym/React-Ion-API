@@ -1,9 +1,5 @@
 node_modules/
-bower_components/
 *.log
 .DS_Store
-build/
-dist/
 user/
 server/config/config-dev.js
-src/css/*

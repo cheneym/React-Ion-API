@@ -1,52 +1,129 @@
-# Project Name
+# React-ion API
 
-> Pithy project description
+## API endpoints
+--------------------------------------------------------------
 
-## Team
+### Authentication
 
-  - __Product Owner__: Matthew Vincent
-  - __Scrum Master__: Andrew Lee
-  - __Development Team Members__: Cheney Mao, Robin Kuehn, Andrew Lee, Matthew Vincent
-
-## Table of Contents
-
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
-
-## Usage
-
-> Some usage instructions
-
-## Requirements
-
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
-
-## Development
-
-### Installing Dependencies
-
-From within the root directory:
-
-```sh
-sudo npm install -g bower
-npm install
-bower install
-```
-
-### Roadmap
-
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+userObject = {
+  id: (integer),
+  username: (string),
+  password: (string),
+  salt: (string)
+}
 
 
-## Contributing
+#### Create a User / Sign Up
+Method: POST
+Path: /signup
+Input:
+{
+  username: (string),
+  password: (string),
+}
+Response:
+{
+  id: (integer),
+  username: (string),
+}
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
+
+#### Login
+Method: POST
+Path: /login
+Input:
+{
+  username: (string),
+  password: (string),
+}
+Response:
+{
+  id: (integer),
+  username: (string),
+}
+
+
+#### Logout
+Method: GET
+Path: /logout
+Input: None
+Response: 'Logout Successful'
+
+
+--------------------------------------------------------------
+
+### Projects
+
+projectObject = {
+  id: (integer),
+  name: (string),
+  project_tree: (string)
+}
+
+
+#### Get All Projects
+Method: GET
+Path: /api/project/
+Input: None
+Response: Array of projectObjects
+
+
+#### Get One Project
+Method: GET
+Path: /api/project/<projectId>
+Input: projectId via route parameter
+Response: projectObject
+
+
+#### Create Project
+Method: POST
+Path: /api/project/
+Input:
+{
+  projectSettings: {
+    userId: (integer),
+    permissionId: (integer),
+  }
+  projectProps: {
+    name: (string),
+    project_tree: (string)
+  }
+}
+Response: projectObject (newly created one)
+
+
+#### Update Project
+Method: PUT
+Path: /api/project/<projectId>
+Input: projectId via route parameter
+projectProps {
+  id: (integer) //OPTIONAL <--- please do not to put this,
+  name: (string), //OPTIONAL
+  project_tree: (string), //OPTIONAL
+}
+Response: projectObject (newly updated one)
+
+
+#### Delete Project
+Method: DELETE
+Path: /api/project/<projectId>
+Input: projectId via route parameter
+Response: projectObject (removed one)
+
+
+#### Generate Project
+Method: POST
+Path: /api/project/generate
+Input: JSON with property username and password
+Response: 200 and Object with properties token, username and userId
+
+
+--------------------------------------------------------------
+
+### User
+
+#### Get projects of a user
+Method: GET
+Path: /api/user/projects
+Input: None but need to be authenticated 
+Response: Array of projectObjects
