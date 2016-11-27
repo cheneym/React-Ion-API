@@ -5,42 +5,46 @@
 
 ### Authentication  
   
-userObject = {  
-  id: (integer),  
-  username: (string),  
-  password: (string),  
-  salt: (string)  
-}  
+    userObject = {
+      id: (integer),
+      username: (string),
+      password: (string),
+      salt: (string)
+    }
   
   
 #### Create a User / Sign Up  
 Method: POST  
 Path: /signup  
 Input:  
-{  
-  username: (string),  
-  password: (string),  
-}  
+
+    {
+      username: (string),
+      password: (string),
+    }
 Response:  
-{  
-  id: (integer),  
-  username: (string),  
-}  
+
+    {
+      id: (integer),
+      username: (string),
+    }
   
   
 #### Login  
 Method: POST  
 Path: /login  
 Input:  
-{  
-  username: (string),  
-  password: (string),  
-}  
+
+    {
+      username: (string),
+      password: (string),
+    }
 Response:  
-{  
-  id: (integer),  
-  username: (string),  
-}  
+
+    {
+      id: (integer),
+      username: (string),
+    }
   
   
 #### Logout  
@@ -54,11 +58,11 @@ Response: 'Logout Successful'
   
 ### Projects  
   
-projectObject = {  
-  id: (integer),  
-  name: (string),  
-  project_tree: (string)  
-}  
+    projectObject = {
+      id: (integer),
+      name: (string),
+      project_tree: (string)
+    }
   
   
 #### Get All Projects  
@@ -79,16 +83,17 @@ Response: projectObject
 Method: POST  
 Path: /api/project/  
 Input:  
-{  
-  projectSettings: {  
-    userId: (integer),  
-    permissionId: (integer),  
-  }  
-  projectProps: {  
-    name: (string),  
-    project_tree: (string)  
-  }  
-}  
+
+    {
+      projectSettings: {
+        userId: (integer),
+        permissionId: (integer),
+      }
+      projectProps: {
+        name: (string),
+        project_tree: (string)
+      }
+    }
 Response: projectObject (newly created one)  
   
   
@@ -96,11 +101,12 @@ Response: projectObject (newly created one)
 Method: PUT  
 Path: /api/project/<projectId>  
 Input: projectId via route parameter  
-projectProps {  
-  id: (integer) //OPTIONAL <--- please do not to put this,  
-  name: (string), //OPTIONAL  
-  project_tree: (string), //OPTIONAL  
-}  
+
+    projectProps {
+      id: (integer) //OPTIONAL <--- please do not to put this,
+      name: (string), //OPTIONAL
+      project_tree: (string), //OPTIONAL
+    }
 Response: projectObject (newly updated one)  
   
   
