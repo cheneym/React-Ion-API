@@ -4,8 +4,8 @@ const Model = require('./model');
 class Project extends Model {
   findUserProjects(userId, cb) {
     const queryString = `select p.id, p.name, p.project_tree from users u
-                         left outer join user_project up on (u.id=up.user_id)
-                         left outer join ${this.model} p on (up.project_id=p.id)
+                         inner join user_project up on (u.id=up.user_id)
+                         inner join ${this.model} p on (up.project_id=p.id)
                          where u.id=?`;
     db.query(queryString, userId, (err, results) => {
       if (err) {
