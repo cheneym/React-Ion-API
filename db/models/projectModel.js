@@ -38,6 +38,23 @@ class Project extends Model {
       }
     });
   }
+
+  findOwner(projectId, cb) {
+    console.log('projectId', projectId);
+    const queryString = `select u.username from users u
+                         inner join user_project up on (u.id=up.user_id)
+                         inner join ${this.model} p on (up.project_id=p.id)
+                         where p.id=?`;
+    db.query(queryString, projectId, (err, results) => {
+      if (err) {
+        cb(err, null);
+      } else if (results[0]) {
+        cb(null, results[0].username);
+      } else {
+        cb(null, null);
+      }
+    });
+  }
 }
 
 module.exports = new Project('projects');
