@@ -7,4 +7,7 @@ const router = new express.Router();
 router.route('/projects')
   .get(authCheck, userController.getProjects);
 
+router.route('/info')
+  .get(authCheck, userController.getInfo);
+
 module.exports = router;
