@@ -78,8 +78,21 @@ module.exports.removeProject = (req, res) => {
 module.exports.generateProject = (req, res) => {
   const tree = JSON.parse(req.query.tree);
   const userId = 1;
-  console.log(tree);
   Worker(tree, userId, () => {
     Zip(res, userId);
+  });
+};
+
+module.exports.findOwner = (req, res) => {
+  const projectId = +req.params.projectId;
+  Project.findOwner(projectId, (err, username) => {
+    if (err) {
+      res.status(400).json({
+        errorCode: 400,
+        errorMessage: 'Unable to find project owner',
+      });
+    } else {
+      res.json({ data: username });
+    }
   });
 };

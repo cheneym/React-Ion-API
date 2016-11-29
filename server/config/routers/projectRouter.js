@@ -28,4 +28,8 @@ router.route('/:projectId')
 router.route('/:projectId')
   .delete(authCheck, projectController.removeProject);
 
+// Get owner of project
+router.route('/:projectId/owner')
+  .get(authCheck, projectController.findOwner);
+
 module.exports = router;

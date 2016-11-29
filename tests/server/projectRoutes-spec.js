@@ -184,6 +184,21 @@ describe('Project Routes', () => {
     });
   });
 
+  describe('GET /api/project/:projectId/owner ', () => {
+    it('gets owner of existing project', (done) => {
+      const options = {
+        method: 'GET',
+        uri: `${host}/api/project/${projectId}/owner`,
+        json: {},
+      };
+      requestWithSession(options, (error, res, body) => {
+        expect(error).to.not.exist;
+        expect(body.data).to.equal('Cheney');
+        done();
+      });
+    });
+  });
+
   describe('DELETE /api/project/:projectId ', () => {
     it('Removes one project from database', (done) => {
       const options = {

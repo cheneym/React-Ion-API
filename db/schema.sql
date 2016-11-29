@@ -14,7 +14,7 @@ CREATE TABLE users (
 CREATE TABLE projects (
   id           int             NOT NULL AUTO_INCREMENT,
   name         varchar(255)    NOT NULL,
-  project_tree varchar(1000)   NOT NULL,
+  project_tree mediumtext   NOT NULL,
   PRIMARY KEY (ID)
 );
 

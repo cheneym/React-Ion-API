@@ -200,4 +200,28 @@ describe('Project Model', () => {
       });
     });
   });
+
+  describe('Project findOwner: ', () => {
+    let projectId;
+    beforeEach((done) => {
+      Project.create({ userId, permissionId }, newProject, (err) => {
+        expect(err).to.not.exist;
+        Project.create({ userId, permissionId }, newProject3, (err2) => {
+          expect(err2).to.not.exist;
+          Project.create({ userId: userId2, permissionId }, newProject4, (err3, project) => {
+            expect(err3).to.not.exist;
+            projectId = project.id;
+            done();
+          });
+        });
+      });
+    });
+    it('finds the owner of project', (done) => {
+      Project.findOwner(projectId, (err, username) => {
+        expect(err).to.not.exist;
+        expect(username).to.equal('alwaysused');
+        done();
+      });
+    });
+  });
 });
