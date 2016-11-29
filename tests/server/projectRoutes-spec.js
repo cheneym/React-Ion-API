@@ -193,7 +193,8 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        expect(body.data).to.equal('Cheney');
+        console.log('body', body);
+        expect(body.data.username).to.equal('Cheney');
         done();
       });
     });

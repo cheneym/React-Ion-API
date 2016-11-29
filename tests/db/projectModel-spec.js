@@ -217,9 +217,9 @@ describe('Project Model', () => {
       });
     });
     it('finds the owner of project', (done) => {
-      Project.findOwner(projectId, (err, username) => {
+      Project.findOwner(projectId, (err, userInfo) => {
         expect(err).to.not.exist;
-        expect(username).to.equal('alwaysused');
+        expect(userInfo.username).to.equal('alwaysused');
         done();
       });
     });

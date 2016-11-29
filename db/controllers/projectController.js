@@ -85,14 +85,14 @@ module.exports.generateProject = (req, res) => {
 
 module.exports.findOwner = (req, res) => {
   const projectId = +req.params.projectId;
-  Project.findOwner(projectId, (err, username) => {
+  Project.findOwner(projectId, (err, ownerInfo) => {
     if (err) {
       res.status(400).json({
         errorCode: 400,
         errorMessage: 'Unable to find project owner',
       });
     } else {
-      res.json({ data: username });
+      res.json({ data: ownerInfo });
     }
   });
 };
