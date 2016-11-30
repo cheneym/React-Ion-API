@@ -1,12 +1,14 @@
 const express = require('express');
-const authController = require('../../../db/controllers/authController');
+const expressJwt = require('express-jwt');
 const passport = require('passport');
+const authController = require('../../../db/controllers/authController');
 
+const authenticate = expressJwt({ secret: 'React-Ion-Secret' });
 const router = new express.Router();
 
 router.route('/login')
   .post((req, res, next) => {
-    passport.authenticate('local', (err, user) => {
+    passport.authenticate('local', { session: false }, (err, user) => {
       if (err) { return next(err); }
       if (!user) {
         return res.status(401).json({
@@ -14,20 +16,18 @@ router.route('/login')
           errorMessage: 'Unauthorized',
         });
       }
-      return req.logIn(user, (err2) => {
-        if (err2) { return next(err2); }
-        return next();
-      });
+      req.user = user;
+      return next();
     })(req, res, next);
   }, authController.login);
 
 router.route('/signup')
   .post(authController.signup);
 
-router.route('/logout')
-  .get(authController.logout);
+// router.route('/logout')
+//   .get(authController.logout);
 
 router.route('/authenticate')
-  .get(authController.authenticate);
+  .get(authenticate, authController.authenticate);
 
 module.exports = router;

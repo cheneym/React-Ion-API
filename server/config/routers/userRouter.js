@@ -1,13 +1,14 @@
 const express = require('express');
+const expressJwt = require('express-jwt');
 const userController = require('../../../db/controllers/userController');
-const authCheck = require('../../utils/authCheck').authCheck;
 
+const authenticate = expressJwt({ secret: 'React-Ion-Secret' });
 const router = new express.Router();
 
 router.route('/projects')
-  .get(authCheck, userController.getProjects);
+  .get(authenticate, userController.getProjects);
 
 router.route('/info')
-  .get(authCheck, userController.getInfo);
+  .get(authenticate, userController.getInfo);
 
 module.exports = router;

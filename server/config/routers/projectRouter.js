@@ -1,12 +1,14 @@
 const express = require('express');
+const expressJwt = require('express-jwt');
 const projectController = require('../../../db/controllers/projectController');
-const authCheck = require('../../utils/authCheck').authCheck;
+
+const authenticate = expressJwt({ secret: 'React-Ion-Secret' });
 
 const router = new express.Router();
 
 // Get all projects
 router.route('/')
-  .get(authCheck, projectController.getProjects);
+  .get(authenticate, projectController.getProjects);
 
 // Generate files for project
 router.route('/generate')
@@ -14,22 +16,22 @@ router.route('/generate')
 
 // Get one project
 router.route('/:projectId')
-  .get(authCheck, projectController.getProject);
+  .get(authenticate, projectController.getProject);
 
 // Create one project
 router.route('/')
-  .post(authCheck, projectController.createProject);
+  .post(authenticate, projectController.createProject);
 
 // Update one project
 router.route('/:projectId')
-  .put(authCheck, projectController.updateProject);
+  .put(authenticate, projectController.updateProject);
 
 // Remove one project
 router.route('/:projectId')
-  .delete(authCheck, projectController.removeProject);
+  .delete(authenticate, projectController.removeProject);
 
 // Get owner of project
 router.route('/:projectId/owner')
-  .get(authCheck, projectController.findOwner);
+  .get(authenticate, projectController.findOwner);
 
 module.exports = router;

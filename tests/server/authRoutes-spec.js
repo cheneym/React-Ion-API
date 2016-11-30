@@ -18,20 +18,20 @@ describe('Auth Routes', () => {
   before((done) => {
     User.remove({}, (err) => {
       expect(err).to.not.exist;
-      const options = {
-        method: 'GET',
-        uri: `${host}/api/project/logout`,
-      };
-      request(options, (err2) => {
-        if (err2) { console.error(err2); }
-        User.create({
-          username: 'Cheney',
-          password: 'notsafe',
-        }, (err3) => {
-          expect(err3).to.not.exist;
-          done();
-        });
+      User.create({
+        username: 'Cheney',
+        password: 'notsafe',
+      }, (err3) => {
+        expect(err3).to.not.exist;
+        done();
       });
+      // const options = {
+      //   method: 'GET',
+      //   uri: `${host}/api/project/logout`,
+      // };
+      // request(options, (err2) => {
+      //   if (err2) { console.error(err2); }
+      // });
     });
   });
 
@@ -120,21 +120,21 @@ describe('Auth Routes', () => {
     });
   });
 
-  describe('GET /logout ', () => {
-    it('Signs user out and destroys session', (done) => {
-      const options = {
-        method: 'GET',
-        uri: `${host}/logout`,
-        json: {},
-      };
-      requestWithSession(options, (err, res, body) => {
-        expect(err).to.not.exist;
-        expect(res.statusCode).to.equal(200);
-        expect(body.data).to.exist;
-        done();
-      });
-    });
-  });
+  // describe('GET /logout ', () => {
+  //   it('Signs user out and destroys session', (done) => {
+  //     const options = {
+  //       method: 'GET',
+  //       uri: `${host}/logout`,
+  //       json: {},
+  //     };
+  //     requestWithSession(options, (err, res, body) => {
+  //       expect(err).to.not.exist;
+  //       expect(res.statusCode).to.equal(200);
+  //       expect(body.data).to.exist;
+  //       done();
+  //     });
+  //   });
+  // });
 
   describe('GET /authenticate ', () => {
     it('returns 200 if user is authenticated', (done) => {
@@ -147,17 +147,21 @@ describe('Auth Routes', () => {
           password: 'notsafe',
         },
       };
-      requestWithSession(options, (err) => {
+      requestWithSession(options, (err, res, body) => {
+        const token = body.data.token;
         expect(err).to.not.exist;
         const options2 = {
           method: 'GET',
           uri: `${host}/authenticate`,
           json: {},
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
-        requestWithSession(options2, (err2, res, body) => {
+        requestWithSession(options2, (err2, res2, body2) => {
           expect(err2).to.not.exist;
-          expect(res.statusCode).to.equal(200);
-          expect(body.data).to.exist;
+          expect(res2.statusCode).to.equal(200);
+          expect(body2.data).to.exist;
           done();
         });
       });
@@ -166,22 +170,15 @@ describe('Auth Routes', () => {
     it('returns 401 if user is not authenticated', (done) => {
       const options = {
         method: 'GET',
-        uri: `${host}/logout`,
+        uri: `${host}/authenticate`,
         json: {},
       };
-      requestWithSession(options, (err) => {
+      requestWithSession(options, (err, res, body) => {
         expect(err).to.not.exist;
-        const options2 = {
-          method: 'GET',
-          uri: `${host}/authenticate`,
-          json: {},
-        };
-        requestWithSession(options2, (err2, res2, body) => {
-          expect(err2).to.not.exist;
-          expect(res2.statusCode).to.equal(401);
-          expect(body.errorCode).to.equal(401);
-          done();
-        });
+        console.log('resstatuscode', res.statusCode);
+        expect(res.statusCode).to.equal(401);
+        expect(body.errorCode).to.equal(401);
+        done();
       });
     });
   });
