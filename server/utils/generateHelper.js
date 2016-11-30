@@ -263,7 +263,17 @@ const componentBodySetup = (treeData) => {
           </div>`;
         break;
       case component.DROPDOWN_COMPONENT:
+        let dropdownItem = '';
+        for (let i = 0; i < child.props.content.length; i++) {
+          dropdownItem += `<option>${child.props.content[i]}</option>
+              `;
+        }
 
+        child.codeString = `<div className="${child.name.toLowerCase()}-${child.componentType.toLowerCase()}">
+            <select style={{ display: 'inline-block' }}>
+              ${dropdownItem}
+            </select>
+          </div>`;
         break;
       default:
         child.codeString = `<${child.name} />`;
