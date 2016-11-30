@@ -1,0 +1,37 @@
+import React from 'react';
+
+require('../css/<%= name %>.css');
+
+class <%- name %> extends React.Component {
+	
+	constructor(props) {
+    super(props);
+    this.state = {
+      selectedOption: "<%= props.content[0] %>",
+    };
+  }
+
+	handleOptionChange(changeEvent) {
+	  this.setState({
+	    selectedOption: changeEvent.target.value
+	  });
+	}
+
+  render() {
+    return (
+      <form className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>">
+        <% for(var i=0; i<props.content.length; i++) { %><div style={{ display: 'block' }}>
+          <label style={{ display: 'inline-block' }}>
+            <input style={{ display: 'inline-block' }} type="radio" value="<%= props.content[i] %>" 
+              checked={this.state.selectedOption === '<%= props.content[i] %>'}
+              onChange={this.handleOptionChange.bind(this)} />
+            <%= props.content[i] %>
+          </label>
+        </div>
+        <% } %>
+      </form>
+    );
+  }
+}
+
+export default <%- name %>;
