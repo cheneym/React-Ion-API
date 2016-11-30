@@ -35,7 +35,10 @@ const createCss = (tree) => {
   const w = tree.props.width ? (tree.props.width[0] + tree.props.width[1]) : '100%';
   const h = tree.props.height ? (tree.props.height[0] + tree.props.height[1]) : '20px';
   let convertedCss = {};
-  if (tree.componentType === 'Text' || tree.componentType === 'List') {
+  if (tree.componentType === 'Text' ||
+      tree.componentType === 'List' ||
+      tree.componentType === 'Radio' ||
+      tree.componentType === 'DropDown') {
     convertedCss = {
       'font-size': tree.props.fontSize ? `${tree.props.fontSize}px` : '100px',
       color: tree.props.color || 'rgb(2, 255, 22)',
@@ -105,7 +108,7 @@ const combineCss = (tree) => {
   pushToCss(tree);
 
   tree.children.forEach((child) => {
-    if (component.inlineComponent) {
+    if (component.inlineComponent(child.componentType)) {
       pushToCss(child);
     }
   });
@@ -258,6 +261,9 @@ const componentBodySetup = (treeData) => {
               ${listItem}
             </ul>
           </div>`;
+        break;
+      case component.DROPDOWN_COMPONENT:
+
         break;
       default:
         child.codeString = `<${child.name} />`;

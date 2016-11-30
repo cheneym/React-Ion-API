@@ -5,10 +5,13 @@ const MENU_COMPONENT = 'Menu';
 const TEXT_COMPONENT = 'Text';
 const IMAGE_COMPONENT = 'Image';
 const LIST_COMPONENT = 'List';
+const RADIO_COMPONENT = 'Radio';
+const DROPDOWN_COMPONENT = 'Dropdown';
 
 const inlineComponent = (type) => {
   if (type === TEXT_COMPONENT ||
-      type === LIST_COMPONENT) {
+      type === LIST_COMPONENT ||
+      type === DROPDOWN_COMPONENT) {
     return true;
   } else {
     return false;
@@ -27,6 +30,9 @@ const getComponent = (tree) => {
     case MENU_COMPONENT:
       componentPath = filePath.BLOCK_TEMPLATE_PATH;
       break;
+    case RADIO_COMPONENT:
+      componentPath = filePath.RADIO_TEMPLATE_PATH;
+      break;
     case IMAGE_COMPONENT:
       componentPath = filePath.IMAGE_TEMPLATE_PATH;
       break;
@@ -43,6 +49,8 @@ module.exports = {
   TEXT_COMPONENT,
   IMAGE_COMPONENT,
   LIST_COMPONENT,
+  RADIO_COMPONENT,
+  DROPDOWN_COMPONENT,
   getComponent,
   inlineComponent,
 };

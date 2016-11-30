@@ -15,6 +15,7 @@ module.exports = (tree, userId, cb) => {
 
   const generateFile = (treeData, inital) => {
     utils.consoleLog(`Generate Files for: ${treeData.name}`);
+    utils.consoleLog(`Length ${componentTotal}`);
     let tempTreeData = treeData;
 
     if (inital) {
@@ -34,7 +35,7 @@ module.exports = (tree, userId, cb) => {
     } else {
       tempTreeData.tag = 'div';
     }
-    
+
     tempTreeData = helper.componentBodySetup(tempTreeData);
     console.log(tempTreeData);
     helper.cssSetup(helper.combineCss(tempTreeData), userId, () => {
@@ -48,7 +49,9 @@ module.exports = (tree, userId, cb) => {
           counter += 1;
           if (tempTreeData.children.length !== 0) {
             tempTreeData.children.forEach((component) => {
-              if (component.componentType !== 'Text' && component.componentType !== 'List') {
+              if (component.componentType !== 'Text' &&
+                  component.componentType !== 'List' &&
+                  component.componentType !== 'DropDown') {
                 generateFile(component);
               }
             });
