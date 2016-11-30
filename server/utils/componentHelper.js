@@ -6,7 +6,7 @@ const TEXT_COMPONENT = 'Text';
 const IMAGE_COMPONENT = 'Image';
 const LIST_COMPONENT = 'List';
 const RADIO_COMPONENT = 'Radio';
-const DROPDOWN_COMPONENT = 'Dropdown';
+const DROPDOWN_COMPONENT = 'DropDown';
 
 const inlineComponent = (type) => {
   if (type === TEXT_COMPONENT ||
