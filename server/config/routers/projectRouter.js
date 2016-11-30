@@ -10,7 +10,7 @@ router.route('/')
 
 // Generate files for project
 router.route('/generate')
-  .get(projectController.generateProject);
+  .post(projectController.generateProject);
 
 // Get one project
 router.route('/:projectId')
