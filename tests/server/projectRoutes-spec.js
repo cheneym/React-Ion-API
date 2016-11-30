@@ -17,6 +17,7 @@ const after = mocha.after;
 describe('Project Routes', () => {
   let userId;
   let projectId;
+  let token;
   const permissionId = 1;
   const requestWithSession = request.defaults({ jar: true });
 
@@ -58,8 +59,9 @@ describe('Project Routes', () => {
               },
             };
 
-            requestWithSession(options, (err5) => {
+            requestWithSession(options, (err5, res, body) => {
               expect(err5).to.not.exist;
+              token = body.data.token;
               done();
             });
           });
@@ -91,6 +93,9 @@ describe('Project Routes', () => {
         method: 'GET',
         uri: `${host}/api/project`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
@@ -114,6 +119,7 @@ describe('Project Routes', () => {
         },
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       };
       requestWithSession(options, (error, res, body) => {
@@ -134,6 +140,9 @@ describe('Project Routes', () => {
         method: 'GET',
         uri: `${host}/api/project/${projectId}/`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
@@ -146,6 +155,9 @@ describe('Project Routes', () => {
         method: 'GET',
         uri: `${host}/api/project/154894845/`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
@@ -163,6 +175,9 @@ describe('Project Routes', () => {
         json: {
           name: 'heaven',
         },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
@@ -175,6 +190,9 @@ describe('Project Routes', () => {
         method: 'PUT',
         uri: `${host}/api/project/154894845/`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
@@ -190,10 +208,12 @@ describe('Project Routes', () => {
         method: 'GET',
         uri: `${host}/api/project/${projectId}/owner`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        console.log('body', body);
         expect(body.data.username).to.equal('Cheney');
         done();
       });
@@ -206,6 +226,9 @@ describe('Project Routes', () => {
         method: 'DELETE',
         uri: `${host}/api/project/${projectId}/`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
@@ -214,6 +237,9 @@ describe('Project Routes', () => {
           method: 'GET',
           uri: `${host}/api/project/${projectId}/`,
           json: {},
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
         requestWithSession(options2, (error2, res2, body2) => {
           expect(error2).to.not.exist;
@@ -227,6 +253,9 @@ describe('Project Routes', () => {
         method: 'DELETE',
         uri: `${host}/api/project/154894845/`,
         json: {},
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;

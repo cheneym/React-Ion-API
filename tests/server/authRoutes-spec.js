@@ -175,7 +175,6 @@ describe('Auth Routes', () => {
       };
       requestWithSession(options, (err, res, body) => {
         expect(err).to.not.exist;
-        console.log('resstatuscode', res.statusCode);
         expect(res.statusCode).to.equal(401);
         expect(body.errorCode).to.equal(401);
         done();
