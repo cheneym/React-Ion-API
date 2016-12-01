@@ -6,7 +6,7 @@ module.exports.login = (req, res) => {
     id: req.user.id,
     username: req.user.username,
   }, 'React-Ion-Secret', { expiresIn: 7200 });
-  res.cookie('access_token', token, { domain: 'http://www.react-ion.com', path: '/', httpOnly : false})
+  res.cookie('access_token', token, { domain: '.react-ion.com', path: '/', httpOnly : false})
     .json({ data: {
       id: req.user.id,
       username: req.user.username,
@@ -40,7 +40,7 @@ module.exports.signup = (req, res) => {
         id: newUser.id,
         username: newUser.username,
       }, 'React-Ion-Secret', { expiresIn: 7200 });
-      return res.cookie('access_token', token, { domain: 'http://www.react-ion.com', path: '/', httpOnly : false})
+      return res.cookie('access_token', token, { domain: '.react-ion.com', path: '/', httpOnly : false})
         .json({ data: {
           id: newUser.id,
           username: newUser.username,
