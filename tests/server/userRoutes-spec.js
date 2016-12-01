@@ -112,17 +112,21 @@ describe('User Routes', () => {
           password: 'notsafe',
         },
       };
-      requestWithSession(options, (err2) => {
+      requestWithSession(options, (err2, res2, body2) => {
         expect(err2).to.not.exist;
+        const token = body2.data.token;
         const options2 = {
           method: 'GET',
           followAllRedirects: true,
           uri: `${host}/api/user/projects`,
           json: {},
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         };
-        requestWithSession(options2, (err3, res2, body2) => {
+        requestWithSession(options2, (err3, res3, body3) => {
           expect(err3).to.not.exist;
-          expect(body2.data.length).to.equal(3);
+          expect(body3.data.length).to.equal(3);
           done();
         });
       });
