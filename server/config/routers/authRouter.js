@@ -1,9 +1,8 @@
 const express = require('express');
-const expressJwt = require('express-jwt');
 const passport = require('passport');
 const authController = require('../../../db/controllers/authController');
+const { authenticate } = require('../auth.js');
 
-const authenticate = expressJwt({ secret: 'React-Ion-Secret' });
 const router = new express.Router();
 
 router.route('/login')

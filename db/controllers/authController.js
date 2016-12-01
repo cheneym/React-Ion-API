@@ -6,11 +6,12 @@ module.exports.login = (req, res) => {
     id: req.user.id,
     username: req.user.username,
   }, 'React-Ion-Secret', { expiresIn: 7200 });
-  res.json({ data: {
-    id: req.user.id,
-    username: req.user.username,
-    token,
-  } });
+  res.cookie('access_token', token)
+    .json({ data: {
+      id: req.user.id,
+      username: req.user.username,
+      token,
+    } });
 };
 
 module.exports.signup = (req, res) => {
@@ -39,11 +40,12 @@ module.exports.signup = (req, res) => {
         id: newUser.id,
         username: newUser.username,
       }, 'React-Ion-Secret', { expiresIn: 7200 });
-      return res.json({ data: {
-        id: newUser.id,
-        username: newUser.username,
-        token,
-      } });
+      return res.cookie('access_token', token)
+        .json({ data: {
+          id: newUser.id,
+          username: newUser.username,
+          token,
+        } });
     });
   });
 };
