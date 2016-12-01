@@ -7,7 +7,7 @@ module.exports = (app) => {
     const allowedOrigins = ['http://localhost:8080', 'http://react-ion.herokuapp.com', 'https://react-ion.herokuapp.com'];
     const origin = req.headers.origin;
     if (allowedOrigins.indexOf(origin) > -1) { res.header('Access-Control-Allow-Origin', origin); }
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Credentials', true);
     next();
@@ -21,4 +21,5 @@ module.exports = (app) => {
       errorMessage: '404 Invalid Request',
     });
   });
+  app.options('/*', (req, res) => { res.status(200).end(); });
 };

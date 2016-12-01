@@ -1,13 +1,13 @@
 const express = require('express');
 const userController = require('../../../db/controllers/userController');
-const authCheck = require('../../utils/authCheck').authCheck;
+const { authenticate } = require('../auth.js');
 
 const router = new express.Router();
 
 router.route('/projects')
-  .get(authCheck, userController.getProjects);
+  .get(authenticate, userController.getProjects);
 
 router.route('/info')
-  .get(authCheck, userController.getInfo);
+  .get(authenticate, userController.getInfo);
 
 module.exports = router;

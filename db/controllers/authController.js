@@ -1,10 +1,18 @@
 const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
 
-module.exports.login = (req, res) =>
-  res.json({ data: {
+module.exports.login = (req, res) => {
+  const token = jwt.sign({
     id: req.user.id,
     username: req.user.username,
-  } });
+  }, 'React-Ion-Secret', { expiresIn: 7200 });
+  res.cookie('access_token', token)
+    .json({ data: {
+      id: req.user.id,
+      username: req.user.username,
+      token,
+    } });
+};
 
 module.exports.signup = (req, res) => {
   const username = req.body.username;
@@ -28,31 +36,17 @@ module.exports.signup = (req, res) => {
           errorMessage: 'Unable to create user',
         });
       }
-      return req.logIn(newUser, (err3) => {
-        if (err3) {
-          return res.status(400).json({
-            errorCode: 400,
-            errorMessage: 'Unable to log in user',
-          });
-        }
-        return res.json({ data: {
+      const token = jwt.sign({
+        id: newUser.id,
+        username: newUser.username,
+      }, 'React-Ion-Secret', { expiresIn: 7200 });
+      return res.cookie('access_token', token)
+        .json({ data: {
           id: newUser.id,
           username: newUser.username,
+          token,
         } });
-      });
     });
-  });
-};
-
-module.exports.logout = (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({
-        errorCode: 500,
-        errorMessage: 'Failed to destroy session',
-      });
-    }
-    return res.status(200).json({ data: 'Logout Successful' });
   });
 };
 
