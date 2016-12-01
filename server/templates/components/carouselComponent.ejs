@@ -1,0 +1,33 @@
+import React from 'react';
+import ImageGallery from 'react-image-gallery';
+import '../../node_modules/react-image-gallery/styles/scss/image-gallery.scss';
+require('../css/<%= name %>.css');
+
+class <%- name %> extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      images: [
+      <% for(var i=0; i<props.images.length; i++) { %>{
+        original: "<%= props.images[i] %>",
+        thumbnail: "<%= props.images[i] %>"
+      },
+      <% } %>
+      ]
+    };
+  }
+
+  render() {
+    return (
+      <div className="<%= name.toLowerCase() %>-<%= componentType.toLowerCase() %>">
+        <ImageGallery
+          items={this.state.images}
+          <% for(var key in props.settings) { %><%= key %>={<%= props.settings[key] %>}
+          <% } %>
+        />
+      </div>
+    );
+  }
+}
+
+export default <%- name %>;

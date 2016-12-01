@@ -14,6 +14,7 @@ module.exports.STRUCTURE_TEMPLATE_PATH = path.join(__dirname, '../../server/stru
 module.exports.BLOCK_TEMPLATE_PATH = path.join(__dirname, '../templates/components/blockComponent.ejs');
 module.exports.IMAGE_TEMPLATE_PATH = path.join(__dirname, '../templates/components/imageComponent.ejs');
 module.exports.RADIO_TEMPLATE_PATH = path.join(__dirname, '../templates/components/radioComponent.ejs');
+module.exports.CAROUSEL_TEMPLATE_PATH = path.join(__dirname, '../templates/components/carouselComponent.ejs');
 
 // USER PATHS
 module.exports.getWebpackPath = userId => path.join(__dirname, `../../user/${userId}`);
