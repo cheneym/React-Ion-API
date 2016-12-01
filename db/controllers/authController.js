@@ -50,18 +50,6 @@ module.exports.signup = (req, res) => {
   });
 };
 
-// module.exports.logout = (req, res) => {
-//   req.session.destroy((err) => {
-//     if (err) {
-//       return res.status(500).json({
-//         errorCode: 500,
-//         errorMessage: 'Failed to destroy session',
-//       });
-//     }
-//     return res.status(200).json({ data: 'Logout Successful' });
-//   });
-// };
-
 module.exports.authenticate = (req, res) => {
   if (req.user) {
     return res.status(200).json({ data: 'Authorized' });
