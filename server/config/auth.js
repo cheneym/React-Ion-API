@@ -1,19 +1,25 @@
 const passport = require('passport');
 const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
+const expressJwt = require('express-jwt');
 const User = require('../../db/models/userModel');
 
+const authenticate = expressJwt({
+  secret: 'React-Ion-Secret',
+  getToken: (req) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      return req.headers.authorization.split(' ')[1];
+    } else if (req.query && req.query.token) {
+      return req.query.token;
+    } else if (req.cookies.access_token) {
+      return req.cookies.access_token;
+    }
+    return null;
+  },
+});
+
+
 module.exports = () => {
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser((id, done) => {
-    User.findOne({ id }, (err, user) => {
-      done(err, user);
-    });
-  });
-
   const validateUserPass = (username, password, done) => {
     User.findOne({ username }, (err, user) => {
       if (err) {
@@ -34,4 +40,4 @@ module.exports = () => {
   passport.use(new LocalStrategy(validateUserPass));
 };
 
-module.exports.passport = passport;
+module.exports.authenticate = authenticate;

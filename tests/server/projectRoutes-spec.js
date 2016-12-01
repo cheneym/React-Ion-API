@@ -17,6 +17,7 @@ const after = mocha.after;
 describe('Project Routes', () => {
   let userId;
   let projectId;
+  let token;
   const permissionId = 1;
   const requestWithSession = request.defaults({ jar: true });
 
@@ -58,8 +59,9 @@ describe('Project Routes', () => {
               },
             };
 
-            requestWithSession(options, (err5) => {
+            requestWithSession(options, (err5, res, body) => {
               expect(err5).to.not.exist;
+              token = body.data.token;
               done();
             });
           });
@@ -193,7 +195,6 @@ describe('Project Routes', () => {
       };
       requestWithSession(options, (error, res, body) => {
         expect(error).to.not.exist;
-        console.log('body', body);
         expect(body.data.username).to.equal('Cheney');
         done();
       });
