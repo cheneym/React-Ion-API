@@ -154,9 +154,6 @@ describe('Auth Routes', () => {
           method: 'GET',
           uri: `${host}/authenticate`,
           json: {},
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
         requestWithSession(options2, (err2, res2, body2) => {
           expect(err2).to.not.exist;
@@ -173,7 +170,7 @@ describe('Auth Routes', () => {
         uri: `${host}/authenticate`,
         json: {},
       };
-      requestWithSession(options, (err, res, body) => {
+      request(options, (err, res, body) => {
         expect(err).to.not.exist;
         expect(res.statusCode).to.equal(401);
         expect(body.errorCode).to.equal(401);

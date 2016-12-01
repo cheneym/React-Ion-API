@@ -17,7 +17,6 @@ const after = mocha.after;
 describe('User Routes', () => {
   let userId1;
   let userId2;
-  let token;
   const requestWithSession = request.defaults({ jar: true });
 
   describe('Get all projects', () => {
@@ -95,7 +94,7 @@ describe('User Routes', () => {
         uri: `${host}/api/user/projects`,
         json: {},
       };
-      requestWithSession(options, (err, res, body) => {
+      request(options, (err, res, body) => {
         expect(err).to.not.exist;
         expect(res.statusCode).to.equal(401);
         expect(body.errorMessage).to.equal('No authorization token was found');
@@ -113,17 +112,13 @@ describe('User Routes', () => {
           password: 'notsafe',
         },
       };
-      requestWithSession(options, (err2, res, body) => {
+      requestWithSession(options, (err2) => {
         expect(err2).to.not.exist;
-        token = body.data.token;
         const options2 = {
           method: 'GET',
           followAllRedirects: true,
           uri: `${host}/api/user/projects`,
           json: {},
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         };
         requestWithSession(options2, (err3, res2, body2) => {
           expect(err3).to.not.exist;
