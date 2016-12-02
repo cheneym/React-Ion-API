@@ -64,7 +64,7 @@ const createCss = (tree) => {
       'box-sizing': tree.props.boxSizing || 'border-box',
       'background-size': 'cover',
     };
-  } else if (tree.componentType === 'Carousels') {
+  } else if (tree.componentType === 'Carousel') {
     convertedCss = {
       width: w,
       padding: '10px',

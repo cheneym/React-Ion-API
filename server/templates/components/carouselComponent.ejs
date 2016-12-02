@@ -9,8 +9,9 @@ class <%- name %> extends React.Component {
     this.state = {
       images: [
       <% for(var i=0; i<props.content.length; i++) { %>{
-        original: "<%= props.content[i] %>",
-        thumbnail: "<%= props.content[i] %>"
+        original: "<%= props.content[i].original %>",
+        thumbnail: "<%= props.content[i].thumbnail %>",
+        description: "<%= props.content[i].description %>"
       },
       <% } %>
       ]
