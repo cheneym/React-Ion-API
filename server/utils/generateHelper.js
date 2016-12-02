@@ -66,9 +66,9 @@ const createCss = (tree) => {
     };
   } else if (tree.componentType === 'Carousels') {
     convertedCss = {
-      width: '100%',
+      width: w,
       padding: '10px',
-      height: 'auto',
+      height: h,
       'flex-wrap': 'wrap',
       'white-space': 'initial',
     };
