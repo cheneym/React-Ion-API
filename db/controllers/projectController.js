@@ -76,8 +76,6 @@ module.exports.removeProject = (req, res) => {
 };
 
 module.exports.generateProject = (req, res) => {
-  //console.log("req", req.body);
-  //const tree = JSON.parse(req.query.tree);
   const tree = JSON.parse(req.body.tree);
   const userId = 1;
   Worker(tree, userId, () => {
